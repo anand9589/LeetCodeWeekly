@@ -44,18 +44,14 @@
             return index;
         }
 
+        int result = 0;
         public int CountUnguarded(int m, int n, int[][] guards, int[][] walls)
         {
-            int result = 0;
             int[][] guarded = new int[m][];
 
             for (int i = 0; i < m; i++)
             {
                 guarded[i] = new int[n];
-                for (int j = 0; j < n; j++)
-                {
-                    guarded[i][j] = -1;
-                }
             }
 
             for (int i = 0; i < walls.Length; i++)
@@ -63,7 +59,8 @@
                 int x = walls[i][0];
                 int y = walls[i][1];
 
-                guarded[x][y] = 1;
+                guarded[x][y] = 2;
+                result++;
             }
 
             for (int i = 0; i < guards.Length; i++)
@@ -71,83 +68,71 @@
                 int x = guards[i][0];
                 int y = guards[i][1];
 
-                guarded[x][y] = 1;
-
-                updateGuarded(guarded, guards, walls, x, y, m, n);
-            }
-
-            for (int i = 0; i < guarded.Length; i++)
-            {
-                for (int j = 0; j < guarded[i].Length; j++)
+                if (guarded[x][y] == 0)
                 {
-                    if (guarded[i][j] == -1) result++;
+                    guarded[x][y] = 1;
+                    result++;
                 }
+                updateGuarded(guarded, guards, walls, x, y, m, n);
+
+                if(result == m*n) return result;
             }
 
-            return result;
+            return m * n - result;
         }
 
         private void updateGuarded(int[][] guarded, int[][] guards, int[][] walls, int x, int y, int m, int n)
         {
             for (int i = x - 1; i >= 0; i--)
             {
-                if (isWall(walls, i, y) || isGuard(guards, i, y))
+                if (guarded[i][y] == 0)
+                {
+                    guarded[i][y] = 1;
+                    result++;
+                }
+                else if (guarded[i][y] == 2)
                 {
                     break;
                 }
-                guarded[i][y] = 1;
             }
-
             for (int i = x + 1; i < m; i++)
             {
-                if (isWall(walls,i,y) || isGuard(guards, i, y))
+                if (guarded[i][y] == 0)
+                {
+                    guarded[i][y] = 1;
+                    result++;
+                }
+                else if (guarded[i][y] == 2)
                 {
                     break;
                 }
-
-                guarded[i][y] = 1;
             }
 
             for (int i = y - 1; i >= 0; i--)
             {
-
-                if (isWall(walls,x,i) || isGuard(guards, x, i))
+                if (guarded[x][i] == 0)
+                {
+                    guarded[x][i] = 1;
+                    result++;
+                }
+                else if (guarded[x][i] == 2)
                 {
                     break;
                 }
-
-                guarded[x][i] = 1;
             }
 
             for (int i = y + 1; i < n; i++)
             {
-                if (isWall(walls,x,i) || isGuard(guards, x, i))
+                if (guarded[x][i] == 0)
+                {
+                    guarded[x][i] = 1;
+                    result++;
+                }
+                else if (guarded[x][i] == 2)
                 {
                     break;
                 }
-
-                guarded[x][i] = 1;
             }
-        }
-
-        private bool isWall(int[][] walls, int x, int y)
-        {
-            foreach (var w in walls)
-            {
-                if (x == w[0] && y == w[1]) return true;
-            }
-
-            return false;
-        }
-
-        private bool isGuard(int[][] gurads, int x, int y)
-        {
-            foreach (var w in gurads)
-            {
-                if (x == w[0] && y == w[1]) return true;
-            }
-
-            return false;
         }
 
         public int MaximumMinutes(int[][] grid)
