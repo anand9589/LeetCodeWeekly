@@ -75,7 +75,7 @@
                 }
                 updateGuarded(guarded, guards, walls, x, y, m, n);
 
-                if(result == m*n) return result;
+                if (result == m * n) return result;
             }
 
             return m * n - result;
@@ -137,7 +137,64 @@
 
         public int MaximumMinutes(int[][] grid)
         {
+            int x = 0;
+            int y = 0;
+            Dictionary<int, List<List<int>>> map = new Dictionary<int, List<List<int>>>();
+            map.Add(0, new List<List<int>>());
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    if (grid[i][j] == 1)
+                    {
+                        map[0].Add(new List<int>() { i, j });
+                    }
+                }
+            }
+            int k = 0;
+            for (int i = 1; i <= 1000000000; i++)
+            {
+                map.Add(i, new List<List<int>>());
+                foreach (var fire in map[i - 1])
+                {
+
+                    int x1 = fire[0];
+                    int y1 = fire[1];
+
+                    if (
+                        (x1 == 0 && y1 - 1 == 0) ||
+                        (x1 == 0 && y1 + 1 == 0) ||
+                        (x1 - 1 == 0 && y1 == 0) ||
+                        (x1 + 1 == 0 && y1 == 0)
+                        )
+                    {
+                        k = i;
+                        break;
+                    }
+                    updateFireValue(grid, x1, y1 - 1, map[i]);
+                    updateFireValue(grid, x1, y1 + 1, map[i]);
+                    updateFireValue(grid, x1 + 1, y1, map[i]);
+                    updateFireValue(grid, x1 - 1, y1, map[i]);
+                }
+                if (k == i) break;
+                if (map[i].Count == 0) return 1000000000;
+            }
+            for (int i = k; i >= 1; i--)
+            {
+
+            }
             return -1;
+        }
+
+
+        private void updateFireValue(int[][] grid, int x1, int y1, List<List<int>> fires)
+        {
+            if (x1 < 0 || y1 < 0 || x1 >= grid.Length || y1 >= grid[x1].Length) return;
+            if (grid[x1][y1] == 0)
+            {
+                grid[x1][y1] = 1;
+                fires.Add(new List<int>() { x1, y1 });
+            }
         }
     }
 }
