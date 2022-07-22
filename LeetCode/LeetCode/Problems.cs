@@ -23,6 +23,43 @@
         }
         #endregion
 
+        #region Problem 81
+        public bool Search(int[] nums, int target)
+        {
+            int lowIndex = 0;
+            int highIndex = nums.Length - 1;
+
+            while (lowIndex <= highIndex)
+            {
+
+                if (nums[lowIndex] == target) return true;
+                if (nums[highIndex] == target) return true;
+
+                if (target > nums[lowIndex])
+                {
+                    while (lowIndex<highIndex && nums[lowIndex+1] == nums[lowIndex])
+                    {
+                        lowIndex++;
+                    }
+                    lowIndex++;
+                }
+                else if(target < nums[highIndex])
+                {
+                    while (highIndex>lowIndex && nums[highIndex-1]==nums[highIndex])
+                    {
+                        highIndex--;
+                    }
+                    highIndex--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return false;
+        }
+        #endregion
+
         #region Problem 86
         public ListNode Partition(ListNode head, int x)
         {
@@ -32,9 +69,9 @@
             ListNode smallHead = smallNode;
             ListNode higherHead = higherNode;
 
-            while (head!=null)
+            while (head != null)
             {
-                if (head.val<x)
+                if (head.val < x)
                 {
                     smallHead.next = head;
                     smallHead = smallHead.next;
