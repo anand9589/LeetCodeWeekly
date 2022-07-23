@@ -60,6 +60,57 @@
         }
         #endregion
 
+        #region Problem 82
+        public ListNode DeleteDuplicates_82(ListNode head)
+        {
+            ListNode firstNode = new ListNode(-101, head);
+            ListNode temp = firstNode;
+            while (head != null)
+            {
+                bool skip = false;
+                if (head.next != null && head.val == head.next.val)
+                {
+                    while (head.next != null && head.val == head.next.val)
+                    {
+                        head = head.next;
+                    }
+                    temp.next = head.next;
+                }
+                else
+                {
+                    temp = temp.next;
+                }
+                head = head.next;
+
+            }
+
+            return firstNode.next;
+        }
+        #endregion
+
+        #region Problem 83
+        public ListNode DeleteDuplicates(ListNode head)
+        {
+            ListNode firstNode = new ListNode(-101,head);
+            ListNode temp = firstNode;
+
+            while (head!=null)
+            {
+                temp.next = head;
+
+                while (head.next!=null && head.val == head.next.val)
+                {
+                    head = head.next;
+                }
+
+                head = head.next;
+                temp = temp.next;
+            }
+
+            return firstNode.next;
+        }
+        #endregion
+
         #region Problem 86
         public ListNode Partition(ListNode head, int x)
         {
@@ -90,5 +141,7 @@
             return smallHead.next;
         }
         #endregion
+
+
     }
 }
