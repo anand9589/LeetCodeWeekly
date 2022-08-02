@@ -37,15 +37,15 @@
 
                 if (target > nums[lowIndex])
                 {
-                    while (lowIndex<highIndex && nums[lowIndex+1] == nums[lowIndex])
+                    while (lowIndex < highIndex && nums[lowIndex + 1] == nums[lowIndex])
                     {
                         lowIndex++;
                     }
                     lowIndex++;
                 }
-                else if(target < nums[highIndex])
+                else if (target < nums[highIndex])
                 {
-                    while (highIndex>lowIndex && nums[highIndex-1]==nums[highIndex])
+                    while (highIndex > lowIndex && nums[highIndex - 1] == nums[highIndex])
                     {
                         highIndex--;
                     }
@@ -91,14 +91,14 @@
         #region Problem 83
         public ListNode DeleteDuplicates(ListNode head)
         {
-            ListNode firstNode = new ListNode(-101,head);
+            ListNode firstNode = new ListNode(-101, head);
             ListNode temp = firstNode;
 
-            while (head!=null)
+            while (head != null)
             {
                 temp.next = head;
 
-                while (head.next!=null && head.val == head.next.val)
+                while (head.next != null && head.val == head.next.val)
                 {
                     head = head.next;
                 }
@@ -142,6 +142,89 @@
         }
         #endregion
 
+        #region Problem 315
+        public IList<int> CountSmaller(int[] nums)
+        {
+            IList<int> result = new List<int>();
 
+            int[][] matrix = new int[nums.Length][];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                matrix[i] = new int[nums.Length];
+            }
+
+            for (int i = 1; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    matrix[i][j] = matrix[i - 1][j];
+                    if (nums[j] > nums[i])
+                    {
+                        matrix[i][j] = matrix[i][j] + 1;
+                    }
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region July 24 2022
+        public char RepeatedCharacter(string s)
+        {
+            List<char> result = new List<char>();
+            int i = 0;
+            while (i < s.Length && !result.Contains(s[i]))
+            {
+                result.Add(s[i]);
+                i++;
+            }
+            return s[i];
+        }
+
+        public int EqualPairs(int[][] grid)
+        {
+            int result = 0;
+            int[][] rows = new int[grid.Length][];
+            int[][] cols = new int[grid.Length][];
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                rows[i] = new int[grid[i].Length];
+                for (int j = 0; j < grid.Length; j++)
+                {
+                    rows[i][j] = grid[i][j];
+                }
+            }
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                cols[i] = new int[rows[i].Length];
+                for (int j = 0; j < grid.Length; j++)
+                {
+                    cols[i][j] = grid[j][i];
+                }
+            }
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                for (int j = 0; j < cols.Length; j++)
+                {
+                    bool match = true;
+                    for (int k = 0; k < cols[i].Length; k++)
+                    {
+                        if (rows[i][k] != cols[j][k])
+                        {
+                            match = false; break;
+                        }
+                    }
+                    if (match) result++;
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
     }
 }

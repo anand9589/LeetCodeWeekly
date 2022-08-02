@@ -1,8 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using LeetCode;
+using LeetCode.Weekly.FoodRating;
 
 Problems problems = new Problems();
-problems.DeleteDuplicates(buildList(new int[] { 1, 1, 1, 2, 2, 3 }));
+//problems.EqualPairs( new int[][] { new int[] { 3, 2, 1 },new int[] { 1,7,6 }, new int[] { 2, 7, 7 } });
+
+FoodRatings foodRatings = new FoodRatings(new string[] { "czopaaeyl", "lxoozsbh", "kbaxapl" }, new string[] { "dmnuqeatj", "dmnuqeatj", "dmnuqeatj" }, new int[] { 11, 2, 15 });
+foodRatings.ChangeRating("czopaaeyl", 12);
+foodRatings.HighestRated("dmnuqeatj");
+foodRatings.ChangeRating("kbaxapl", 8);
+foodRatings.ChangeRating("lxoozsbh", 5);
+foodRatings.HighestRated("dmnuqeatj");
 
 
 ListNode buildList(int[] arr)
