@@ -169,6 +169,40 @@
         }
         #endregion
 
+        #region Problem 336
+        public IList<IList<int>> PalindromePairs(string[] words)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+            for (int i = 0; i < words.Length-1; i++)
+            {
+                for (int j = i+1; j < words.Length; j++)
+                {
+                    if (isPalindrome(words[i] + words[j]))
+                    {
+                        result.Add(new List<int>() { i, j });
+                    }
+                    if (isPalindrome(words[j] + words[i]))
+                    {
+                        result.Add(new List<int>() { j, i });
+                    }
+                }
+            }
+            return result;
+        }
+
+        private bool isPalindrome(string word)
+        {
+            int startIndex = 0, endIndex=word.Length-1;
+
+            while (startIndex<endIndex)
+            {
+                if(word[startIndex++] != word[endIndex--]) return false;
+            }
+            return true;
+
+        }
+        #endregion
+
         #region July 24 2022
         public char RepeatedCharacter(string s)
         {
