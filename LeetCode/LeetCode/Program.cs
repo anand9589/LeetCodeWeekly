@@ -1,20 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using LeetCode;
-using Problem1115;
+using Problem1116;
 
-FooBar fooBar = new FooBar(2);
+ZeroEvenOdd zeroEvenOdd = new ZeroEvenOdd(5);
 
-Thread A = new Thread( ()=> { fooBar.Foo(foo); });
-Thread B = new Thread(() => { fooBar.Bar(bar); });
+Thread A = new Thread(() => { zeroEvenOdd.Zero(printNumber); });
+Thread B = new Thread(() => { zeroEvenOdd.Odd(printNumber); });
+Thread C = new Thread(() => { zeroEvenOdd.Even(printNumber); });
 A.Start();
-B.Start();  
+B.Start();
+C.Start();
 
-void foo()
+void printNumber(int n)
 {
-    Console.WriteLine("foo");
-}
-
-void bar()
-{
-    Console.WriteLine("bar");
+    Console.WriteLine(n);
 }

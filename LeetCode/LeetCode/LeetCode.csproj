@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PalindromePairs\PalindromePairs.csproj" />
     <ProjectReference Include="..\Problem1115\Problem1115.csproj" />
+    <ProjectReference Include="..\Problem1116\Problem1116.csproj" />
   </ItemGroup>
 
 </Project>

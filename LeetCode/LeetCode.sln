@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PalindromePairs", "Palindro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem1115", "Problem1115\Problem1115.csproj", "{83625E43-8068-453F-AAD3-C5F1439DB7FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem1116", "Problem1116\Problem1116.csproj", "{0230D370-88B2-4AC1-A050-061D14C39977}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{83625E43-8068-453F-AAD3-C5F1439DB7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83625E43-8068-453F-AAD3-C5F1439DB7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83625E43-8068-453F-AAD3-C5F1439DB7FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0230D370-88B2-4AC1-A050-061D14C39977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0230D370-88B2-4AC1-A050-061D14C39977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0230D370-88B2-4AC1-A050-061D14C39977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0230D370-88B2-4AC1-A050-061D14C39977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
