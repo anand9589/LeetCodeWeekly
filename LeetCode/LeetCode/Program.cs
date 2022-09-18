@@ -1,9 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using LeetCode;
-using PalindromePairs;
+using Problem1115;
 
-Problems problems = new Problems();
-string[] words = new string[] { "abcd", "dcba", "lls", "s", "sssll" };
-//problems.PalindromePairs(words);
-Solution solution = new Solution();
-solution.PalindromePairs(words);
+FooBar fooBar = new FooBar(2);
+
+Thread A = new Thread( ()=> { fooBar.Foo(foo); });
+Thread B = new Thread(() => { fooBar.Bar(bar); });
+A.Start();
+B.Start();  
+
+void foo()
+{
+    Console.WriteLine("foo");
+}
+
+void bar()
+{
+    Console.WriteLine("bar");
+}

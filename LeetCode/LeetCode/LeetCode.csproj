@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PalindromePairs\PalindromePairs.csproj" />
+    <ProjectReference Include="..\Problem1115\Problem1115.csproj" />
   </ItemGroup>
 
 </Project>
