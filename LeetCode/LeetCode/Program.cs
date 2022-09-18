@@ -1,17 +1,23 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using LeetCode;
-using Problem1116;
+using Week311;
 
-ZeroEvenOdd zeroEvenOdd = new ZeroEvenOdd(5);
+TreeNode treeNode = new TreeNode(0,null,null);
+treeNode.left = new TreeNode(1,null,null);
+treeNode.right = new TreeNode(2,null,null);
+treeNode.left.left = new TreeNode(0,null,null);
+treeNode.left.right = new TreeNode(0, null, null);
+treeNode.right.left = new TreeNode(0, null, null);
+treeNode.right.right = new TreeNode(0, null, null);
+treeNode.left.left.left = new TreeNode(1, null, null);
+treeNode.left.left.right = new TreeNode(1, null, null);
+treeNode.left.right.left = new TreeNode(1, null, null);
+treeNode.left.right.right = new TreeNode(1, null, null);
+treeNode.right.left.left = new TreeNode(2, null, null);
+treeNode.right.left.right = new TreeNode(2, null, null);
+treeNode.right.right.left = new TreeNode(2, null, null);
+treeNode.right.right.right = new TreeNode(2, null, null);
 
-Thread A = new Thread(() => { zeroEvenOdd.Zero(printNumber); });
-Thread B = new Thread(() => { zeroEvenOdd.Odd(printNumber); });
-Thread C = new Thread(() => { zeroEvenOdd.Even(printNumber); });
-A.Start();
-B.Start();
-C.Start();
+Solution Solution = new Solution();
 
-void printNumber(int n)
-{
-    Console.WriteLine(n);
-}
+Solution.ReverseOddLevels(treeNode);

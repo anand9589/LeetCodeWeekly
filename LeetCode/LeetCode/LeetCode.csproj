@@ -11,6 +11,8 @@
     <ProjectReference Include="..\PalindromePairs\PalindromePairs.csproj" />
     <ProjectReference Include="..\Problem1115\Problem1115.csproj" />
     <ProjectReference Include="..\Problem1116\Problem1116.csproj" />
+    <ProjectReference Include="..\Problem1117\Problem1117.csproj" />
+    <ProjectReference Include="..\Week311\Week311.csproj" />
   </ItemGroup>
 
 </Project>
