@@ -13,7 +13,7 @@
             {
                 if (previous[i] == -1 || next[i] == -1) continue;
 
-                int vol = Math.Min(height[ previous[i]], height[next[i]]);
+                int vol = Math.Min(height[previous[i]], height[next[i]]);
 
                 result += vol - height[i];
             }
@@ -22,11 +22,11 @@
 
         private int[] nextMaxElement(int[] height)
         {
-            int [] next = new int[height.Length];
+            int[] next = new int[height.Length];
 
             Stack<int> stack = new Stack<int>();
-            stack.Push(height.Length-1);
-            for (int i = height.Length-1; i >= 0; i--)
+            stack.Push(height.Length - 1);
+            for (int i = height.Length - 1; i >= 0; i--)
             {
                 if (height[stack.Peek()] > height[i])
                 {
@@ -38,7 +38,7 @@
                     next[i] = -1;
                 }
             }
-           
+
 
             return next;
         }
@@ -236,9 +236,9 @@
         public IList<IList<int>> PalindromePairs(string[] words)
         {
             IList<IList<int>> result = new List<IList<int>>();
-            for (int i = 0; i < words.Length-1; i++)
+            for (int i = 0; i < words.Length - 1; i++)
             {
-                for (int j = i+1; j < words.Length; j++)
+                for (int j = i + 1; j < words.Length; j++)
                 {
                     if (isPalindrome(words[i] + words[j]))
                     {
@@ -255,14 +255,57 @@
 
         private bool isPalindrome(string word)
         {
-            int startIndex = 0, endIndex=word.Length-1;
+            int startIndex = 0, endIndex = word.Length - 1;
 
-            while (startIndex<endIndex)
+            while (startIndex < endIndex)
             {
-                if(word[startIndex++] != word[endIndex--]) return false;
+                if (word[startIndex++] != word[endIndex--]) return false;
             }
             return true;
 
+        }
+        #endregion
+
+        #region Problem 1647
+        public int MinDeletions(string s)
+        {
+            int i = 0;
+            Dictionary<char, int> map = new Dictionary<char, int>();
+            while (i < s.Length)
+            {
+                if (!map.ContainsKey(s[i]))
+                {
+                    map.Add(s[i], 0);
+                }
+
+                map[s[i]]++;
+
+                i++;
+            }
+
+
+            var lst = map.OrderByDescending(x => x.Value).Select(x => x.Value).ToArray();
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(lst[0]);
+            int result = 0;
+            for (int j = 1; j < lst.Count(); j++)
+            {
+                if (stack.Peek() == 1)
+                { while (lst[j] > 0) { result++; lst[j]--; } }
+                else
+                {
+                    if (lst[j] >= stack.Peek())
+                    {
+                        int diff = lst[j] - stack.Peek() + 1;
+                        result += diff;
+                        lst[j] = stack.Peek()-1;
+                    }
+                    stack.Push(lst[j]);
+                }
+            }
+
+            return result;
         }
         #endregion
 
