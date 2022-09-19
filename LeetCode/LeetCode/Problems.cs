@@ -2,6 +2,69 @@
 {
     public class Problems
     {
+
+        #region Problem 42
+        public int Trap(int[] height)
+        {
+            int[] previous = previousMaxElement(height);
+            int[] next = nextMaxElement(height);
+            int result = 0;
+            for (int i = 0; i < height.Length; i++)
+            {
+                if (previous[i] == -1 || next[i] == -1) continue;
+
+                int vol = Math.Min(height[ previous[i]], height[next[i]]);
+
+                result += vol - height[i];
+            }
+            return result;
+        }
+
+        private int[] nextMaxElement(int[] height)
+        {
+            int [] next = new int[height.Length];
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(height.Length-1);
+            for (int i = height.Length-1; i >= 0; i--)
+            {
+                if (height[stack.Peek()] > height[i])
+                {
+                    next[i] = stack.Peek();
+                }
+                else
+                {
+                    stack.Push(i);
+                    next[i] = -1;
+                }
+            }
+           
+
+            return next;
+        }
+
+        private int[] previousMaxElement(int[] height)
+        {
+            int[] previous = new int[height.Length];
+            Stack<int> stack = new Stack<int>();
+            previous[0] = -1;
+            stack.Push(0);
+            for (int i = 1; i < height.Length; i++)
+            {
+                if (height[stack.Peek()] > height[i])
+                {
+                    previous[i] = stack.Peek();
+                }
+                else
+                {
+                    stack.Push(i);
+                    previous[i] = -1;
+                }
+            }
+            return previous;
+        }
+        #endregion
+
         #region Problem 80
         public int RemoveDuplicates(int[] nums)
         {
