@@ -1,4 +1,7 @@
-﻿namespace LeetCode
+﻿using BinaryTreeProblems;
+using System.Text;
+
+namespace LeetCode
 {
     public class Problems
     {
@@ -205,6 +208,85 @@
         }
         #endregion
 
+        #region Problem 108
+        public TreeNode SortedArrayToBST(int[] nums)
+        {
+            if (nums.Length == 0) return null;
+
+            if(nums.Length == 1) return new TreeNode(nums[0],null,null);
+
+            int left = 0;
+            int right = nums.Length - 1;
+            int mid = (left + right)/2;
+
+            TreeNode root = new TreeNode(nums[mid], null, null);
+
+            root.Left = SortedArrayToBST(nums.Take(mid).ToArray());
+            root.Right = SortedArrayToBST(nums.Skip(mid+1).ToArray());
+
+            return root;
+        }
+        #endregion
+
+        #region Problem 110
+        public bool IsBalanced(TreeNode root)
+        {
+            if(root == null) return true;
+
+            if (Math.Abs(IsBalancedHeight(root.Left) - IsBalancedHeight(root.Right)) > 1) return false;
+
+            return IsBalanced(root.Left) && IsBalanced(root.Right);
+        }
+
+        private int IsBalancedHeight(TreeNode node)
+        {
+            return 1 + Math.Max(IsBalancedHeight(node.Left), IsBalancedHeight(node.Right));
+        }
+        #endregion
+
+        #region Problem 118
+        public IList<IList<int>> Generate(int numRows)
+        {
+            IList<IList<int>> list = new List<IList<int>>();
+
+            for (int i = 1; i <= numRows; i++)
+            {
+                var row = new int[i];
+                row[0] = 1;
+                row[i-1] = 1;
+                var prev = list.LastOrDefault();
+                for (int j = 1; j < i-1; j++)
+                {
+                    row[j] = prev[j] + prev[j-1];
+                }
+                list.Add(row);
+            }
+
+            return list;
+        }
+        #endregion
+
+        #region Problem 119
+        public IList<int> GetRow(int rowIndex)
+        {
+            IList<int> list = new List<int>();
+            for (int i = 1; i <= rowIndex+1; i++)
+            {
+                var row = new int[i];
+                row[0] = 1;
+                row[i - 1] = 1;
+               
+                for (int j = 1; j < i - 1; j++)
+                {
+                    row[j] = list [j] + list[j - 1];
+                }
+                list = row;
+            }
+
+            return list;
+        }
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {
@@ -266,6 +348,61 @@
         }
         #endregion
 
+        #region Problem 838
+        public string PushDominoes(string dominoes)
+        {
+            char[] chs = dominoes.ToCharArray();
+
+            int n = chs.Length;
+
+            int[] forces = new int[n];
+            int force = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (chs[i] == 'R')
+                {
+                    force = n;
+                }
+                else if (chs[i] == 'L')
+                {
+                    force = 0;
+                }
+                else
+                {
+                    force = Math.Max(force - 1, 0);
+                }
+                forces[i] += force;
+            }
+
+            force = 0;
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (chs[i] == 'L')
+                {
+                    force = n;
+                }
+                else if (chs[i] == 'R')
+                {
+                    force = 0;
+                }
+                else
+                {
+                    force = Math.Max(force - 1, 0);
+                }
+                forces[i] -= force;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < n; i++)
+            {
+                if (forces[i] == 0) stringBuilder.Append('.');
+                else if (forces[i] > 0) stringBuilder.Append('R');
+                else if (forces[i] < 0) stringBuilder.Append('L');
+            }
+            return stringBuilder.ToString();
+        }
+        #endregion
+
         #region Problem 1647
         public int MinDeletions(string s)
         {
@@ -299,7 +436,7 @@
                     {
                         int diff = lst[j] - stack.Peek() + 1;
                         result += diff;
-                        lst[j] = stack.Peek()-1;
+                        lst[j] = stack.Peek() - 1;
                     }
                     stack.Push(lst[j]);
                 }
