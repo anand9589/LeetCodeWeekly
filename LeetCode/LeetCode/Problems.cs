@@ -8,13 +8,13 @@ namespace LeetCode
         #region Problem 19
         public ListNode RemoveNthFromEnd(ListNode head, int n)
         {
-            ListNode node = new ListNode(-1,head);
+            ListNode node = new ListNode(-1, head);
             int counter = 0;
             ListNode temp = node.next;
 
             while (temp != null)
             {
-                if(counter+1 == n)
+                if (counter + 1 == n)
                 {
                     ListNode listNode = temp.next;
 
@@ -233,11 +233,11 @@ namespace LeetCode
         #region Problem 88
         public void Merge(int[] nums1, int m, int[] nums2, int n)
         {
-            for (int i = nums1.Length-1; i >= 0; i--)
+            for (int i = nums1.Length - 1; i >= 0; i--)
             {
                 if (n == 0)
                 {
-                    nums1[i]=nums1[m-1];
+                    nums1[i] = nums1[m - 1];
                     m--;
                 }
                 else if (m == 0)
@@ -246,9 +246,9 @@ namespace LeetCode
                     n--;
 
                 }
-                else if(nums1[m-1] > nums2[n - 1])
+                else if (nums1[m - 1] > nums2[n - 1])
                 {
-                    nums1[i] = nums1[m-1];
+                    nums1[i] = nums1[m - 1];
                     m--;
                 }
                 else
@@ -265,16 +265,16 @@ namespace LeetCode
         {
             if (nums.Length == 0) return null;
 
-            if(nums.Length == 1) return new TreeNode(nums[0],null,null);
+            if (nums.Length == 1) return new TreeNode(nums[0], null, null);
 
             int left = 0;
             int right = nums.Length - 1;
-            int mid = (left + right)/2;
+            int mid = (left + right) / 2;
 
             TreeNode root = new TreeNode(nums[mid], null, null);
 
             root.Left = SortedArrayToBST(nums.Take(mid).ToArray());
-            root.Right = SortedArrayToBST(nums.Skip(mid+1).ToArray());
+            root.Right = SortedArrayToBST(nums.Skip(mid + 1).ToArray());
 
             return root;
         }
@@ -283,7 +283,7 @@ namespace LeetCode
         #region Problem 110
         public bool IsBalanced(TreeNode root)
         {
-            if(root == null) return true;
+            if (root == null) return true;
 
             if (Math.Abs(IsBalancedHeight(root.Left) - IsBalancedHeight(root.Right)) > 1) return false;
 
@@ -305,11 +305,11 @@ namespace LeetCode
             {
                 var row = new int[i];
                 row[0] = 1;
-                row[i-1] = 1;
+                row[i - 1] = 1;
                 var prev = list.LastOrDefault();
-                for (int j = 1; j < i-1; j++)
+                for (int j = 1; j < i - 1; j++)
                 {
-                    row[j] = prev[j] + prev[j-1];
+                    row[j] = prev[j] + prev[j - 1];
                 }
                 list.Add(row);
             }
@@ -322,15 +322,15 @@ namespace LeetCode
         public IList<int> GetRow(int rowIndex)
         {
             IList<int> list = new List<int>();
-            for (int i = 1; i <= rowIndex+1; i++)
+            for (int i = 1; i <= rowIndex + 1; i++)
             {
                 var row = new int[i];
                 row[0] = 1;
                 row[i - 1] = 1;
-               
+
                 for (int j = 1; j < i - 1; j++)
                 {
-                    row[j] = list [j] + list[j - 1];
+                    row[j] = list[j] + list[j - 1];
                 }
                 list = row;
             }
@@ -357,11 +357,11 @@ namespace LeetCode
         {
             int[] output = new int[input.Length];
             Stack<int> stack = new Stack<int>();
-            stack.Push(input.Length-1);
+            stack.Push(input.Length - 1);
             output[output.Length - 1] = -1;
-            for (int i = input.Length-2; i >= 0; i--)
+            for (int i = input.Length - 2; i >= 0; i--)
             {
-                if(input[stack.Peek()] < input[i])
+                if (input[stack.Peek()] < input[i])
                 {
                     stack.Push(i);
                     output[i] = -1;
@@ -369,11 +369,29 @@ namespace LeetCode
                 else
                 {
                     output[i] = stack.Peek();
-                }                
+                }
             }
 
             return output;
-        } 
+        }
+        #endregion
+
+        #region Problem 125
+        public bool IsPalindrome(string s)
+        {
+            s = new string(s.ToLower().Where(x => (x >= 'a' && x <= 'z') || (x >= '0' && x <= '9')).ToArray());
+
+            int left = 0;
+            int right = s.Length - 1;
+
+            while (left < right)
+            {
+                if (s[left] != s[right]) return false;
+                left++;
+                right--;
+            }
+            return true;
+        }
         #endregion
 
         #region Problem 315
