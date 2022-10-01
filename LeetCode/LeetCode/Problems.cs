@@ -439,6 +439,40 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 144
+        public IList<int> PreorderTraversal(TreeNode root)
+        {
+            IList<int> list = new List<int>();
+            preOrder(list, root);
+            return list; 
+        }
+
+        private void preOrder(IList<int> result, TreeNode root)
+        {
+            if(root==null) return;
+            result.Add(root.Val);
+            preOrder(result,root.Left);
+            preOrder(result,root.Right);
+        }
+        #endregion
+
+        #region Problem 145
+        public IList<int> PostorderTraversal(TreeNode root)
+        {
+            IList<int> list = new List<int>();
+            postOrder(list, root);
+            return list;
+        }
+
+        private void postOrder(IList<int> result, TreeNode root)
+        {
+            if (root == null) return;
+            postOrder(result, root.Left);
+            postOrder(result, root.Right);
+            result.Add(root.Val);
+        }
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {
