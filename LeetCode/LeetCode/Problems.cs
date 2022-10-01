@@ -394,6 +394,51 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 136
+        public int SingleNumber(int[] nums)
+        {
+            //List<int> result = new List<int>();
+
+            //foreach (int num in nums)
+            //{
+            //    if (result.Contains(num))
+            //    {
+            //        result.Remove(num);
+            //    }
+            //    else
+            //    {
+            //        result.Add(num);
+            //    }
+            //}
+
+            //return result[0];
+            Array.Sort(nums);
+            for (int i = 0; i < nums.Length-1; i=i+2)
+            {
+                if(nums[i] != nums[i+1]) return nums[i];
+            }
+            return 0;   
+        }
+        #endregion
+
+        #region Problem 141
+        public bool HasCycle(ListNode head)
+        {
+            if(head==null) return false;
+            ListNode node1 = head;
+            ListNode node2 = head.next;
+
+            while(node2!= node1)
+            {
+                if(node2 == null || node2.next==null) return false;
+
+                node1 = node1.next;
+                node2 = node2.next.next;
+            }
+            return true;
+        }
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {
