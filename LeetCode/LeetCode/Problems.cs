@@ -339,6 +339,43 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 121
+        public int MaxProfit(int[] prices)
+        {
+            int[] nextMax = nextMaxElement_MaxProfit(prices);
+            int result = 0;
+            for (int i = 0; i < prices.Length; i++)
+            {
+                if (nextMax[i] == -1) continue;
+
+                result = Math.Max(result, prices[nextMax[i]] - prices[i]);
+            }
+            return result;
+        }
+
+        private int[] nextMaxElement_MaxProfit(int[] input)
+        {
+            int[] output = new int[input.Length];
+            Stack<int> stack = new Stack<int>();
+            stack.Push(input.Length-1);
+            output[output.Length - 1] = -1;
+            for (int i = input.Length-2; i >= 0; i--)
+            {
+                if(input[stack.Peek()] < input[i])
+                {
+                    stack.Push(i);
+                    output[i] = -1;
+                }
+                else
+                {
+                    output[i] = stack.Peek();
+                }                
+            }
+
+            return output;
+        } 
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {

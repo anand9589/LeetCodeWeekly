@@ -1,5 +1,8 @@
-﻿using October22;
+﻿//using October22;
 
-Solution solution = new Solution();
+//Solution solution = new Solution();
 
-solution.NumDecodings("12");
+using LeetCode;
+
+Problems problems = new Problems();
+problems.MaxProfit(new int[] { 7, 1, 5, 3, 6, 4 });
