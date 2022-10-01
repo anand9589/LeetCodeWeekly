@@ -1,5 +1,5 @@
-﻿using LeetCode;
+﻿using October22;
 
-Problems problems = new Problems();
+Solution solution = new Solution();
 
-problems.GetRow(3);
+solution.NumDecodings("12");

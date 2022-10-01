@@ -7,15 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeetCode", "LeetCode\LeetCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PalindromePairs", "PalindromePairs\PalindromePairs.csproj", "{F0604E36-7C22-46A5-995D-6B1F0FFC90A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem1115", "Problem1115\Problem1115.csproj", "{83625E43-8068-453F-AAD3-C5F1439DB7FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem1115", "Problem1115\Problem1115.csproj", "{83625E43-8068-453F-AAD3-C5F1439DB7FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem1116", "Problem1116\Problem1116.csproj", "{0230D370-88B2-4AC1-A050-061D14C39977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem1116", "Problem1116\Problem1116.csproj", "{0230D370-88B2-4AC1-A050-061D14C39977}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem1117", "Problem1117\Problem1117.csproj", "{87E5E22A-E07B-45DA-A176-E82E9484BBFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem1117", "Problem1117\Problem1117.csproj", "{87E5E22A-E07B-45DA-A176-E82E9484BBFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Week311", "Week311\Week311.csproj", "{C1E05ABF-B5BB-4118-AD78-BDDEC53F5D98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week311", "Week311\Week311.csproj", "{C1E05ABF-B5BB-4118-AD78-BDDEC53F5D98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryTreeProblems", "BinaryTreeProblems\BinaryTreeProblems.csproj", "{43EA251D-9F12-4DD4-ABDB-032922EB0E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTreeProblems", "BinaryTreeProblems\BinaryTreeProblems.csproj", "{43EA251D-9F12-4DD4-ABDB-032922EB0E8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "October22", "October22\October22.csproj", "{7C92C8B5-BF82-4AA4-ACE1-2456B2601BDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{43EA251D-9F12-4DD4-ABDB-032922EB0E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43EA251D-9F12-4DD4-ABDB-032922EB0E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43EA251D-9F12-4DD4-ABDB-032922EB0E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C92C8B5-BF82-4AA4-ACE1-2456B2601BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C92C8B5-BF82-4AA4-ACE1-2456B2601BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C92C8B5-BF82-4AA4-ACE1-2456B2601BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C92C8B5-BF82-4AA4-ACE1-2456B2601BDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

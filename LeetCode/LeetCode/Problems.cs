@@ -5,6 +5,28 @@ namespace LeetCode
 {
     public class Problems
     {
+        #region Problem 19
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            ListNode node = new ListNode(-1,head);
+            int counter = 0;
+            ListNode temp = node.next;
+
+            while (temp != null)
+            {
+                if(counter+1 == n)
+                {
+                    ListNode listNode = temp.next;
+
+                }
+                temp = temp.next;
+                counter++;
+            }
+
+
+            return node.next;
+        }
+        #endregion
 
         #region Problem 42
         public int Trap(int[] height)
