@@ -73,6 +73,34 @@
         }
         #endregion
 
+        #region Day 3 Problem 1578. Minimum Time to Make Rope Colorful
+        public int MinCost(string colors, int[] neededTime)
+        {
+            if (colors.Length == 1) return 0;
+
+            int index = 1;
+            int sum = neededTime[0];
+            int max = neededTime[0];
+            int result = 0;
+
+            while (index<colors.Length)
+            {
+                if(colors[index] != colors[index - 1])
+                {
+                    result += sum - max;
+                    sum = 0;
+                    max = 0;
+                }
+                sum+=neededTime[index];
+                max = Math.Max(max, neededTime[index]);
+                index++;
+            }
+            result += sum - max;
+
+            return result;
+        }
+        #endregion
+
         #region Weekly 313
         public int CommonFactors(int a, int b)
         {
