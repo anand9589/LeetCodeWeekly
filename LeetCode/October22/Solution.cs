@@ -126,7 +126,35 @@ namespace October22
         }
         #endregion
 
-        #region Day 5 Problem
+        #region Day 5 Problem 623. Add One Row to Tree
+        public TreeNode AddOneRow(TreeNode root, int val, int depth)
+        {
+            if (depth == 1)
+            {
+                return new TreeNode(val,root,null);
+            }
+
+            insertNode(root, depth, val, 1);
+            return root;
+        }
+
+        private void insertNode(TreeNode node, int depth, int val, int currDepth)
+        {
+            if (node == null) return;
+
+            if (currDepth == depth-1)
+            {
+                TreeNode temp = node.Left;
+                node.Left = new TreeNode(val, temp, null);
+                temp = node.Right;
+                node.Right = new TreeNode(val, null, temp);
+            }
+            else
+            {
+                insertNode(node.Left,depth,val,currDepth+1);
+                insertNode(node.Right, depth, val, currDepth + 1);
+            }
+        }
         #endregion
 
         #region Day 6 Problem
