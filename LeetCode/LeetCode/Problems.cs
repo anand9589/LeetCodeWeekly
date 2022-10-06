@@ -1,4 +1,4 @@
-﻿using BinaryTreeProblems;
+﻿using Common;
 using System.Text;
 
 namespace LeetCode
@@ -470,6 +470,92 @@ namespace LeetCode
             postOrder(result, root.Left);
             postOrder(result, root.Right);
             result.Add(root.Val);
+        }
+        #endregion
+
+        #region Problem 160
+        public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            ListNode A = headA;
+            ListNode B = headB;
+
+            while (A != B)
+            {
+                A = A !=null? A.next : headB;
+                B= B != null? B.next : headA;
+            }
+            return A;
+        }
+        #endregion
+
+        #region Problem 168
+        public string ConvertToTitle(int columnNumber)
+        {
+            StringBuilder result = new StringBuilder();
+
+            while (columnNumber>26)
+            {
+                int rem = columnNumber % 26;
+                rem = rem == 0 ? 26 : rem;
+                char c = (char)('A' - 1 + rem );
+                result.Insert(0, c);
+                columnNumber -= rem;
+                columnNumber /= 26;
+
+            }
+            if (columnNumber <= 26)
+            {
+                result.Insert(0, (char)('A' + columnNumber - 1));
+                columnNumber = 0;
+            }
+
+            return result.ToString();
+        }
+        #endregion
+
+        #region Problem 169
+        public int MajorityElement(int[] nums)
+        {
+            int res = nums[0];
+            int cnt = 1;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (cnt == 0)
+                {
+                    res = nums[i];
+                }
+
+                if(nums[i] == res)
+                {
+                    cnt++;
+                }
+                else
+                {
+                    cnt--;
+                }
+            }
+            return res;
+        }
+        #endregion
+
+        #region 171
+        public int TitleToNumber(string columnTitle)
+        {
+            int index = columnTitle.Length - 1;
+            int pow = 0;
+            int result = 0;
+            while (index >= 0)
+            {
+                int v = columnTitle[index] - 64;
+
+                int x = (int)Math.Pow(26, pow);
+
+                result += x * v;
+                index--;
+                pow++;
+            }
+            return result;
         }
         #endregion
 

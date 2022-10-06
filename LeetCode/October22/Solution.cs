@@ -110,9 +110,9 @@ namespace October22
 
             targetSum -= root.Val;
 
-            if(root.Left == null && root.Right == null && targetSum ==0) return true;
+            if (root.Left == null && root.Right == null && targetSum == 0) return true;
 
-            return HasPathSum(root.Left, targetSum) || HasPathSum(root.Right,targetSum);
+            return HasPathSum(root.Left, targetSum) || HasPathSum(root.Right, targetSum);
         }
 
         private bool hasPathSum_helper(TreeNode node, int sum)
@@ -120,7 +120,7 @@ namespace October22
             if (node.Left == null && node.Right == null && sum - node.Val == 0) return true;
 
             bool leftTree = node.Left != null ? hasPathSum_helper(node.Left, sum - node.Val) : false;
-            bool rightTree = node.Right !=null ? hasPathSum_helper(node.Right, sum - node.Val) : false;
+            bool rightTree = node.Right != null ? hasPathSum_helper(node.Right, sum - node.Val) : false;
 
             return leftTree || rightTree;
         }
@@ -131,7 +131,7 @@ namespace October22
         {
             if (depth == 1)
             {
-                return new TreeNode(val,root,null);
+                return new TreeNode(val, root, null);
             }
 
             insertNode(root, depth, val, 1);
@@ -142,7 +142,7 @@ namespace October22
         {
             if (node == null) return;
 
-            if (currDepth == depth-1)
+            if (currDepth == depth - 1)
             {
                 TreeNode temp = node.Left;
                 node.Left = new TreeNode(val, temp, null);
@@ -151,13 +151,95 @@ namespace October22
             }
             else
             {
-                insertNode(node.Left,depth,val,currDepth+1);
+                insertNode(node.Left, depth, val, currDepth + 1);
                 insertNode(node.Right, depth, val, currDepth + 1);
             }
         }
         #endregion
 
-        #region Day 6 Problem
+        #region Day 6 Problem 981. Time Based Key-Value Store
+        public class TimeMap
+        {
+            Dictionary<string, List<KeyValuePair<int, string>>> dctKeyTime;
+            public TimeMap()
+            {
+                dctKeyTime = new Dictionary<string, List<KeyValuePair<int, string>>>();
+            }
+
+            public void Set(string key, string value, int timestamp)
+            {
+                if (!dctKeyTime.ContainsKey(key))
+                {
+                    dctKeyTime.Add(key, new List<KeyValuePair<int, string>>());
+                }
+
+                dctKeyTime[key].Add(new KeyValuePair<int, string>( timestamp, value));
+            }
+
+            public string Get(string key, int timestamp)
+            {
+                if (dctKeyTime.ContainsKey(key))
+                {
+                    List<KeyValuePair<int, string>> values = dctKeyTime[key];
+                    if (values.Count > 0)
+                    {
+                        if (values.Count == 1)
+                        {
+                            if(values.First().Key <= timestamp) return values.First().Value;
+                        }
+                        else
+                        {
+
+                            //int[] keys = values.Keys.ToArray();
+                            int low = 0;
+                            int high = values.Count - 1;
+
+                            //if (keys[low] > timestamp) return "";
+                            //if (keys[high] < timestamp) return values[keys[high]];
+                            if (values[low].Key > timestamp) return "";
+                            //if(values[high].Key < timestamp) return values[high].Value;
+
+                            while (low < high)
+                            {
+                                if(values[low].Key == timestamp) return values[low].Value;
+                                if (values[high].Key <= timestamp) return values[high].Value;
+                                //if (keys[low] == timestamp) return values[keys[low]];
+                                //if (keys[high] == timestamp) return values[keys[high]];
+
+                                int mid = (low + high) / 2;
+
+                                if (values[mid].Key == timestamp) return values[mid].Value;
+                                //if (keys[mid] == timestamp) return values[keys[mid]];
+
+                                if (timestamp > values[mid].Key)
+                                {
+                                    if (Math.Abs(mid - low) <= 1) return values[low].Value;
+                                    low = mid + 1;
+                                }
+                                else
+                                {
+                                    if (Math.Abs(high - low) <= 1) return values[mid].Value;
+                                    high = mid - 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                return "";
+
+                //int low = 0;
+                //int high = values.Count;
+
+                //if(values?.Count >= 0)
+                //{
+                //    var res = values.Where(x => x.Key <= timestamp).LastOrDefault().Value;
+
+                //   return string.IsNullOrEmpty(res) ? "" : res;
+
+                //}
+                //return "";
+            }
+        }
         #endregion
 
         #region Day 7 Problem

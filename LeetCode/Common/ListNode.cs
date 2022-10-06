@@ -1,4 +1,4 @@
-﻿namespace LeetCode
+﻿namespace Common
 {
     public class ListNode
     {
