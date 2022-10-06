@@ -6,17 +6,18 @@
 
 //solution.MaxSum(new int[][] { new int[] { 520626, 685427, 788912, 800638, 717251, 683428 }, new int[] { 23602, 608915, 697585, 957500, 154778, 209236 }, new int[] { 287585, 588801, 818234, 73530, 939116, 252369 } });
 using LeetCode;
-using static October22.Solution;
+//using static October22.Solution;
 //["TimeMap","set","get","get","set","get","get"]
 //[[],["foo","bar",1],["foo",1],["foo",3],["foo","bar2",4],["foo",4],["foo",5]]
 Problems problems = new Problems();
+problems.IsHappy(19);
 //problems.MaxProfit(new int[] { 7, 1, 5, 3, 6, 4 });
-TimeMap timeMap = new TimeMap();
-timeMap.Set("foo", "bar", 1);
-timeMap.Get("foo", 1);
-timeMap.Get("foo", 3);
-timeMap.Set("foo", "bar2", 4);
-timeMap.Get("foo", 4);
-timeMap.Get("foo", 3);
-timeMap.Get("foo", 1);
+//TimeMap timeMap = new TimeMap();
+//timeMap.Set("foo", "bar", 1);
+//timeMap.Get("foo", 1);
+//timeMap.Get("foo", 3);
+//timeMap.Set("foo", "bar2", 4);
+//timeMap.Get("foo", 4);
+//timeMap.Get("foo", 3);
+//timeMap.Get("foo", 1);
 

@@ -539,7 +539,7 @@ namespace LeetCode
         }
         #endregion
 
-        #region 171
+        #region Problem 171
         public int TitleToNumber(string columnTitle)
         {
             int index = columnTitle.Length - 1;
@@ -557,6 +557,53 @@ namespace LeetCode
             }
             return result;
         }
+        #endregion
+
+        #region Problem 190
+        public uint reverseBits(uint n)
+        {
+            uint x = 0;
+
+            for (int i = 0; i < 32; i++)
+            {
+                uint y = (n & 1);
+                x = (x << 1) + y;
+                n>>=1;
+            }
+
+            return x;
+        }
+        #endregion
+
+        #region Problem 202
+        private List<int> visited_Happy = new List<int>();
+        public bool IsHappy(int n)
+        {
+            if (visited_Happy.Contains(n))
+            {
+                return false;
+            }
+            visited_Happy.Add(n);
+            if(n==1) return true;
+
+
+            //if(n<9) return false;
+
+            int newNumber = 0;
+            while (n>0)
+            {
+
+               int rem = n % 10;
+
+                newNumber += rem * rem;
+
+                n /= 10;
+            }
+
+            return IsHappy(newNumber);
+        }
+
+        
         #endregion
 
         #region Problem 315
