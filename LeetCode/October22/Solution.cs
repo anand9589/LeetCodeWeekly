@@ -173,7 +173,7 @@ namespace October22
                     dctKeyTime.Add(key, new List<KeyValuePair<int, string>>());
                 }
 
-                dctKeyTime[key].Add(new KeyValuePair<int, string>( timestamp, value));
+                dctKeyTime[key].Add(new KeyValuePair<int, string>(timestamp, value));
             }
 
             public string Get(string key, int timestamp)
@@ -185,7 +185,7 @@ namespace October22
                     {
                         if (values.Count == 1)
                         {
-                            if(values.First().Key <= timestamp) return values.First().Value;
+                            if (values.First().Key <= timestamp) return values.First().Value;
                         }
                         else
                         {
@@ -201,7 +201,7 @@ namespace October22
 
                             while (low < high)
                             {
-                                if(values[low].Key == timestamp) return values[low].Value;
+                                if (values[low].Key == timestamp) return values[low].Value;
                                 if (values[high].Key <= timestamp) return values[high].Value;
                                 //if (keys[low] == timestamp) return values[keys[low]];
                                 //if (keys[high] == timestamp) return values[keys[high]];
@@ -242,7 +242,46 @@ namespace October22
         }
         #endregion
 
-        #region Day 7 Problem
+        #region Day 7 Problem 732. My Calendar III
+        public class MyCalendarThree
+        {
+            SortedDictionary<int, int> values;
+            public MyCalendarThree()
+            {
+                values = new SortedDictionary<int, int>();
+            }
+
+            public int Book(int start, int end)
+            {
+                int currBooking = 0;
+                int maxBooking = 0;
+                if (values.ContainsKey(start))
+                {
+                    values[start]++;
+                }
+                else
+                {
+                    values.Add(start, 1);   
+                }
+
+                if (values.ContainsKey(end))
+                {
+                    values[end]--;
+                }
+                else
+                {
+                    values.Add(end, -1);
+                }
+
+                foreach (int t in values.Values)
+                {
+                    currBooking += t;
+                    maxBooking = Math.Max(maxBooking, currBooking);
+                }
+
+                return maxBooking;
+            }
+        }
         #endregion
 
         #region Day 8 Problem
