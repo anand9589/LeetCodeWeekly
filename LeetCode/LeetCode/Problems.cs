@@ -90,6 +90,53 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 79
+        bool[][] visited_WordExists;
+        public bool Exist(char[][] board, string word)
+        {
+            visited_WordExists = new bool[board.Length][];
+            for (int i = 0; i < board.Length; i++)
+            {
+                visited_WordExists[i] = new bool[board[i].Length];
+            }
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    if (board[i][j] == word[0] && searchWord(i, j, 0, word, board))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool searchWord(int i, int j, int index, string word, char[][] board)
+        {
+            if (index == word.Length) return true;
+
+
+            if (i < 0 || i >= board.Length || j < 0 || j >= board[i].Length || word[index] != board[i][j] || visited_WordExists[i][j]) return false;
+
+            visited_WordExists[i][j] = true;
+
+            if (
+                searchWord(i, j + 1, index + 1, word, board) ||
+                searchWord(i, j - 1, index + 1, word, board) ||
+                searchWord(i + 1, j, index + 1, word, board) ||
+                searchWord(i - 1, j, index + 1, word, board)
+                )
+            {
+                return true;
+            }
+
+            visited_WordExists[i][j] = false;
+            return false;
+
+        }
+        #endregion
+
         #region Problem 80
         public int RemoveDuplicates(int[] nums)
         {
@@ -413,24 +460,24 @@ namespace LeetCode
 
             //return result[0];
             Array.Sort(nums);
-            for (int i = 0; i < nums.Length-1; i=i+2)
+            for (int i = 0; i < nums.Length - 1; i = i + 2)
             {
-                if(nums[i] != nums[i+1]) return nums[i];
+                if (nums[i] != nums[i + 1]) return nums[i];
             }
-            return 0;   
+            return 0;
         }
         #endregion
 
         #region Problem 141
         public bool HasCycle(ListNode head)
         {
-            if(head==null) return false;
+            if (head == null) return false;
             ListNode node1 = head;
             ListNode node2 = head.next;
 
-            while(node2!= node1)
+            while (node2 != node1)
             {
-                if(node2 == null || node2.next==null) return false;
+                if (node2 == null || node2.next == null) return false;
 
                 node1 = node1.next;
                 node2 = node2.next.next;
@@ -444,15 +491,15 @@ namespace LeetCode
         {
             IList<int> list = new List<int>();
             preOrder(list, root);
-            return list; 
+            return list;
         }
 
         private void preOrder(IList<int> result, TreeNode root)
         {
-            if(root==null) return;
+            if (root == null) return;
             result.Add(root.Val);
-            preOrder(result,root.Left);
-            preOrder(result,root.Right);
+            preOrder(result, root.Left);
+            preOrder(result, root.Right);
         }
         #endregion
 
@@ -481,8 +528,8 @@ namespace LeetCode
 
             while (A != B)
             {
-                A = A !=null? A.next : headB;
-                B= B != null? B.next : headA;
+                A = A != null ? A.next : headB;
+                B = B != null ? B.next : headA;
             }
             return A;
         }
@@ -493,11 +540,11 @@ namespace LeetCode
         {
             StringBuilder result = new StringBuilder();
 
-            while (columnNumber>26)
+            while (columnNumber > 26)
             {
                 int rem = columnNumber % 26;
                 rem = rem == 0 ? 26 : rem;
-                char c = (char)('A' - 1 + rem );
+                char c = (char)('A' - 1 + rem);
                 result.Insert(0, c);
                 columnNumber -= rem;
                 columnNumber /= 26;
@@ -526,7 +573,7 @@ namespace LeetCode
                     res = nums[i];
                 }
 
-                if(nums[i] == res)
+                if (nums[i] == res)
                 {
                     cnt++;
                 }
@@ -568,7 +615,7 @@ namespace LeetCode
             {
                 uint y = (n & 1);
                 x = (x << 1) + y;
-                n>>=1;
+                n >>= 1;
             }
 
             return x;
@@ -584,16 +631,16 @@ namespace LeetCode
                 return false;
             }
             visited_Happy.Add(n);
-            if(n==1) return true;
+            if (n == 1) return true;
 
 
             //if(n<9) return false;
 
             int newNumber = 0;
-            while (n>0)
+            while (n > 0)
             {
 
-               int rem = n % 10;
+                int rem = n % 10;
 
                 newNumber += rem * rem;
 
@@ -603,7 +650,7 @@ namespace LeetCode
             return IsHappy(newNumber);
         }
 
-        
+
         #endregion
 
         #region Problem 315
