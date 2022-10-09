@@ -284,7 +284,29 @@ namespace October22
         }
         #endregion
 
-        #region Day 8 Problem
+        #region Day 8 Problem 653. Two Sum IV - Input is a BST
+        public bool FindTarget(TreeNode root, int k)
+        {
+            List<int> remTarget = new List<int>();
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+                TreeNode node = queue.Dequeue();
+                if (node != null)
+                {
+
+                    if (remTarget.Contains(node.Val)) return true;
+                    int rem = k - node.Val;
+
+                    remTarget.Add(rem);
+                    queue.Enqueue(node.Left);
+                    queue.Enqueue(node.Right);
+                }
+            }
+            return false;
+        }
         #endregion
 
         #region Day 9 Problem
