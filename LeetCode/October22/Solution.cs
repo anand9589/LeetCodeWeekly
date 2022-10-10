@@ -309,7 +309,28 @@ namespace October22
         }
         #endregion
 
-        #region Day 9 Problem
+        #region Day 9 Problem 1328. Break a Palindrome
+        public string BreakPalindrome(string palindrome)
+        {
+            
+            if (palindrome.Length == 1)
+            {
+                return string.Empty;
+            }
+            char[] chars = palindrome.ToCharArray();    
+            for (int i = 0; i <= (chars.Length-1)/2; i++)
+            {
+                if (chars[i] != 'a')
+                {
+                    chars[i] = 'a';
+
+                    return new string(chars);
+                }
+            }
+
+            chars[chars.Length-1] = 'b';
+            return new string(chars);
+        }
         #endregion
 
         #region Day 10 Problem

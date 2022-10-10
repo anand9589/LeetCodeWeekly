@@ -6,7 +6,7 @@ Solution solution = new Solution();
 TreeNode treeNode = new TreeNode(5,
     new TreeNode(3, new TreeNode(2, null, null), new TreeNode(4, null, null)),
     new TreeNode(6, null, new TreeNode(7, null, null)));
-solution.FindTarget(treeNode,9);
+solution.BreakPalindrome("aabbaa");
 //Console.WriteLine(  solution.DeleteString("aaaaa"));
 //solution.MaxSum(new int[][] { new int[] { 6, 2, 1, 3 }, new int[] { 4, 2, 1, 5 }, new int[] { 9, 2, 8, 7 }, new int[] { 4, 1, 2, 9 } });
 
