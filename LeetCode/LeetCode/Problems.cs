@@ -653,6 +653,50 @@ namespace LeetCode
 
         #endregion
 
+        #region Problem 203
+        public ListNode RemoveElements(ListNode head, int val)
+        {
+            while (head !=null && head.val==val)
+            {
+                head = head.next;
+            }
+            ListNode node = head;
+            while (node != null && node.next!=null)
+            {
+                if (node.next.val == val)
+                {
+                    node.next = node.next.next;
+                }
+                else
+                {
+                    node = node.next;
+                }
+            }
+
+            return head;
+        }
+        #endregion
+
+        #region Problem 205
+        public bool IsIsomorphic(string s, string t)
+        {
+            Dictionary<char, char> map = new Dictionary<char, char>();
+
+            for(int i = 0; i < s.Length; i++)
+            {
+                if (map.ContainsKey(s[i]))
+                {
+                    if(map[s[i]] != t[i]) return false;
+                }
+                else
+                {
+                    map.Add(s[i], t[i]);    
+                }
+            }
+            return true;
+        }
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {

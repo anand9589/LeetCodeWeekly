@@ -3,10 +3,11 @@ using Common;
 using October22;
 
 Solution solution = new Solution();
-TreeNode treeNode = new TreeNode(5,
-    new TreeNode(3, new TreeNode(2, null, null), new TreeNode(4, null, null)),
-    new TreeNode(6, null, new TreeNode(7, null, null)));
-solution.BreakPalindrome("aabbaa");
+solution.IncreasingTriplet(new int[] { 20, 100, 10, 12, 5, 13 });
+//TreeNode treeNode = new TreeNode(5,
+//    new TreeNode(3, new TreeNode(2, null, null), new TreeNode(4, null, null)),
+//    new TreeNode(6, null, new TreeNode(7, null, null)));
+
 //Console.WriteLine(  solution.DeleteString("aaaaa"));
 //solution.MaxSum(new int[][] { new int[] { 6, 2, 1, 3 }, new int[] { 4, 2, 1, 5 }, new int[] { 9, 2, 8, 7 }, new int[] { 4, 1, 2, 9 } });
 
@@ -14,8 +15,9 @@ solution.BreakPalindrome("aabbaa");
 //using LeetCode;
 //using static October22.Solution;
 //["TimeMap","set","get","get","set","get","get"]
-////[[],["foo","bar",1],["foo",1],["foo",3],["foo","bar2",4],["foo",4],["foo",5]]
+//////[[],["foo","bar",1],["foo",1],["foo",3],["foo","bar2",4],["foo",4],["foo",5]]
 //Problems problems = new Problems();
+//problems.IsIsomorphic("add", "egg");
 //problems.IsHappy(19);
 //problems.MaxProfit(new int[] { 7, 1, 5, 3, 6, 4 });
 //TimeMap timeMap = new TimeMap();

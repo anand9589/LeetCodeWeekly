@@ -261,7 +261,7 @@ namespace October22
                 }
                 else
                 {
-                    values.Add(start, 1);   
+                    values.Add(start, 1);
                 }
 
                 if (values.ContainsKey(end))
@@ -284,7 +284,43 @@ namespace October22
         }
         #endregion
 
-        #region Day 8 Problem 653. Two Sum IV - Input is a BST
+        #region Day 8 Problem 16. 3Sum Closest
+        public int ThreeSumClosest(int[] nums, int target)
+        {
+
+            Array.Sort(nums);
+            int result = int.MaxValue;
+            int diff = int.MaxValue;
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                int j = i + 1;
+                int k = nums.Length - 1;
+
+                while (j < k)
+                {
+                    int sum = nums[i] + nums[j] + nums[k];
+
+                    if (Math.Abs(diff) > Math.Abs(sum - target))
+                    {
+                        diff = sum - target;
+                        result = sum;
+                    }
+
+                    if (sum < target)
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        k--;
+                    }
+                }
+            }
+            return result;
+        }
+        #endregion
+
+        #region Day 9 Problem 653. Two Sum IV - Input is a BST
         public bool FindTarget(TreeNode root, int k)
         {
             List<int> remTarget = new List<int>();
@@ -309,16 +345,16 @@ namespace October22
         }
         #endregion
 
-        #region Day 9 Problem 1328. Break a Palindrome
+        #region Day 10 Problem 1328. Break a Palindrome
         public string BreakPalindrome(string palindrome)
         {
-            
+
             if (palindrome.Length == 1)
             {
                 return string.Empty;
             }
-            char[] chars = palindrome.ToCharArray();    
-            for (int i = 0; i <= (chars.Length-1)/2; i++)
+            char[] chars = palindrome.ToCharArray();
+            for (int i = 0; i <= (chars.Length - 1) / 2; i++)
             {
                 if (chars[i] != 'a')
                 {
@@ -328,15 +364,58 @@ namespace October22
                 }
             }
 
-            chars[chars.Length-1] = 'b';
+            chars[chars.Length - 1] = 'b';
             return new string(chars);
         }
         #endregion
 
-        #region Day 10 Problem
-        #endregion
+        #region Day 11 Problem 334. Increasing Triplet Subsequence
+        public bool IncreasingTriplet(int[] nums)
+        {
+            //for (int i = 0; i < nums.Length-2; i++)
+            //{
+            //    for (int j = i+1; j < nums.Length-1; j++)
+            //    {
+            //        for (int k = j+1; k < nums.Length; k++)
+            //        {
+            //            if (nums[i] < nums[j] && nums[j] < nums[k]) return true;
+            //        }
+            //    }
+            //}
 
-        #region Day 11 Problem
+            //Stack<int> stack = new Stack<int>();
+            //stack.Push(nums[0]);
+
+            //for (int i = 1; i < nums.Length; i++)
+            //{
+            //    while (stack.Peek() >= nums[i])
+            //    {
+            //        stack.Pop();
+            //    }
+            //    stack.Push(nums[i]);
+            //    if (stack.Count == 3) return true;
+            //}
+
+            int i = int.MaxValue;
+            int j = int.MaxValue;
+
+            for (int k = 0; k < nums.Length; k++)
+            {
+                if (nums[k] <= i)
+                {
+                    i = nums[k];
+                }
+                else if(nums[k] <= j)
+                {
+                    j = nums[k];    
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #endregion
 
         #region Day 12 Problem
