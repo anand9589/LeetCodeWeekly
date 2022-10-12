@@ -442,7 +442,7 @@ namespace LeetCode
         #endregion
 
         #region Problem 136
-        public int SingleNumber(int[] nums)
+        public int SingleNumber_v1(int[] nums)
         {
             //List<int> result = new List<int>();
 
@@ -465,6 +465,15 @@ namespace LeetCode
                 if (nums[i] != nums[i + 1]) return nums[i];
             }
             return 0;
+        }
+
+        public int SingleNumber(int[] nums)
+        {
+            for (int i = 1; i < nums.Length; i++)
+            {
+                nums[i] = nums[i] ^ nums[i - 1];
+            }
+            return nums[nums.Length-1];
         }
         #endregion
 
