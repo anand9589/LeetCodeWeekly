@@ -418,7 +418,20 @@ namespace October22
         }
         #endregion
 
-        #region Day 12 Problem
+        #region Day 12 Problem 976. Largest Perimeter Triangle
+        public int LargestPerimeter(int[] nums)
+        {
+            Array.Sort(nums);
+
+            for (int i = nums.Length-1; i >=2; i--)
+            {
+                if(nums[i] < nums[i-1] + nums[i-2])
+                {
+                    return nums[i] + nums[i-1] + nums[i-2];
+                }
+            }
+            return 0;
+        }
         #endregion
 
         #region Day 13 Problem
