@@ -307,6 +307,37 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 92. Reverse Linked List II
+        public ListNode ReverseBetween(ListNode head, int left, int right)
+        {
+            ListNode dummy = new ListNode(-1,head);
+            int counter = 0;
+            ListNode temp = dummy;
+            while (counter < left-1)
+            {
+                temp = temp.next;
+                counter++;
+            }
+            Stack<ListNode> stack = new Stack<ListNode>();  
+            ListNode n1 = temp.next;
+            while(counter<right)
+            {
+                stack.Push(n1);
+                n1 = n1.next;
+                counter++;
+            }
+
+            while (stack.Count()>0)
+            {
+                temp.next = stack.Pop();
+                temp = temp.next;
+            }
+
+            temp.next = n1;
+            return dummy.next;
+        }
+        #endregion
+
         #region Problem 108
         public TreeNode SortedArrayToBST(int[] nums)
         {
