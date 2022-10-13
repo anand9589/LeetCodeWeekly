@@ -434,7 +434,12 @@ namespace October22
         }
         #endregion
 
-        #region Day 13 Problem
+        #region Day 13 Problem 237. Delete Node in a Linked List
+        public void DeleteNode(ListNode node)
+        {
+            node.val = node.next.val;
+            node.next = node.next.next;
+        }
         #endregion
 
         #region Day 14 Problem
