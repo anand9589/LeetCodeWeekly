@@ -310,6 +310,8 @@ namespace LeetCode
         #region Problem 92. Reverse Linked List II
         public ListNode ReverseBetween(ListNode head, int left, int right)
         {
+            if (left == right) return head;
+
             ListNode dummy = new ListNode(-1,head);
             int counter = 0;
             ListNode temp = dummy;
