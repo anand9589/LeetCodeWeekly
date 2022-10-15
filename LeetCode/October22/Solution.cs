@@ -405,9 +405,9 @@ namespace October22
                 {
                     i = nums[k];
                 }
-                else if(nums[k] <= j)
+                else if (nums[k] <= j)
                 {
-                    j = nums[k];    
+                    j = nums[k];
                 }
                 else
                 {
@@ -423,11 +423,11 @@ namespace October22
         {
             Array.Sort(nums);
 
-            for (int i = nums.Length-1; i >=2; i--)
+            for (int i = nums.Length - 1; i >= 2; i--)
             {
-                if(nums[i] < nums[i-1] + nums[i-2])
+                if (nums[i] < nums[i - 1] + nums[i - 2])
                 {
-                    return nums[i] + nums[i-1] + nums[i-2];
+                    return nums[i] + nums[i - 1] + nums[i - 2];
                 }
             }
             return 0;
@@ -442,7 +442,26 @@ namespace October22
         }
         #endregion
 
-        #region Day 14 Problem
+        #region Day 14 Problem 2095. Delete the Middle Node of a Linked List
+        public ListNode DeleteMiddle(ListNode head)
+        {
+            ListNode slow = head;
+            ListNode fast = head;
+
+            while (fast.next != null && fast.next.next !=null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            if (slow == fast) return null;
+            if (fast.next == null)
+            {
+                slow.val = slow.next.val;
+            }
+            slow.next = slow.next.next;
+
+            return head;
+        }
         #endregion
 
         #region Day 15 Problem

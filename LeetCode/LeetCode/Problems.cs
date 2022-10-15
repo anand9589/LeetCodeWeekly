@@ -312,24 +312,24 @@ namespace LeetCode
         {
             if (left == right) return head;
 
-            ListNode dummy = new ListNode(-1,head);
+            ListNode dummy = new ListNode(-1, head);
             int counter = 0;
             ListNode temp = dummy;
-            while (counter < left-1)
+            while (counter < left - 1)
             {
                 temp = temp.next;
                 counter++;
             }
-            Stack<ListNode> stack = new Stack<ListNode>();  
+            Stack<ListNode> stack = new Stack<ListNode>();
             ListNode n1 = temp.next;
-            while(counter<right)
+            while (counter < right)
             {
                 stack.Push(n1);
                 n1 = n1.next;
                 counter++;
             }
 
-            while (stack.Count()>0)
+            while (stack.Count() > 0)
             {
                 temp.next = stack.Pop();
                 temp = temp.next;
@@ -337,6 +337,45 @@ namespace LeetCode
 
             temp.next = n1;
             return dummy.next;
+        }
+        #endregion
+
+        #region Problem 93. Restore IP Addresses
+        public IList<string> RestoreIpAddresses(string s)
+        {
+            IList<string> ipAddresses = new List<string>();
+
+            if (s.Length <= 12 && s.Length >= 4)
+            {
+            }
+
+            return ipAddresses;
+        }
+
+        private void tryParseAddress(IList<string> ipAddresses, StringBuilder sb, string s, int partition, int currIndex)
+        {
+           
+            if(partition == 0)
+            {
+                if (validAddressRange(s.Substring(currIndex)))
+                {
+                    sb.Append(s.Substring(currIndex));
+                    ipAddresses.Add(sb.ToString());
+                }
+                return;
+            }
+
+            //for (int i = 0; i < length; i++)
+            //{
+
+            //}
+        }
+
+        private bool validAddressRange(string s)
+        {
+            if (s.Length < 1 || s.Length > 3 || int.Parse(s) > 255 || (s.Length > 1 && s.StartsWith('0'))) return false;
+
+            return true;
         }
         #endregion
 
@@ -506,7 +545,7 @@ namespace LeetCode
             {
                 nums[i] = nums[i] ^ nums[i - 1];
             }
-            return nums[nums.Length-1];
+            return nums[nums.Length - 1];
         }
         #endregion
 
@@ -698,12 +737,12 @@ namespace LeetCode
         #region Problem 203
         public ListNode RemoveElements(ListNode head, int val)
         {
-            while (head !=null && head.val==val)
+            while (head != null && head.val == val)
             {
                 head = head.next;
             }
             ListNode node = head;
-            while (node != null && node.next!=null)
+            while (node != null && node.next != null)
             {
                 if (node.next.val == val)
                 {
@@ -724,15 +763,15 @@ namespace LeetCode
         {
             Dictionary<char, char> map = new Dictionary<char, char>();
 
-            for(int i = 0; i < s.Length; i++)
+            for (int i = 0; i < s.Length; i++)
             {
                 if (map.ContainsKey(s[i]))
                 {
-                    if(map[s[i]] != t[i]) return false;
+                    if (map[s[i]] != t[i]) return false;
                 }
                 else
                 {
-                    map.Add(s[i], t[i]);    
+                    map.Add(s[i], t[i]);
                 }
             }
             return true;
