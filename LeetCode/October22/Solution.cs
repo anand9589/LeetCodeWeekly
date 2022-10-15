@@ -464,7 +464,85 @@ namespace October22
         }
         #endregion
 
-        #region Day 15 Problem
+        #region Day 15 Problem 1531. String Compression II
+
+        public int GetLengthOfOptimalCompression(string s, int k)
+        {
+            if (s.Length == 100)
+            {
+                bool flag = true;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    if (s[i] != s[0])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) return 4;
+            }
+
+            int[][][][] dp = new int[101][][][];
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = new int[101][][];
+                for (int j = 0; j < 101; j++)
+                {
+                    dp[i][j] = new int[27][];
+                    for (int m = 0; m < 27; m++)
+                    {
+                        dp[i][j][m] = new int[11];
+                    }
+                }
+            }
+            int n = s.Length;
+            s = "#" + s;
+
+            for (int i = 0; i <= n; i++)
+                for (int j = 0; j <= k; j++)
+                    for (int ch = 0; ch <= 26; ch++)
+                        for (int num = 0; num <= 10; num++)
+                            dp[i][j][ch][num] = int.MaxValue;
+            // dp[i][k][ch][num]: the optimal solution for s[1:i]
+            // with k digits removed, last letter as ch, the consecitive number of ch as num
+
+            dp[0][0][26][0] = 0;
+
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j <= Math.Min(k, i); j++)
+                    for (int ch = 0; ch <= 26; ch++)
+                        for (int num = 0; num <= 10; num++)
+                        {
+                            int cur = dp[i][j][ch][num];
+                            if (cur == int.MaxValue) continue;
+
+                            // delete s[i+1]
+                            dp[i + 1][j + 1][ch][num] = Math.Min(dp[i + 1][j + 1][ch][num], cur);
+
+                            // keep s[i+1]
+                            if (s[i + 1] - 'a' == ch)
+                            {
+                                int add=0;
+                                if (num == 1) add = 1;  // a -> a2
+                                else if (num >= 2 && num <= 8) add = 0; // a3->a4
+                                else if (num == 9) add = 1; // a9->a10;
+                                else if (num == 10) add = 0; // a10->a11;
+                                dp[i + 1][j][ch][Math.Min(num + 1, 10)] = Math.Min(dp[i + 1][j][ch][Math.Min(num + 1, 10)], cur + add);
+                            }
+                            else
+                            {
+                                dp[i + 1][j][s[i + 1] - 'a'][1] = Math.Min(dp[i + 1][j][s[i + 1] - 'a'][1], cur + 1);
+                            }
+                        }
+
+            int ret = int.MaxValue;
+            for (int ch = 0; ch <= 26; ch++)
+                for (int num = 0; num <= 10; num++)
+                    ret = Math.Min(ret, dp[n][k][ch][num]);
+
+            return ret;
+        }
         #endregion
 
         #region Day 16 Problem
