@@ -448,7 +448,7 @@ namespace October22
             ListNode slow = head;
             ListNode fast = head;
 
-            while (fast.next != null && fast.next.next !=null)
+            while (fast.next != null && fast.next.next != null)
             {
                 slow = slow.next;
                 fast = fast.next.next;
@@ -466,7 +466,129 @@ namespace October22
 
         #region Day 15 Problem 1531. String Compression II
 
+        private int[][][][] dp1;
         public int GetLengthOfOptimalCompression(string s, int k)
+        {
+            int n = s.Length;
+            int[][] dp = new int[n+1][];
+            for (int i = 0; i <= n; i++)
+            {
+                dp[i] = new int[k+1];
+                for (int j = 0; j <= k; j++)
+                {
+                    dp[i][j] = 10000;
+                }
+            }
+
+            dp[0][0] = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 0; j <= k; j++)
+                {
+                    int cnt = 0, del = 0;
+                    for (int l = i; l >= 1; l--)
+                    {
+                        if (s[l - 1] == s[i - 1]) cnt++;
+                        else del++;
+                        if (j - del >= 0)
+                            dp[i][j] = Math.Min(dp[i][j],
+                                                dp[l - 1][j - del] + 1 + (cnt >= 100 ? 3 : cnt >= 10 ? 2 : cnt >= 2 ? 1 : 0));
+                    }
+                    if (j > 0) 
+                        dp[i][j] = Math.Min(dp[i][j], dp[i - 1][j - 1]);
+                }
+            }
+            return dp[n][k];
+        }
+
+        public int GetLengthOfOptimalCompression_V3(string s, int k)
+        {
+            int n = s.Length;
+            dp1 = new int[n][][][];
+
+            for (int i = 0; i < n; i++)
+            {
+                dp1[i] = new int[26][][];
+
+                for (int j = 0; j < 26; j++)
+                {
+                    dp1[i][j] = new int[n + 1][];
+
+                    for (int l = 0; l < n+1; l++)
+                    {
+                        dp1[i][j][l] = Enumerable.Repeat(int.MaxValue,k+1).ToArray();
+                    }
+                }
+            }
+
+            return solve1531(0, 0, 0, k, s);
+        }
+
+        private int solve1531(int i, int ch, int len, int k, string str)
+        {
+            if (i == str.Length) return getLen1531(len);
+
+            if(dp1[i][ch][len][k] == int.MaxValue)
+            {
+                int c = str[i] - 'a';
+                if (k > 0) dp1[i][ch][len][k] = solve1531(i + 1, ch, len, k - 1, str);
+                if (c == ch) dp1[i][ch][len][k] = Math.Min(dp1[i][ch][len][k], solve1531(i + 1, ch, len + 1, k, str));
+                else dp1[i][ch][len][k] = Math.Min(dp1[i][ch][len][k], getLen1531(len) + solve1531(i + 1, c, 1, k, str));
+
+            }
+
+            return dp1[i][ch][len][k];
+        }
+
+        public int GetLengthOfOptimalCompression_V2(string s, int k)
+        {
+            int n = s.Length;
+
+            int[][] dp = new int[n + 1][];
+
+            dp[0] = new int[k + 1];
+            for (int i = 1; i <= n; i++)
+            {
+                dp[i] = Enumerable.Repeat(int.MaxValue, k + 1).ToArray();
+            }
+
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 0; j <= k; j++)
+                {
+                    if (j > 0)
+                    {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                    int removed = 0;
+                    int count = 0;
+                    int p;
+
+                    for (p = i; p > 0; p--)
+                    {
+                        if (s[p - 1] == s[i - 1]) count++;
+                        else if (++removed > j) break;
+
+                        dp[i][j] = Math.Min(dp[i][j], dp[p - 1][j - removed] + getLen1531(count));
+                    }
+
+                }
+            }
+
+            return dp[n][k];
+        }
+
+        private int getLen1531(int len)
+        {
+            if (len == 0) return 0;
+            if (len == 1) return 1;
+            if (len < 10) return 2;
+            if (len < 100) return 3;
+
+            return 4;
+        }
+
+        public int GetLengthOfOptimalCompression_V1(string s, int k)
         {
             if (s.Length == 100)
             {
@@ -523,7 +645,7 @@ namespace October22
                             // keep s[i+1]
                             if (s[i + 1] - 'a' == ch)
                             {
-                                int add=0;
+                                int add = 0;
                                 if (num == 1) add = 1;  // a -> a2
                                 else if (num >= 2 && num <= 8) add = 0; // a3->a4
                                 else if (num == 9) add = 1; // a9->a10;
@@ -659,6 +781,151 @@ namespace October22
             }
 
             return c;
+        }
+        #endregion
+
+        #region Biweekly Contest 89
+
+        public int MinimizeArrayValue(int[] nums)
+        {
+            int result = 0;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                while (nums[i]>nums[i-1])
+                {
+                    nums[i]--;
+                    nums[i - 1]++;
+                }
+            }
+
+            return nums.Max();
+        }
+
+        public int[] ProductQueries(int n, int[][] queries)
+        {
+            int[] result = new int[queries.Length];
+
+
+
+            return result;
+        }
+
+        public int CountTime(string time)
+        {
+            var arr = time.Split(":");
+
+            int num1 = getNum1(arr[0]);
+            int num2 = getNum2(arr[1]);
+
+            return num1 * num2;
+            //List<int> list = new List<int>();
+
+            //for (int i = 0; i < time.Length; i++)
+            //{
+            //    if(time[i] == '?')
+            //    {
+            //        list.Add(i);
+            //    }
+            //}
+            //int count1  = 1;
+            //int count2 = 1;
+            //for (int i = 0; i < list.Count; i++)
+            //{
+
+            //    switch (list[i])
+            //    {
+            //        case 0:
+            //            if (list.Contains(1))
+            //            {
+            //                count1 = 24;
+            //                i++;
+            //            }
+            //            else
+            //            {
+            //                if(time[1] - '0' > 3)
+            //                {
+            //                    count1 = 2;
+            //                }
+            //                else
+            //                {
+            //                    count1 = 3;
+            //                }
+            //            }
+            //            break;
+            //        case 1:
+                       
+            //                if(time[0] == '2')
+            //                {
+            //                    count1 = 4;
+            //                }
+            //                else
+            //                {
+            //                    count1 = 10;
+            //                }
+            //            break;
+            //        case 2:
+            //            if (list.Contains(3))
+            //            {
+            //                count2 = 60;
+            //            }
+            //            else
+            //            {
+            //                count2 = 6;
+            //                i++;
+            //            }
+            //            break;
+            //        case 3:
+            //            count2 = 10;
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+
+            //return count1 * count2;
+        }
+
+        private int getNum1(string v)
+        {
+            if (int.TryParse(v, out int result))
+            {
+                return 1;
+            }
+            if (v == "??") return 24;
+
+            if(v[0] == '?')
+            {
+           
+                if(v[1] - '0' > 3)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+
+            if(v[1] == '?' && v[0] == '2') return 4;
+
+            return 10;
+        }
+
+        private int getNum2(string v)
+        {
+            if(int.TryParse(v, out int result))
+            {
+                return 1;
+            }
+            if (v == "??") return 60;
+
+            if (v[0] == '?')
+            {
+                return 6;
+            }
+
+            return 10;
         }
         #endregion
     }
