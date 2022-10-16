@@ -344,38 +344,46 @@ namespace LeetCode
         public IList<string> RestoreIpAddresses(string s)
         {
             IList<string> ipAddresses = new List<string>();
+            if (s.Length < 4) return ipAddresses;
+            int n = s.Length;
 
-            if (s.Length <= 12 && s.Length >= 4)
+            for (int i = 1; i <= 3; i++)
             {
+                string[] ipAddrPart = new string[4];
+
+                ipAddrPart[0] = s.Substring(0, i);
+
+                if (!validAddressRange(ipAddrPart[0])) continue;
+
+                for (int j = 1; j <= 3; j++)
+                {
+                    if (i + j >= n) break;
+                    ipAddrPart[1] = s.Substring(i, j);
+
+                    if (!validAddressRange(ipAddrPart[1])) continue;
+
+                    for (int k = 1; k <= 3; k++)
+                    {
+                        if (i + j + k >= n) break;
+                        ipAddrPart[2] = s.Substring(i + j, k);
+                        ipAddrPart[3] = s.Substring(i + j + k);
+
+                        if (validAddressRange(ipAddrPart[2]) && validAddressRange(ipAddrPart[3]))
+                        {
+                            ipAddresses.Add(string.Join('.', ipAddrPart));
+                        }
+
+                    }
+                }
             }
+
 
             return ipAddresses;
         }
 
-        private void tryParseAddress(IList<string> ipAddresses, StringBuilder sb, string s, int partition, int currIndex)
-        {
-           
-            if(partition == 0)
-            {
-                if (validAddressRange(s.Substring(currIndex)))
-                {
-                    sb.Append(s.Substring(currIndex));
-                    ipAddresses.Add(sb.ToString());
-                }
-                return;
-            }
-
-            //for (int i = 0; i < length; i++)
-            //{
-
-            //}
-        }
-
         private bool validAddressRange(string s)
         {
-            if (s.Length < 1 || s.Length > 3 || int.Parse(s) > 255 || (s.Length > 1 && s.StartsWith('0'))) return false;
-
-            return true;
+            return !(s.Length < 1 || s.Length > 3 || int.Parse(s) > 255 || (s.Length > 1 && s.StartsWith('0')));
         }
         #endregion
 
