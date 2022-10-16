@@ -470,10 +470,10 @@ namespace October22
         public int GetLengthOfOptimalCompression(string s, int k)
         {
             int n = s.Length;
-            int[][] dp = new int[n+1][];
+            int[][] dp = new int[n + 1][];
             for (int i = 0; i <= n; i++)
             {
-                dp[i] = new int[k+1];
+                dp[i] = new int[k + 1];
                 for (int j = 0; j <= k; j++)
                 {
                     dp[i][j] = 10000;
@@ -494,7 +494,7 @@ namespace October22
                             dp[i][j] = Math.Min(dp[i][j],
                                                 dp[l - 1][j - del] + 1 + (cnt >= 100 ? 3 : cnt >= 10 ? 2 : cnt >= 2 ? 1 : 0));
                     }
-                    if (j > 0) 
+                    if (j > 0)
                         dp[i][j] = Math.Min(dp[i][j], dp[i - 1][j - 1]);
                 }
             }
@@ -514,9 +514,9 @@ namespace October22
                 {
                     dp1[i][j] = new int[n + 1][];
 
-                    for (int l = 0; l < n+1; l++)
+                    for (int l = 0; l < n + 1; l++)
                     {
-                        dp1[i][j][l] = Enumerable.Repeat(int.MaxValue,k+1).ToArray();
+                        dp1[i][j][l] = Enumerable.Repeat(int.MaxValue, k + 1).ToArray();
                     }
                 }
             }
@@ -528,7 +528,7 @@ namespace October22
         {
             if (i == str.Length) return getLen1531(len);
 
-            if(dp1[i][ch][len][k] == int.MaxValue)
+            if (dp1[i][ch][len][k] == int.MaxValue)
             {
                 int c = str[i] - 'a';
                 if (k > 0) dp1[i][ch][len][k] = solve1531(i + 1, ch, len, k - 1, str);
@@ -667,7 +667,56 @@ namespace October22
         }
         #endregion
 
-        #region Day 16 Problem
+        #region Day 16 Problem 1335. Minimum Difficulty of a Job Schedule
+        public int MinDifficulty(int[] jobDifficulty, int d)
+        {
+            if (d > jobDifficulty.Length) return -1;
+            if (d == jobDifficulty.Length) return jobDifficulty.Sum();
+
+            int[][] dp = new int[d + 1][];
+
+            for (int i = 0; i <= d; i++)
+            {
+                dp[i] = new int[jobDifficulty.Length];
+
+                for (int j = 0; j < jobDifficulty.Length; j++)
+                {
+                    dp[i][j] = -1;
+                }
+            }
+
+            return findMinDifficulty(dp, jobDifficulty, d, 0);
+
+        }
+
+        private int findMinDifficulty(int[][] dp, int[] jobDifficulty, int d, int index)
+        {
+            int max = 0;
+            if (d == 1)
+            {
+                while (index < jobDifficulty.Length)
+                {
+                    max = Math.Max(max, jobDifficulty[index]);
+                    index++;
+                }
+
+                return max;
+            }
+
+            if (dp[d][index] != -1) return dp[d][index];
+
+            int res = int.MaxValue;
+
+            for (int i = index; i < jobDifficulty.Length - d + 1; i++)
+            {
+                max = Math.Max(max, jobDifficulty[i]);
+                res = Math.Min(res, max + findMinDifficulty(dp,jobDifficulty,d-1,i+1));
+            }
+
+            dp[d][index] = res;
+
+            return dp[d][index];
+        }
         #endregion
 
         #region Day 17 Problem
@@ -784,6 +833,63 @@ namespace October22
         }
         #endregion
 
+        #region Weekly Contest 315
+        public int FindMaxK(int[] nums)
+        {
+            List<int> list = new List<int>();
+            int result = -1;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (list.Contains(-(nums[i])))
+                {
+                    result = Math.Max(result, Math.Abs(nums[i]));
+                }
+                else
+                {
+                    list.Add(nums[i]);
+                }
+            }
+            return result;
+        }
+
+        public int CountDistinctIntegers(int[] nums)
+        {
+            int[] newArr = new int[nums.Length + nums.Length];
+
+            for (int i = 0; i < nums.Length * 2; i++)
+            {
+                if (i < nums.Length)
+                {
+                    newArr[i] = nums[i];
+                }
+                else
+                {
+                    int index = i % nums.Length;
+                    newArr[i] = Convert.ToInt32(new string(nums[index].ToString().Reverse().ToArray()));
+                }
+            }
+
+            return newArr.Distinct().Count();
+        }
+        public bool SumOfNumberAndReverse(int num)
+        {
+            for (int i = num; i >= 1; i--)
+            {
+                int x = i;
+                int y = getReverseNumber(i);
+
+                if (x + y == num) return true;
+            }
+
+            return false;
+        }
+
+        private int getReverseNumber(int i)
+        {
+            return Convert.ToInt32(new string(i.ToString().Reverse().ToArray()));
+        }
+        #endregion
+
         #region Biweekly Contest 89
 
         public int MinimizeArrayValue(int[] nums)
@@ -792,7 +898,7 @@ namespace October22
 
             for (int i = 1; i < nums.Length; i++)
             {
-                while (nums[i]>nums[i-1])
+                while (nums[i] > nums[i - 1])
                 {
                     nums[i]--;
                     nums[i - 1]++;
@@ -854,7 +960,7 @@ namespace October22
             //            }
             //            break;
             //        case 1:
-                       
+
             //                if(time[0] == '2')
             //                {
             //                    count1 = 4;
@@ -894,10 +1000,10 @@ namespace October22
             }
             if (v == "??") return 24;
 
-            if(v[0] == '?')
+            if (v[0] == '?')
             {
-           
-                if(v[1] - '0' > 3)
+
+                if (v[1] - '0' > 3)
                 {
                     return 2;
                 }
@@ -907,14 +1013,14 @@ namespace October22
                 }
             }
 
-            if(v[1] == '?' && v[0] == '2') return 4;
+            if (v[1] == '?' && v[0] == '2') return 4;
 
             return 10;
         }
 
         private int getNum2(string v)
         {
-            if(int.TryParse(v, out int result))
+            if (int.TryParse(v, out int result))
             {
                 return 1;
             }
