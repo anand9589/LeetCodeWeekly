@@ -387,6 +387,49 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 95. Unique Binary Search Trees II
+        public IList<TreeNode> GenerateTrees(int n)
+        {
+            return generateTree_helper(1, n);
+        }
+
+        private IList<TreeNode> generateTree_helper(int left, int right)
+        {
+            IList<TreeNode> treeNodes = new List<TreeNode>();
+            if (left >= right)
+            {
+                if (left == right)
+                {
+                    TreeNode treeNode = new TreeNode(left, null, null);
+                    treeNodes.Add(treeNode);
+                }
+                else
+                {
+                    treeNodes.Add(null);
+                }
+                return treeNodes;
+            }
+
+            for (int i = left; i <= right; i++)
+            {
+                IList<TreeNode> leftNodes = generateTree_helper(left, i - 1);
+                IList<TreeNode> rightNodes = generateTree_helper(i + 1, right);
+
+                foreach (TreeNode leftNode in leftNodes)
+                {
+                    foreach (TreeNode rightNode in rightNodes)
+                    {
+                        TreeNode node = new TreeNode(i, leftNode, rightNode);
+                        treeNodes.Add(node);
+                    }
+                }
+            }
+
+
+            return treeNodes;
+        }
+        #endregion
+
         #region Problem 108
         public TreeNode SortedArrayToBST(int[] nums)
         {

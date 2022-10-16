@@ -11,4 +11,4 @@ using LeetCode;
 
 
 Problems problems = new Problems();
-problems.RestoreIpAddresses("101023");
+problems.GenerateTrees(6);
