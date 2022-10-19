@@ -515,17 +515,44 @@ namespace LeetCode
         }
 
 
-        private bool isValidBST_Helper(TreeNode root,long minval, long maxval)
+        private bool isValidBST_Helper(TreeNode root, long minval, long maxval)
         {
-            if(root == null) return true;
+            if (root == null) return true;
 
-            
-            return root.val < maxval 
-                &&  root.val > minval 
+
+            return root.val < maxval
+                && root.val > minval
                 && isValidBST_Helper(root.left, minval, root.val)
                 && isValidBST_Helper(root.right, root.val, maxval);
         }
 
+        #endregion
+
+        #region Problem 106. Construct Binary Tree from Inorder and Postorder Traversal
+        public TreeNode BuildTree(int[] inorder, int[] postorder)
+        {
+            if (inorder.Length == 0 && postorder.Length == 0) return null;
+
+            int rootVal = postorder[postorder.Length - 1];
+            TreeNode root = new TreeNode(rootVal, null, null);
+            if (inorder.Length == 1 && postorder.Length == 1) return root;
+
+            int[] inorder1, postorder1, inorder2, postorder2;
+
+            int indexRootVal1 = Array.IndexOf(inorder, rootVal);
+
+            inorder1 = inorder.Take(indexRootVal1).ToArray();
+            postorder1 = postorder.Take(indexRootVal1).ToArray();
+
+            inorder2 = inorder.Skip(indexRootVal1 + 1).ToArray();
+            postorder2 = postorder.Skip(indexRootVal1).Take(inorder2.Length).ToArray();
+
+
+            root.left = BuildTree(inorder1, postorder1);
+            root.right = BuildTree(inorder2, postorder2);
+
+            return root;
+        }
         #endregion
 
         #region Problem 108

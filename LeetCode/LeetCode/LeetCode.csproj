@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Week311\Week311.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Testcase.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
