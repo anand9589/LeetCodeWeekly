@@ -14,5 +14,17 @@
 
             return dummyNode.next;
         }
+
+        public static TreeNode BuildTreeNode(int?[] arr, int index = 0)
+        {
+            TreeNode root = null;
+
+            if (index < arr.Length && arr[index] != null)
+            {
+                root = new TreeNode((int)arr[index], BuildTreeNode(arr, 2 * index + 1), BuildTreeNode(arr, 2 * index + 2));
+            }
+
+            return root;
+        }
     }
 }

@@ -632,6 +632,34 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 113. Path Sum II
+        public IList<IList<int>> PathSum(TreeNode root, int targetSum)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+            findPaths(root, targetSum, new List<int>(), result);
+            return result;
+        }
+
+        private void findPaths(TreeNode root, int targetSum, List<int> list, IList<IList<int>> result)
+        {
+            if(root == null || root.val>targetSum) return;
+
+            list.Add(root.val);
+
+            if (targetSum - root.val == 0 && root.left == null && root.right == null)
+            {
+                result.Add(new List<int>(list));
+            }
+            else
+            {
+                findPaths(root.left, targetSum - root.val, list, result);
+                findPaths(root.right, targetSum - root.val, list, result);
+            }
+            list.RemoveAt(list.Count - 1);
+        }
+        #endregion
+
         #region Problem 118
         public IList<IList<int>> Generate(int numRows)
         {
