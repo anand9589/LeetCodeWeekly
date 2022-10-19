@@ -575,6 +575,47 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 109. Convert Sorted List to Binary Search Tree
+        public TreeNode SortedListToBST(ListNode head)
+        {
+           
+            if(head == null) return null;
+
+            ListNode mid = getMidNode(head);
+            TreeNode root = new TreeNode(mid.val, null, null);
+
+            if (mid != head)
+            {
+
+                root.left = SortedListToBST(head);
+                root.right = SortedListToBST(mid.next);
+            }
+
+            return root;
+        }
+
+        private ListNode getMidNode(ListNode head)
+        {
+            ListNode fast = head;
+            ListNode slow = head;
+            ListNode prev = head;
+
+            while (fast != null && fast.next != null)
+            {
+                prev = slow;
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            if(prev != null)
+            {
+                prev.next = null;
+            }
+
+            return slow;
+        }
+        #endregion
+
         #region Problem 110
         public bool IsBalanced(TreeNode root)
         {

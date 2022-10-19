@@ -12,9 +12,10 @@ using October22;
 string[] arr1 = File.ReadAllLines(@".\Testcase.txt");
 
 int[] inorder = Array.ConvertAll(arr1[0].Split(','), int.Parse);
-int[] postorder = Array.ConvertAll(arr1[1].Split(','), int.Parse);
+ListNode head = Utilities.BuildListNode(inorder);
+//int[] postorder = Array.ConvertAll(arr1[1].Split(','), int.Parse);
 Problems problems = new Problems();
 
-var p = problems.BuildTree(inorder, postorder);
+var p = problems.SortedListToBST(head);
 
 Console.WriteLine(p);
