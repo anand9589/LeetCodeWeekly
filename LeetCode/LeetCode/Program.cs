@@ -1,14 +1,14 @@
 ﻿
 using Common;
 using LeetCode;
-//using October22;
+using October22;
 
-//Solution solution = new Solution();
+Solution solution = new Solution();
 
 //ListNode head = Utilities.BuildListNode(new int[] { 1, 2});
-//var p = solution.CountDistinctIntegers(new int[] { 1, 13, 10, 12, 31 });
-//Console.WriteLine(p);
+var p = solution.CountAndSay(5);
+Console.WriteLine(p);
 
 
-Problems problems = new Problems();
-problems.GenerateTrees(6);
+//Problems problems = new Problems();
+//problems.IsInterleave("aabcc", "dbbca", "aadbbcbcac");

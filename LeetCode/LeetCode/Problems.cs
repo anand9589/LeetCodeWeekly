@@ -430,6 +430,104 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 96. Unique Binary Search Trees
+        public int NumTrees(int n)
+        {
+            int[] nums = new int[n + 1];
+
+            nums[0] = 1;
+            nums[1] = 1;
+
+            for (int i = 2; i <= n; ++i)
+            {
+                for (int j = 0; j < i; ++j)
+                {
+                    nums[i] += nums[j] * nums[i - j - 1];
+                }
+            }
+
+            return nums[n];
+        }
+
+        //private int NumTrees_Helper(int left, int right)
+        //{
+        //    if (n)
+        //        int count = 0;
+        //    if (left >= right)
+        //    {
+        //        if (left == right)
+        //        {
+        //            count++;
+        //        }
+        //        return count;
+        //    }
+
+        //    for (int i = left; i <= right; i++)
+        //    {
+        //        int leftNodeCount = NumTrees_Helper(left, i - 1);
+        //        int rightNodeCount = NumTrees_Helper(i + 1, right);
+
+        //        count = leftNodeCount + rightNodeCount;
+        //    }
+        //    return count;
+        //}
+        #endregion
+
+        #region Problem 97. Interleaving String
+        public bool IsInterleave(string s1, string s2, string s3)
+        {
+            if (s1.Length + s2.Length != s3.Length) return false;
+            return checkInterleaving(s1, s2, s3, 0, 0, 0);
+        }
+
+        private bool checkInterleaving(string s1, string s2, string s3, int p1, int p2, int p3)
+        {
+            if (s3.Length == p3 && s1.Length == p1 && s2.Length == p2) return true;
+
+            bool first = false, second = false;
+
+            if (p1 == s1.Length) return s2[p2] == s3[p3] ? checkInterleaving(s1, s2, s3, p1, p2 + 1, p3 + 1) : false;
+            if (p2 == s2.Length) return s1[p1] == s3[p3] ? checkInterleaving(s1, s2, s3, p1 + 1, p2, p3 + 1) : false;
+
+            if (s1[p1] == s3[p3])
+            {
+                first = checkInterleaving(s1, s2, s3, p1 + 1, p2, p3 + 1);
+            }
+
+            if (s2[p2] == s3[p3])
+            {
+                second = checkInterleaving(s1, s2, s3, p1, p2 + 1, p3 + 1);
+            }
+
+            return first || second;
+        }
+        #endregion
+
+        #region Problem 98. Validate Binary Search Tree
+        public bool IsValidBST(TreeNode root)
+        {
+            long minval = int.MinValue;
+            minval--;
+
+            long maxval = int.MaxValue;
+            maxval++;
+            return isValidBST_Helper(root, minval, maxval);
+        }
+
+
+        private bool isValidBST_Helper(TreeNode root,long minval, long maxval)
+        {
+            if(root == null) return true;
+
+            
+            return root.val < maxval 
+                &&  root.val > minval 
+                && isValidBST_Helper(root.left, minval, root.val)
+                && isValidBST_Helper(root.right, root.val, maxval);
+        }
+
+        #endregion
+
         #region Problem 108
         public TreeNode SortedArrayToBST(int[] nums)
         {
@@ -443,8 +541,8 @@ namespace LeetCode
 
             TreeNode root = new TreeNode(nums[mid], null, null);
 
-            root.Left = SortedArrayToBST(nums.Take(mid).ToArray());
-            root.Right = SortedArrayToBST(nums.Skip(mid + 1).ToArray());
+            root.left = SortedArrayToBST(nums.Take(mid).ToArray());
+            root.right = SortedArrayToBST(nums.Skip(mid + 1).ToArray());
 
             return root;
         }
@@ -455,14 +553,14 @@ namespace LeetCode
         {
             if (root == null) return true;
 
-            if (Math.Abs(IsBalancedHeight(root.Left) - IsBalancedHeight(root.Right)) > 1) return false;
+            if (Math.Abs(IsBalancedHeight(root.left) - IsBalancedHeight(root.right)) > 1) return false;
 
-            return IsBalanced(root.Left) && IsBalanced(root.Right);
+            return IsBalanced(root.left) && IsBalanced(root.right);
         }
 
         private int IsBalancedHeight(TreeNode node)
         {
-            return 1 + Math.Max(IsBalancedHeight(node.Left), IsBalancedHeight(node.Right));
+            return 1 + Math.Max(IsBalancedHeight(node.left), IsBalancedHeight(node.right));
         }
         #endregion
 
@@ -629,9 +727,9 @@ namespace LeetCode
         private void preOrder(IList<int> result, TreeNode root)
         {
             if (root == null) return;
-            result.Add(root.Val);
-            preOrder(result, root.Left);
-            preOrder(result, root.Right);
+            result.Add(root.val);
+            preOrder(result, root.left);
+            preOrder(result, root.right);
         }
         #endregion
 
@@ -646,9 +744,9 @@ namespace LeetCode
         private void postOrder(IList<int> result, TreeNode root)
         {
             if (root == null) return;
-            postOrder(result, root.Left);
-            postOrder(result, root.Right);
-            result.Add(root.Val);
+            postOrder(result, root.left);
+            postOrder(result, root.right);
+            result.Add(root.val);
         }
         #endregion
 

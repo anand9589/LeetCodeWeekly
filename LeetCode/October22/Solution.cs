@@ -1,4 +1,5 @@
 ﻿using Common;
+using System.Text;
 
 namespace October22
 {
@@ -108,19 +109,19 @@ namespace October22
         {
             if (root == null) return false;
 
-            targetSum -= root.Val;
+            targetSum -= root.val;
 
-            if (root.Left == null && root.Right == null && targetSum == 0) return true;
+            if (root.left == null && root.right == null && targetSum == 0) return true;
 
-            return HasPathSum(root.Left, targetSum) || HasPathSum(root.Right, targetSum);
+            return HasPathSum(root.left, targetSum) || HasPathSum(root.right, targetSum);
         }
 
         private bool hasPathSum_helper(TreeNode node, int sum)
         {
-            if (node.Left == null && node.Right == null && sum - node.Val == 0) return true;
+            if (node.left == null && node.right == null && sum - node.val == 0) return true;
 
-            bool leftTree = node.Left != null ? hasPathSum_helper(node.Left, sum - node.Val) : false;
-            bool rightTree = node.Right != null ? hasPathSum_helper(node.Right, sum - node.Val) : false;
+            bool leftTree = node.left != null ? hasPathSum_helper(node.left, sum - node.val) : false;
+            bool rightTree = node.right != null ? hasPathSum_helper(node.right, sum - node.val) : false;
 
             return leftTree || rightTree;
         }
@@ -144,15 +145,15 @@ namespace October22
 
             if (currDepth == depth - 1)
             {
-                TreeNode temp = node.Left;
-                node.Left = new TreeNode(val, temp, null);
-                temp = node.Right;
-                node.Right = new TreeNode(val, null, temp);
+                TreeNode temp = node.left;
+                node.left = new TreeNode(val, temp, null);
+                temp = node.right;
+                node.right = new TreeNode(val, null, temp);
             }
             else
             {
-                insertNode(node.Left, depth, val, currDepth + 1);
-                insertNode(node.Right, depth, val, currDepth + 1);
+                insertNode(node.left, depth, val, currDepth + 1);
+                insertNode(node.right, depth, val, currDepth + 1);
             }
         }
         #endregion
@@ -333,12 +334,12 @@ namespace October22
                 if (node != null)
                 {
 
-                    if (remTarget.Contains(node.Val)) return true;
-                    int rem = k - node.Val;
+                    if (remTarget.Contains(node.val)) return true;
+                    int rem = k - node.val;
 
                     remTarget.Add(rem);
-                    queue.Enqueue(node.Left);
-                    queue.Enqueue(node.Right);
+                    queue.Enqueue(node.left);
+                    queue.Enqueue(node.right);
                 }
             }
             return false;
@@ -710,7 +711,7 @@ namespace October22
             for (int i = index; i < jobDifficulty.Length - d + 1; i++)
             {
                 max = Math.Max(max, jobDifficulty[i]);
-                res = Math.Min(res, max + findMinDifficulty(dp,jobDifficulty,d-1,i+1));
+                res = Math.Min(res, max + findMinDifficulty(dp, jobDifficulty, d - 1, i + 1));
             }
 
             dp[d][index] = res;
@@ -719,13 +720,93 @@ namespace October22
         }
         #endregion
 
-        #region Day 17 Problem
+        #region Day 17 Problem 1832. Check if the Sentence Is Pangram
+        public bool CheckIfPangram_v1(string sentence)
+        {
+            char[] chs = sentence.ToCharArray().Distinct().ToArray();
+            return chs.Length == 26;
+        }
+        public bool CheckIfPangram(string sentence)
+        {
+            int index = 0;
+            int count = 0;
+            bool[] visited = new bool[26];
+            while (index < sentence.Length)
+            {
+                int i = sentence[index] - 'a';
+                if (!visited[i])
+                {
+                    visited[i] = true;
+                    count++;
+                }
+                index++;
+            }
+            return count == 26;
+        }
         #endregion
 
-        #region Day 18 Problem
+        #region Day 18 Problem 38. Count and Say
+        public string CountAndSay(int n)
+        {
+            if (n == 1) return "1";
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(1);
+
+            for (int i = 2; i <= n; i++)
+            {
+                IList<(char, int)> lst = new List<(char, int)>();
+                string s = sb.ToString();
+                int index = 1;
+                char lastch = s[0];
+                lst.Add((lastch, 1));
+                int counter = 1;
+                while (index < s.Length)
+                {
+                    if (lastch == s[index])
+                    {
+                        counter++;
+                        lst[lst.Count - 1] = (lastch, counter);
+                    }
+                    else
+                    {
+                        counter = 1;
+                        lastch = s[index];
+                        lst.Add((lastch, counter));
+                    }
+                    index++;
+                }
+                sb = new StringBuilder();
+                foreach (var item in lst)
+                {
+                    sb.Append(item.Item2);
+                    sb.Append(item.Item1 - '0');
+                }
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
-        #region Day 19 Problem
+        #region Day 19 Problem 692. Top K Frequent Words
+        public IList<string> TopKFrequent(string[] words, int k)
+        {
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            foreach (string word in words)
+            {
+                if (dic.ContainsKey(word))
+                {
+                    dic[word]++;
+                }
+                else
+                {
+                    dic.Add(word, 1);
+                }
+            }
+
+            return dic.OrderBy(x => x.Key).OrderByDescending(y => y.Value).Select(x => x.Key).Take(k).ToList();
+        }
         #endregion
 
         #region Day 20 Problem

@@ -2,15 +2,15 @@
 {
     public class TreeNode
     {
-        public int Val { get; set; }
-        public TreeNode Left { get; set; }
-        public TreeNode Right { get; set; }
+        public int val { get; set; }
+        public TreeNode left { get; set; }
+        public TreeNode right { get; set; }
 
         public TreeNode(int val, TreeNode left, TreeNode right)
         {
-            Val = val;
-            Left = left;
-            Right = right;
+            this.val = val;
+            this.left = left;
+            this.right = right;
         }
     }
 }
