@@ -660,6 +660,33 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 114. Flatten Binary Tree to Linked List
+        public void Flatten(TreeNode root)
+        {
+            if(root != null)
+            {
+                while(root != null)
+                {
+                    if(root.left != null)
+                    {
+                        TreeNode left = root.left;
+                        TreeNode current = left;
+
+                        while(current.right != null)
+                        {
+                            current = current.right;
+                        }
+                        current.right = root.right;
+
+                        root.left = null;
+                        root.right = left;
+                    }
+                    root = root.right;
+                }
+            }
+        }
+        #endregion
+
         #region Problem 118
         public IList<IList<int>> Generate(int numRows)
         {
