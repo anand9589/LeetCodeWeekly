@@ -578,8 +578,8 @@ namespace LeetCode
         #region Problem 109. Convert Sorted List to Binary Search Tree
         public TreeNode SortedListToBST(ListNode head)
         {
-           
-            if(head == null) return null;
+
+            if (head == null) return null;
 
             ListNode mid = getMidNode(head);
             TreeNode root = new TreeNode(mid.val, null, null);
@@ -607,7 +607,7 @@ namespace LeetCode
                 fast = fast.next.next;
             }
 
-            if(prev != null)
+            if (prev != null)
             {
                 prev.next = null;
             }
@@ -643,7 +643,7 @@ namespace LeetCode
 
         private void findPaths(TreeNode root, int targetSum, List<int> list, IList<IList<int>> result)
         {
-            if(root == null || root.val>targetSum) return;
+            if (root == null || root.val > targetSum) return;
 
             list.Add(root.val);
 
@@ -663,16 +663,16 @@ namespace LeetCode
         #region Problem 114. Flatten Binary Tree to Linked List
         public void Flatten(TreeNode root)
         {
-            if(root != null)
+            if (root != null)
             {
-                while(root != null)
+                while (root != null)
                 {
-                    if(root.left != null)
+                    if (root.left != null)
                     {
                         TreeNode left = root.left;
                         TreeNode current = left;
 
-                        while(current.right != null)
+                        while (current.right != null)
                         {
                             current = current.right;
                         }
@@ -730,6 +730,34 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 120. Triangle
+        public int MinimumTotal(IList<IList<int>> triangle)
+        {
+
+            for (int i = 1; i < triangle.Count; i++)
+            {
+                for (int j = 0; j < triangle[i].Count; j++)
+                {
+                    int add = 0;
+                    if (j == 0)
+                    {
+                        add = triangle[i - 1][j];
+                    }
+                    else if (j == triangle[i].Count - 1)
+                    {
+                        add = triangle[i - 1][j - 1];
+                    }
+                    else
+                    {
+                        add = Math.Min(triangle[i - 1][j], triangle[i - 1][j - 1]);
+                    }
+                    triangle[i][j] += add;
+                }
+            }
+            return triangle.Last().Min();
+        }
+        #endregion
+
         #region Problem 121
         public int MaxProfit(int[] prices)
         {
@@ -782,6 +810,117 @@ namespace LeetCode
                 right--;
             }
             return true;
+        }
+        #endregion
+
+        #region Problem 128. Longest Consecutive Sequence
+        public int LongestConsecutive(int[] nums)
+        {
+            Dictionary<int, int> dct = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!dct.ContainsKey(nums[i]))
+                {
+                    dct.Add(nums[i], 1);
+                }
+            }
+
+            IList<int> list = new List<int>();
+            foreach (var item in dct.Keys)
+            {
+                if (dct.ContainsKey(item - 1))
+                {
+                    dct[item] = 0;
+                }
+                else
+                {
+                    list.Add(item);
+                }
+            }
+            int result = 0;
+            foreach (var item in list)
+            {
+                int counter = 1;
+                int num = item;
+                while (dct.ContainsKey(++num))
+                {
+                    counter++;
+                }
+
+                result = counter <= result ? result : counter;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Problem 129. Sum Root to Leaf Numbers
+        public int SumNumbers(TreeNode root)
+        {
+            if (root == null) return 0;
+
+            return calculateSum(root, 0);
+        }
+
+        private int calculateSum(TreeNode root, int sum)
+        {
+            if (root == null) return 0;
+            if (root.left == null && root.right == null) return sum + root.val;
+
+            sum += root.val;
+
+            return calculateSum(root.left, sum * 10) + calculateSum(root.right, sum * 10);
+        }
+        #endregion
+
+        #region Problem 130. Surrounded Regions
+        public void Solve(char[][] board)
+        {
+            bool[][] visited = new bool[board.Length][];
+            for (int i = 0; i < visited.Length; i++)
+            {
+                visited[i] = new bool[board[i].Length];
+
+            }
+
+
+            for (int i = 1; i < board.Length - 1; i++)
+            {
+                for (int j = 1; j < board[i].Length - 1; j++)
+                {
+                    if (board[i][j] == 'O')
+                    {
+                        Queue<(int, int)> queue = new Queue<(int, int)>();
+                        //queue.Enqueue((i, j));
+                        helper_130(board, visited, queue, i, j);
+                    }
+                }
+            }
+        }
+
+        private bool helper_130(char[][] board, bool[][] visited, Queue<(int, int)> queue, int i, int j)
+        {
+            if (visited[i][j]) return true;
+            if (i == 0 || j == 0 || i == board.Length - 1 || j == board[i].Length - 1) return false;
+
+            queue.Enqueue((i, j));
+            visited[i][j] = true;
+            bool top = board[i - 1][j] == 'X' ? true : helper_130(board, visited, queue, i - 1, j);
+            bool bottom = board[i + 1][j] == 'X' ? true : helper_130(board, visited, queue, i + 1, j);
+            bool left = board[i][j - 1] == 'X' ? true : helper_130(board, visited, queue, i, j - 1);
+            bool right = board[i][j + 1] == 'X' ? true : helper_130(board, visited, queue, i, j + 1);
+
+            if (top && bottom && right && left)
+            {
+                while (queue.Count > 0)
+                {
+                    (int x, int y) = queue.Dequeue();
+                    board[x][y] = 'X';
+                }
+            }
+            return false;
         }
         #endregion
 
@@ -1166,6 +1305,43 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 1381. Design a Stack With Increment Operation
+        public class CustomStack
+        {
+            int[] arr;
+            int currIndex;
+            int len;
+            public CustomStack(int maxSize)
+            {
+                len = maxSize;
+                arr = new int[len];
+                currIndex = -1;
+            }
+
+            public void Push(int x)
+            {
+                if (currIndex < len - 1)
+                {
+                    arr[++currIndex] = x;
+                }
+            }
+
+            public int Pop()
+            {
+                if (currIndex == -1) return currIndex;
+                return arr[currIndex--];
+            }
+
+            public void Increment(int k, int val)
+            {
+                for (int i = 0; i < Math.Min(k, currIndex + 1); i++)
+                {
+                    arr[i] += val;
+                }
+            }
+        }
+        #endregion
+
         #region Problem 1647
         public int MinDeletions(string s)
         {
@@ -1206,6 +1382,78 @@ namespace LeetCode
             }
 
             return result;
+        }
+        #endregion
+
+        #region Problem 1913. Maximum Product Difference Between Two Pairs
+        public int MaxProductDifference(int[] nums)
+        {
+            Array.Sort(nums);
+
+            return nums[nums.Length - 1] * nums[nums.Length - 2] - nums[0] * nums[1];
+        }
+
+
+        public int MaxProductDifference_V1(int[] nums)
+        {
+            int min1 = int.MaxValue;
+            int min2 = int.MaxValue;
+
+            int max1 = int.MinValue;
+            int max2 = int.MinValue;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (min1 > nums[i])
+                {
+                    min2 = min1;
+                    min1 = nums[i];
+                }
+                else if (min2 > nums[i])
+                {
+                    min2 = nums[i];
+                }
+
+                if (max1 < nums[i])
+                {
+                    max2 = max1;
+                    max1 = nums[i];
+                }
+                else if (max2 < nums[i])
+                {
+                    max2 = nums[i];
+                }
+
+            }
+            return (max1 * max2) - (min1 * min2);
+        }
+        #endregion
+
+        #region Problem 2401. Longest Nice Subarray
+        public int LongestNiceSubarray(int[] nums)
+        {
+            int len = nums.Length;
+
+            if (len == 1) return len;
+            int n = 0;
+            int j = 0;
+            int kResult = 0;
+            for (int i = 0; i < len; i++)
+            {
+                while ((n & nums[i]) != 0)
+                {
+                    n ^= nums[j++];
+                }
+
+                n |= nums[i];
+
+                if (i - j + 1 > kResult)
+                {
+                    kResult = i - j + 1;
+                }
+            }
+
+            return kResult;
         }
         #endregion
 

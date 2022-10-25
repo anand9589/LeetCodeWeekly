@@ -833,7 +833,7 @@ namespace October22
 
             foreach (int item in romanCode.Keys)
             {
-                while (num>=item)
+                while (num >= item)
                 {
                     sb.Append(romanCode[item]);
                     num -= item;
@@ -844,19 +844,149 @@ namespace October22
         }
         #endregion
 
-        #region Day 21 Problem
+        #region Day 21 Problem 219. Contains Duplicate II
+        public bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                for (int j = i + 1; j < Math.Min(i + k + 1, nums.Length); j++)
+                {
+                    if (nums[i] == nums[j]) return true;
+                }
+
+            }
+            return false;
+        }
         #endregion
 
-        #region Day 22 Problem
+        #region Day 22 Problem 76. Minimum Window Substring
+        public string MinWindow(string s, string t)
+        {
+            int stringLength = int.MaxValue;
+            string result = "";
+            if (s.Length < t.Length) return result;
+
+            if (t.Length == 1 && s.Contains(t[0])) return t;
+            Dictionary<char, int> dct = new Dictionary<char, int>();
+
+
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (!dct.ContainsKey(t[i]))
+                {
+                    dct.Add(t[i], 1);
+                }
+                else
+                {
+                    dct[t[i]]++;
+                }
+            }
+            int startIndex = 0;
+            int endIndex = s.Length - 1;
+            while (startIndex <= endIndex && !dct.ContainsKey(s[startIndex]))
+            {
+                startIndex++;
+            }
+
+            while (startIndex <= endIndex && !dct.ContainsKey(s[endIndex]))
+            {
+                endIndex--;
+            }
+
+            if (startIndex > endIndex || (endIndex - startIndex + 1) < t.Length) return result;
+
+            int counter = t.Length;
+            int index = startIndex;
+            while (startIndex <= endIndex)
+            {
+                if (dct.ContainsKey(s[startIndex]))
+                {
+                    char c = s[startIndex];
+                    dct[c]--;
+                    if (dct[c] >= 0) counter--;
+                    while (counter == 0)
+                    {
+                        if (stringLength > startIndex - index + 1)
+                        {
+                            stringLength = startIndex - index + 1;
+                            result = s.Substring(index, stringLength);
+
+                        }
+
+                        char p = s[index];
+
+                        dct[p]++;
+                        if (dct[p] > 0) counter++;
+                        index++;
+
+                        while (!dct.ContainsKey(s[index]))
+                        {
+                            index++;
+                        }
+
+                    }
+                }
+                startIndex++;
+            }
+            return result;
+        }
         #endregion
 
-        #region Day 23 Problem
+        #region Day 23 Problem 645. Set Mismatch
+        public int[] FindErrorNums(int[] nums)
+        {
+            int[] result = new int[2];
+
+            foreach (int n in nums)
+            {
+                if (nums[Math.Abs(n) - 1] < 0)
+                {
+                    result[0] = Math.Abs(n);
+                }
+                else
+                {
+                    nums[Math.Abs(n) - 1] *= -1;
+                }
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] > 0)
+                {
+                    result[1] = i + 1;
+                }
+            }
+            return result;
+        }
         #endregion
 
-        #region Day 24 Problem
+        #region Day 24 1239. Maximum Length of a Concatenated String with Unique Characters
+        public int MaxLength(IList<string> arr)
+        {
+            arr = arr.Where(x => x.Distinct().Count() == x.Count()).ToList();
+
+            return MaxLength_BackTrack(arr);
+        }
+
+        public int MaxLength_BackTrack(IList<string> arr, int i = 0, string s = "")
+        {
+            if (s.Distinct().Count() < s.Length) return 0;
+
+            if (arr.Count == i) return s.Length;
+
+            return Math.Max(
+                MaxLength_BackTrack(arr, i + 1, s),
+                MaxLength_BackTrack(arr, i + 1, s + arr[i])
+            );
+        }
         #endregion
 
-        #region Day 25 Problem
+        #region Day 25 Problem 1662. Check If Two String Arrays are Equivalent
+        public bool ArrayStringsAreEqual(string[] word1, string[] word2)
+        {
+
+            return string.Join("", word1).Equals(string.Join("", word2));
+        }
         #endregion
 
         #region Day 26 Problem
@@ -1001,6 +1131,176 @@ namespace October22
         {
             return Convert.ToInt32(new string(i.ToString().Reverse().ToArray()));
         }
+        #endregion
+
+        #region Weekly Contest 316
+        public bool HaveConflict(string[] event1, string[] event2)
+        {
+            int event1StartTime = int.Parse(event1[0].Split(":")[0]) * 60 + int.Parse(event1[0].Split(":")[1]);
+            int event1EndTime = int.Parse(event1[1].Split(":")[0]) * 60 + int.Parse(event1[1].Split(":")[1]);
+            int event2StartTime = int.Parse(event2[0].Split(":")[0]) * 60 + int.Parse(event2[0].Split(":")[1]);
+            int event2EndTime = int.Parse(event2[1].Split(":")[0]) * 60 + int.Parse(event2[1].Split(":")[1]);
+
+            if (event2StartTime >= event1StartTime && event2StartTime <= event1EndTime) return true;
+            if (event1StartTime >= event2StartTime && event1StartTime <= event2EndTime) return true;
+
+            if (event2EndTime >= event1StartTime && event2EndTime <= event1EndTime) return true;
+            if (event1EndTime >= event2StartTime && event1EndTime <= event2EndTime) return true;
+
+            return false;
+        }
+
+        public int SubarrayGCD(int[] nums, int k)
+        {
+
+            return 0;
+        }
+
+        public long MinCost(int[] nums, int[] cost)
+        {
+            long result = 0;
+
+            long arrLen = 0;
+
+            for (int i = 0; i < cost.Length; i++)
+            {
+                arrLen += cost[i];
+            }
+            //int[] arr = new int[arrLen];
+            List<(int, int)> list = new List<(int, int)>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                list.Add((nums[i], cost[i]));
+            }
+
+            list = list.OrderBy(x => x.Item1).ToList();
+            //int index = 0;
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    for (int j = 0; j < cost[i]; j++)
+            //    {
+            //        arr[index++] = nums[i];
+            //    }
+            //}
+            //Array.Sort(arr);
+            long median = arrLen / 2;
+            int num = 0;
+
+            long k = median;
+            for (int i = 0; i < list.Count(); i++)
+            {
+                k -= list[i].Item2;
+                if (k <= 0)
+                {
+                    num = list[i].Item1;
+                    break;
+                }
+            }
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int diff = Math.Abs(nums[i] - num);
+
+                result += (diff * (long)cost[i]);
+            }
+
+            return result;
+        }
+
+        public long MakeSimilar(int[] nums, int[] target)
+        {
+            int n = nums.Length;
+            Array.Sort(nums);
+            Array.Sort(target);
+            Dictionary<int, int> mapTarget = new Dictionary<int, int>();
+            Dictionary<int, int> mapNums = new Dictionary<int, int>();
+
+            for (int i = 0; i < n; i++)
+            {
+                if (mapNums.ContainsKey(nums[i]))
+                {
+                    mapNums[nums[i]]++;
+                }
+                else
+                {
+                    mapNums.Add(nums[i], 1);
+                }
+                if (mapTarget.ContainsKey(target[i]))
+                {
+                    mapTarget[target[i]]++;
+                }
+                else
+                {
+                    mapTarget.Add(target[i], 1);
+                }
+            }
+
+            foreach (var key in mapTarget.Keys)
+            {
+                if (mapNums.ContainsKey(key))
+                {
+                    while (mapTarget[key] > 0 && mapNums[key] > 0)
+                    {
+                        mapNums[key]--;
+                        mapTarget[key]--;
+                    }
+                }
+            }
+
+            if (mapTarget.Values.Sum() == 0) return 0;
+
+            int[] newNum = mapNums.Keys.Where(x => mapNums[x] > 0).ToArray();
+            int[] newTarget = mapTarget.Keys.Where(x => mapTarget[x] > 0).ToArray();
+
+
+            int indexI = -1, indexJ = -1;
+
+
+            if (newTarget[0] % 2 == 0)
+            {
+                for (int i = 0; i < newNum.Length; i++)
+                {
+                    if (newNum[i] % 2 == 0)
+                    {
+                        if (newNum[i] > newTarget[0])
+                        {
+                            indexJ = i;
+                        }
+                        else
+                        {
+                            indexI = i;
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
+            for (int i = 0; i < newNum.Length; i++)
+            {
+                if (newNum[i] < newTarget[0])
+                {
+                    indexI = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < newNum.Length; i++)
+            {
+                if (newNum[i] > newTarget[0])
+                {
+                    indexJ = i;
+                    break;
+                }
+            }
+
+            newNum[indexI] += 2;
+            newNum[indexJ] -= 2;
+
+            return 1 + MakeSimilar(newNum, newTarget);
+        }
+
         #endregion
 
         #region Biweekly Contest 89
