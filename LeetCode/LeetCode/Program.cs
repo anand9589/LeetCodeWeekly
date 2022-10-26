@@ -24,22 +24,10 @@ using static LeetCode.Problems;
 //}
 //TreeNode root = Utilities.BuildTreeNode(arr);
 ////int[] postorder = Array.ConvertAll(arr1[1].Split(','), int.Parse);
-//Problems problems = new Problems();
+Problems problems = new Problems();
 
-//var p = problems.Min(new int[] { 5, 6, 2, 7, 4 });
+var p = problems.FirstDayBeenInAllRooms(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-//Console.WriteLine(p);
+Console.WriteLine(p);
 
-CustomStack customStack = new CustomStack(3);
-customStack.Push(1);
-customStack.Push(2);
-customStack.Pop();
-customStack.Push(2);
-customStack.Push(3);
-customStack.Push(4);
-customStack.Increment(5, 100);
-customStack.Increment(2,100);
-customStack.Pop();
-customStack.Pop();
-customStack.Pop();
 Console.ReadLine();

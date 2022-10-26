@@ -1429,6 +1429,28 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 1997. First Day Where You Have Been in All the Rooms
+        public int FirstDayBeenInAllRooms(int[] nextVisit)
+        {
+            long[] dp = new long[nextVisit.Length];
+            int mod = (int)1e9 + 7;
+
+            for (int i = 1; i < nextVisit.Length; i++)
+            {
+                if (nextVisit[i - 1] == i - 1)
+                {
+                    dp[i] = dp[i - 1] + 2;
+                }
+                else
+                {
+                    dp[i] =((dp[i - 1] + dp[i-1] - dp[nextVisit[i-1]] + 2 + mod) % mod);
+                }
+            }
+
+            return (int)dp[nextVisit.Length - 1];
+        }
+        #endregion
+
         #region Problem 2401. Longest Nice Subarray
         public int LongestNiceSubarray(int[] nums)
         {

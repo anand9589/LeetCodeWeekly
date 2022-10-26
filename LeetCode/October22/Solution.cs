@@ -989,7 +989,27 @@ namespace October22
         }
         #endregion
 
-        #region Day 26 Problem
+        #region Day 26 Problem 523. Continuous Subarray Sum
+        public bool CheckSubarraySum(int[] nums, int k)
+        {
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            map.Add(0, -1);
+            long sum = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum+=nums[i];
+                int rem = (int)(sum % k);
+                if (map.ContainsKey(rem))
+                {
+                    if (i - map[rem] > 1) return true;
+                }
+                else
+                {
+                    map.Add(rem,i);
+                }
+            }
+            return false;
+        }
         #endregion
 
         #region Day 27 Problem
