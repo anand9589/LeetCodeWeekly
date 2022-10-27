@@ -997,7 +997,7 @@ namespace October22
             long sum = 0;
             for (int i = 0; i < nums.Length; i++)
             {
-                sum+=nums[i];
+                sum += nums[i];
                 int rem = (int)(sum % k);
                 if (map.ContainsKey(rem))
                 {
@@ -1005,14 +1005,61 @@ namespace October22
                 }
                 else
                 {
-                    map.Add(rem,i);
+                    map.Add(rem, i);
                 }
             }
             return false;
         }
         #endregion
 
-        #region Day 27 Problem
+        #region Day 27 Problem 835. Image Overlap
+        public int LargestOverlap(int[][] img1, int[][] img2)
+        {
+
+            int n = img1.Length;
+            if (n == 1)
+            {
+                if (img1[0][0] == img2[0][0] && img1[0][0] == 1) return 1;
+                return 0;
+            }
+            IList<(int, int)> img1List = new List<(int, int)>();
+            IList<(int, int)> img2List = new List<(int, int)>();
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (img1[i][j] == 1)
+                    {
+                        img1List.Add((i + n - 1, j + n - 1));
+                    }
+                    if (img2[i][j] == 1)
+                    {
+                        img2List.Add((i, j));
+                    }
+                }
+            }
+            Dictionary<(int, int), int> map = new Dictionary<(int, int), int>();
+
+            foreach (var (p, q) in img1List)
+            {
+                foreach (var (x, y) in img2List)
+                {
+                    var m = (p - x, q - y);
+
+                    if (map.ContainsKey(m))
+                    {
+                        map[m]++;
+                    }
+                    else
+                    {
+                        map.Add(m, 1);
+                    }
+                }
+            }
+
+            return map.Count > 0 ? map.Values.Max() : 0;
+        }
         #endregion
 
         #region Day 28 Problem
