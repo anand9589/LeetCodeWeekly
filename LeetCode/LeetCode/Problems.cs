@@ -1189,6 +1189,33 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 228. Summary Ranges
+        public IList<string> SummaryRanges(int[] nums)
+        {
+            IList<string> result = new List<string>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append(nums[i]);
+                bool flag = false;
+                while (i < nums.Length - 1 && nums[i] + 1 == nums[i + 1])
+                {
+                    flag = true;
+                    i++;
+                }
+                if (flag)
+                {
+                    stringBuilder.Append("->");
+                    stringBuilder.Append(nums[i]);
+                }
+                result.Add(stringBuilder.ToString());   
+            }
+
+            return result;
+        }
+        #endregion
+
         #region Problem 315
         public IList<int> CountSmaller(int[] nums)
         {
@@ -1443,7 +1470,7 @@ namespace LeetCode
                 }
                 else
                 {
-                    dp[i] =((dp[i - 1] + dp[i-1] - dp[nextVisit[i-1]] + 2 + mod) % mod);
+                    dp[i] = ((dp[i - 1] + dp[i - 1] - dp[nextVisit[i - 1]] + 2 + mod) % mod);
                 }
             }
 
