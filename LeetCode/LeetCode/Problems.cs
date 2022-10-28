@@ -1277,6 +1277,48 @@ namespace LeetCode
         }
         #endregion
 
+        #region Problem 673. Number of Longest Increasing Subsequence
+        public int FindNumberOfLIS(int[] nums)
+        {
+            int result = 0;
+
+            int[] len = new int[nums.Length];
+            int[] cnt = new int[nums.Length];
+
+            int maxlen = 1;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (nums[i]>nums[j])
+                    {
+                        if(len[j]+1 > len[i])
+                        {
+                            len[i] = len[j] + 1;
+                            cnt[i] = cnt[j];
+                        }
+                        else if(len[j]+1 == len[i])
+                        {
+                            cnt[i] += cnt[j];
+                        }
+                    }
+                }
+                maxlen = Math.Max(len[i],maxlen);
+            }
+
+            for (int i = 0; i < len.Length; i++)
+            {
+                if (len[i] == maxlen)
+                {
+                    result += cnt[i];
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
         #region Problem 838
         public string PushDominoes(string dominoes)
         {
