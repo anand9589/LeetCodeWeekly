@@ -4,12 +4,15 @@ using LeetCode;
 using October22;
 using static LeetCode.Problems;
 
-//Solution solution = new Solution();
-
+//string[] arr1 = File.ReadAllLines(@".\Testcase.txt");
+//int[] arr2 = Array.ConvertAll(arr1[0].Split(','), int.Parse);
+//int[] arr3 = Array.ConvertAll(arr1[1].Split(','), int.Parse);
+int[][] arr = Utilities.Get2DArray(@".\Testcase.txt");
+Solution solution = new Solution();
+solution.IsToeplitzMatrix(arr);
 ////ListNode head = Utilities.BuildListNode(new int[] { 1, 2});
 
 
-//string[] arr1 = File.ReadAllLines(@".\Testcase.txt");
 //string[] arr2 = arr1[0].Replace("\"","").Split(',');
 //var p =solution.MaxLength(arr2);
 //int[] arr3 = Array.ConvertAll(arr1[1].Split(','), int.Parse);
@@ -24,10 +27,10 @@ using static LeetCode.Problems;
 //}
 //TreeNode root = Utilities.BuildTreeNode(arr);
 ////int[] postorder = Array.ConvertAll(arr1[1].Split(','), int.Parse);
-Problems problems = new Problems();
+//Problems problems = new Problems();
 
-var p = problems.FirstDayBeenInAllRooms(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+//var p = problems.FirstDayBeenInAllRooms(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-Console.WriteLine(p);
+//Console.WriteLine(p);
 
 Console.ReadLine();

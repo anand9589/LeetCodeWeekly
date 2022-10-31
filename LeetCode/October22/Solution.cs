@@ -1062,16 +1062,231 @@ namespace October22
         }
         #endregion
 
-        #region Day 28 Problem
+        #region Day 28 Problem 49. Group Anagrams
+        public IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            IDictionary<string, IList<string>> map = new Dictionary<string, IList<string>>();
+            foreach (var str in strs)
+            {
+                var ch = str.ToCharArray();
+                Array.Sort(ch);
+
+                string s = string.Join("", ch);
+
+                if (!map.ContainsKey(s))
+                {
+                    map.Add(s, new List<string>());
+                }
+
+                map[s].Add(str);
+            }
+
+            return map.Values.ToList();
+        }
         #endregion
 
-        #region Day 29 Problem
+        #region Day 29 Problem 2136. Earliest Possible Day of Full Bloom
+        public int EarliestFullBloom(int[] plantTime, int[] growTime)
+        {
+            int result = 0;
+
+            IList<(int, int)> lst = new List<(int, int)>();
+            for (int i = 0; i < plantTime.Length; i++)
+            {
+                lst.Add((plantTime[i], growTime[i]));
+            }
+
+            lst = lst.OrderByDescending(x => x.Item2).ToList();
+
+            int start = 0;
+            int end = 0;
+            foreach ((int x, int y) item in lst)
+            {
+                start += item.x;
+                result = Math.Max(result, start + item.y);
+            }
+
+            return result;
+        }
         #endregion
 
-        #region Day 30 Problem
+        #region Day 30 Problem 1293. Shortest Path in a Grid with Obstacles Elimination
+
+        int[] dx = new int[] { 0, 1, 0, -1 };
+        int[] dy = new int[] { 1, 0, -1, 0 };
+
+        public int ShortestPath(int[][] grid, int k)
+        {
+            if (grid == null || grid.Length == 0 || grid[0].Length == 0) return -1;
+            int r = grid.Length, c = grid[0].Length;
+            var queue = new Queue<int[]>();
+            var visited = new bool[r, c, k + 1];
+            var length = new int[r, c, k + 1];
+            queue.Enqueue(new int[] { 0, 0, 0 });
+            visited[0, 0, 0] = true;
+            length[0, 0, 0] = 0;
+
+            while (queue.Count != 0)
+            {
+                var curr = queue.Dequeue();
+                int x = curr[0], y = curr[1], obs = curr[2];
+                for (int i = 0; i < 4; i++)
+                {
+                    int nx = x + dx[i], ny = y + dy[i];
+                    if (nx >= 0 && nx < r && ny >= 0 && ny < c)
+                    {
+                        if (grid[nx][ny] == 1)
+                        {
+                            if (obs + 1 <= k && !visited[nx, ny, obs + 1])
+                            {
+                                visited[nx, ny, obs + 1] = true;
+                                queue.Enqueue(new int[] { nx, ny, obs + 1 });
+                                length[nx, ny, obs + 1] = length[x, y, obs] + 1;
+                            }
+                        }
+                        else
+                        {
+                            if (!visited[nx, ny, obs])
+                            {
+                                visited[nx, ny, obs] = true;
+                                queue.Enqueue(new int[] { nx, ny, obs });
+                                length[nx, ny, obs] = length[x, y, obs] + 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            int result = int.MaxValue;
+            for (int i = 0; i <= k; i++)
+                if (visited[r - 1, c - 1, i])
+                    result = Math.Min(result, length[r - 1, c - 1, i]);
+
+            return result == int.MaxValue ? -1 : result;
+        }
+
+        //int[][] dir = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { -1, 0 }, new int[] { 0, -1 } };
+        //int[][] visited;
+        //public int ShortestPath(int[][] grid, int k)
+        //{
+        //    int steps = int.MaxValue;
+        //    Queue<(int, int, int, int, List<(int, int)>)> q = new Queue<(int, int, int, int, List<(int, int)>)>();
+        //    int m = grid.Length;
+        //    int n = grid[0].Length;
+
+        //    q.Enqueue((0, 0, k, 0, new List<(int, int)>() { (0, 0) }));
+
+        //    while (q.Count > 0)
+        //    {
+        //        (int x, int y, int remk, int d, List<(int, int)> vis) = q.Dequeue();
+
+        //        if (x == m - 1 && y == n - 1)
+        //        {
+        //            steps = Math.Min(steps, d);
+        //        }
+
+        //        visitNext(grid, q, new List<(int, int)>(vis), x + 1, y, remk, d + 1);
+        //        visitNext(grid, q, new List<(int, int)>(vis), x, y + 1, remk, d + 1);
+        //        visitNext(grid, q, new List<(int, int)>(vis), x - 1, y, remk, d + 1);
+        //        visitNext(grid, q, new List<(int, int)>(vis), x, y - 1, remk, d + 1);
+
+        //    }
+
+        //    return steps == int.MaxValue ? -1 : steps;
+        //}
+
+        //private void visitNext(int[][] grid, Queue<(int, int, int, int, List<(int, int)>)> q, List<(int, int)> list, int x, int y, int k, int d)
+        //{
+        //    if (x < 0 || y < 0
+        //        || x >= grid.Length
+        //        || y >= grid[x].Length
+        //        || list.Contains((x, y))
+        //        || (grid[x][y] == 1 && k <= 0)) return;
+
+
+        //    k = k - grid[x][y];
+        //    list.Add((x, y));
+        //    q.Enqueue((x, y, k, d, new List<(int, int)>(list)));
+
+        //    list = null;
+        //}
+
+        //public int ShortestPath(int[][] grid, int k)
+        //{
+        //    int steps = int.MaxValue;
+        //    int m = grid.Length;
+        //    int n = grid[0].Length;
+
+        //    Queue<(int, int, int, int)> q = new Queue<(int, int, int, int)>();
+        //    int[][] visited = new int[m][];
+        //    for (int i = 0; i < m; i++)
+        //    {
+        //        visited[i] = Enumerable.Repeat(int.MaxValue, n).ToArray();
+        //    }
+
+        //    q.Enqueue((0, 0, k - grid[0][0], 0));
+        //    visited[0][0] = 0;
+
+        //    while (q.Count > 0)
+        //    {
+        //        (int x, int y, int z, int d) = q.Dequeue();
+        //        //steps = Math.Max(steps, d);
+
+        //        if (x == m - 1 && y == n - 1)
+        //        {
+        //            steps = Math.Min(steps, d);
+        //        }
+
+        //        visitFlag(grid, q, x - 1, y, z, d + 1, visited);
+        //        visitFlag(grid, q, x + 1, y, z, d + 1, visited);
+        //        visitFlag(grid, q, x, y - 1, z, d + 1, visited);
+        //        visitFlag(grid, q, x, y + 1, z, d + 1, visited);
+
+        //    }
+
+        //    return steps == int.MaxValue ? -1 : steps;
+        //}
+
+        //private void visitFlag(int[][] grid, Queue<(int, int, int, int)> q, int i, int j, int k, int distance, int[][] visited)
+        //{
+        //    if (i < 0 || j < 0 || i >= grid.Length || j >= grid[i].Length || visited[i][j] < distance || (grid[i][j] == 1 && k <= 0)) return;
+        //    k = k - grid[i][j];
+        //    visited[i][j] = distance;
+        //    q.Enqueue((i, j, k, distance));
+        //}
         #endregion
 
-        #region Day 31 Problem
+        #region Day 31 Problem 766. Toeplitz Matrix
+        public bool IsToeplitzMatrix(int[][] matrix)
+        {
+            if (!IsToeplitzMatrix_Helper(matrix, 0, 0)) return false;
+
+            for (int i = 1; i < matrix.Length; i++)
+            {
+                if (!IsToeplitzMatrix_Helper(matrix, i, 0)) return false;
+            }
+
+            for (int i = 1; i < matrix[0].Length; i++)
+            {
+                if (!IsToeplitzMatrix_Helper(matrix, 0, i)) return false;
+            }
+
+            return true;
+        }
+        public bool IsToeplitzMatrix_Helper(int[][] matrix, int x, int y)
+        {
+            if (x == matrix.Length || y == matrix[x].Length) return true;
+            int ele = matrix[x][y];
+            x++;
+            y++;
+            while (x < matrix.Length && y < matrix[x].Length)
+            {
+                if (ele != matrix[x][y]) return false;
+                x++;
+                y++;
+            }
+            return true;
+        }
         #endregion
 
         #region Weekly 313

@@ -37,5 +37,24 @@
 
             return root;
         }
+
+        public static int[][] Get2DArray(string path)
+        {
+            string s = File.ReadAllText(path);
+
+            s = s.TrimStart('[');
+            s = s.TrimEnd(']');
+
+            string[] arr = s.Split("],[");
+
+            int[][] arr2 = new int[arr.Length][];
+
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = Array.ConvertAll(arr[i].Split(','), int.Parse);
+            }
+
+            return arr2;
+        }
     }
 }
