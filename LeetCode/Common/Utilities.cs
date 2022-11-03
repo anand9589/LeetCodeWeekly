@@ -56,5 +56,17 @@
 
             return arr2;
         }
+
+        public static int[] GetIntArray(string path)
+        {
+            string s = File.ReadAllText(path);
+
+            s = s.TrimStart('[');
+            s = s.TrimEnd(']');
+
+            string[] arr = s.Split(",");
+
+            return Array.ConvertAll(arr, int.Parse);
+        }
     }
 }
