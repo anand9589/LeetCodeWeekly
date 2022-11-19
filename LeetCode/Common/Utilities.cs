@@ -68,5 +68,30 @@
 
             return Array.ConvertAll(arr, int.Parse);
         }
+
+        public static char[][] Get2DCharArray(string path)
+        {
+            string s = File.ReadAllText(path);
+
+            s = s.TrimStart('[');
+            s = s.TrimEnd(']');
+            s = s.Replace("\"","");
+            string[] arr = s.Split("],[");
+
+            char[][] arr2 = new char[arr.Length][];
+
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = Array.ConvertAll(arr[i].Split(','), char.Parse);
+            }
+
+            return arr2;
+        }
+
+        //public static string[] GetStringArray(string path, int lineIndex = 0)
+        //{
+        //    string s = File.ReadAllText(path);
+
+        //}
     }
 }
