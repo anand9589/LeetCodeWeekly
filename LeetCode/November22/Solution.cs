@@ -205,14 +205,14 @@ namespace November22
                     visited = new bool[board.Length, board[0].Length];
 
                     visited[i, j] = true;
-                    DFS(board, i, j, trie.Head, new StringBuilder(board[i][j].ToString()));
+                    DFS_FindWords(board, i, j, trie.Head, new StringBuilder(board[i][j].ToString()));
                 }
 
             return res.ToList<string>();
         }
 
 
-        private void DFS(char[][] board, int x, int y, TrieNode node, StringBuilder cur)
+        private void DFS_FindWords(char[][] board, int x, int y, TrieNode node, StringBuilder cur)
         {
             if (!node.ContainsChar(board[x][y]))
                 return;
@@ -230,7 +230,7 @@ namespace November22
                     visited[newX, newY] = true;
                     cur.Append(board[newX][newY]);
 
-                    DFS(board, newX, newY, node[board[x][y]], cur);
+                    DFS_FindWords(board, newX, newY, node[board[x][y]], cur);
 
                     visited[newX, newY] = false;
                     cur.Remove(cur.Length - 1, 1);
@@ -518,7 +518,77 @@ namespace November22
         #region Day 11 Problem
         #endregion
 
-        #region Day 12 Problem
+        #region Day 12 Problem 295. Find Median from Data Stream
+        public class MedianFinder
+        {
+
+            PriorityQueue<int, int> leftQueue;
+            PriorityQueue<int, int> rightQueue;
+
+            public MedianFinder()
+            {
+                leftQueue = new PriorityQueue<int, int>();
+                rightQueue = new PriorityQueue<int, int>();
+            }
+
+            public void AddNum(int num)
+            {
+                if (leftQueue.Count == rightQueue.Count)
+                {
+                    if (leftQueue.Count == 0)
+                    {
+                        leftQueue.Enqueue(num, -num);
+                    }
+                    else
+                    {
+                        var rightTop = rightQueue.Peek();
+                        //add in leftQueue
+                        if (num < rightTop)
+                        {
+                            leftQueue.Enqueue(num, -num);
+                        }
+                        else
+                        {
+                            rightQueue.Dequeue();
+                            leftQueue.Enqueue(rightTop, -rightTop);
+                            rightQueue.Enqueue(num, num);
+                        }
+
+                    }
+                }
+                else
+                {
+                    //add in rightQueue
+                    var leftTop = leftQueue.Peek();
+
+                    if (num > leftTop)
+                    {
+                        rightQueue.Enqueue(num, num);
+                    }
+                    else
+                    {
+                        leftQueue.Dequeue();
+                        rightQueue.Enqueue(leftTop, leftTop);
+                        leftQueue.Enqueue(num, -num);
+                    }
+
+                }
+            }
+
+            public double FindMedian()
+            {
+
+                if (leftQueue.Count == rightQueue.Count)
+                {
+                    return (double)(leftQueue.Peek() + rightQueue.Peek()) / 2;
+                }
+                else
+                {
+                    return leftQueue.Peek();
+                }
+            }
+        }
+
         #endregion
 
         #region Day 13 Problem 151. Reverse Words in a String
@@ -536,7 +606,95 @@ namespace November22
         }
         #endregion
 
-        #region Day 14 Problem
+        #region Day 14 Problem 947. Most Stones Removed with Same Row or Column
+        public int RemoveStones(int[][] stones)
+        {
+            int result = 0;
+
+            HashSet<int[]> visited = new HashSet<int[]>();
+
+            foreach (var stone in stones)
+            {
+                if (!visited.Contains(stone))
+                {
+                    DFS_RemoveStones(stone, stones, visited);
+                    result++;
+                }
+            }
+
+            //IList<(int, int)> list = new List<(int, int)>();
+
+            //for (int i = 0; i < stones.Length; i++)
+            //{
+            //    list.Add((stones[i][0], stones[i][1]));
+            //}
+
+            //int maxX = list.Select(x => x.Item1).Max();
+            //int maxY = list.Select(x => x.Item2).Max();
+
+            //int[][] matrix = new int[maxX + 1][];
+
+            //for (int i = 0; i < matrix.Length; i++)
+            //{
+            //    matrix[i] = new int[maxY + 1];
+            //}
+            //for (int i = 0; i < stones.Length; i++)
+            //{
+            //    matrix[stones[i][0]][stones[i][1]] = 1;
+            //}
+
+            //for (int i = 0; i < matrix.Length; i++)
+            //{
+            //    for (int j = 0; j < matrix[i].Length; j++)
+            //    {
+            //        if (matrix[i][j] == 1)
+            //        {
+            //            bool found1 = false;
+            //            for (int k = 0; k < matrix.Length; k++)
+            //            {
+            //                if (k == i) continue;
+
+            //                if (matrix[k][j] == 1)
+            //                {
+            //                    found1 = true;
+            //                    matrix[i][j] = 0;
+            //                    break;
+            //                }
+            //            }
+            //            if (!found1)
+            //            {
+            //                for (int k = 0; k < matrix[i].Length; k++)
+            //                {
+            //                    if (k == j) continue;
+
+            //                    if (matrix[i][k] == 1)
+            //                    {
+            //                        found1 = true;
+            //                        matrix[i][j] = 0;
+            //                        break;
+            //                    }
+            //                }
+            //            }
+            //            if (found1) result++;
+            //        }
+            //    }
+            //}
+
+            return stones.Length - result;
+        }
+
+        private void DFS_RemoveStones(int[] stone, int[][] stones, HashSet<int[]> visited)
+        {
+            visited.Add(stone);
+            foreach (var nextStone in stones)
+            {
+                if (!visited.Contains(nextStone))
+                {
+                    if (stone[0] == nextStone[0] || stone[1] == nextStone[1])
+                        DFS_RemoveStones(nextStone, stones, visited);
+                }
+            }
+        }
         #endregion
 
         #region Day 15 Problem 222. Count Complete Tree Nodes
