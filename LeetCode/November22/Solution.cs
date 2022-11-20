@@ -536,7 +536,7 @@ namespace November22
                         stack.Pop();
                     }
 
-                    if(stack.Count == 0)
+                    if (stack.Count == 0)
                     {
                         stack.Push((dayIndex, price));
                         return dayIndex;
@@ -544,56 +544,10 @@ namespace November22
                     else
                     {
                         int res = dayIndex - stack.Peek().Item1;
-                        stack.Push((dayIndex,price));
+                        stack.Push((dayIndex, price));
                         return res;
                     }
                 }
-            }
-        }
-
-        public class StockSpanner_V1
-        {
-            Stack<int> stack1;
-            Stack<int> stack2;
-
-            public StockSpanner()
-            {
-                stack1 = new Stack<int>();
-                stack2 = new Stack<int>();
-            }
-
-            public int Next(int price)
-            {
-                int result = 0;
-                if (stack1.Count == 0)
-                {
-                    stack1.Push(price);
-                    return 1;
-                }
-                else
-                {
-                    if (stack1.Peek() >= price)
-                    {
-                        stack1.Push((int)price);
-                        return 1;
-                    }
-                    else
-                    {
-                        result = 1;
-                        while (stack1.Count > 0 && price >= stack1.Peek())
-                        {
-                            stack2.Push(stack1.Pop());
-                        }
-                        result += stack2.Count;
-                        while (stack2.Count > 0)
-                        {
-                            stack1.Push(stack2.Pop());
-                        }
-                        stack1.Push(price);
-
-                    }
-                }
-                return result;
             }
         }
         #endregion
@@ -1190,24 +1144,34 @@ namespace November22
             return result;
         }
         #endregion
+
         #region Day 21 Problem
         #endregion
+
         #region Day 22 Problem
         #endregion
+
         #region Day 23 Problem
         #endregion
+
         #region Day 24 Problem
         #endregion
+
         #region Day 25 Problem
         #endregion
+
         #region Day 26 Problem
         #endregion
+
         #region Day 27 Problem
         #endregion
+
         #region Day 28 Problem
         #endregion
+
         #region Day 29 Problem
         #endregion
+
         #region Day 30 Problem
         #endregion
         #endregion
@@ -1476,6 +1440,119 @@ namespace November22
 
             return sb.ToString();
         }
+        #endregion
+
+        #region Weekly 320
+        public int UnequalTriplets(int[] nums)
+        {
+            int result = 0;
+
+            for (int i = 0; i < nums.Length - 2; i++)
+            {
+                for (int j = i + 1; j < nums.Length - 1; j++)
+                {
+                    if (nums[i] == nums[j]) continue;
+                    for (int k = j + 1; k < nums.Length; k++)
+                    {
+                        if (nums[j] == nums[k]) continue;
+                        if (nums[i] == nums[k]) continue;
+
+                        result++;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public IList<IList<int>> ClosestNodes(TreeNode root, IList<int> queries)
+        {
+            IList<IList<int>> nodes = new List<IList<int>>();
+
+            for (int i = 0; i < queries.Count; i++)
+            {
+                int search = queries[i];
+                nodes.Add(new List<int>() { findSmallest(root, search), findLargest(root, search) });
+            }
+
+            return nodes;
+        }
+
+        private int findLargest(TreeNode root, int search)
+        {
+            if (root == null) return -1;
+
+            int result = -1;
+            while (root != null)
+            {
+
+                if (root.val == search) return root.val;
+                if (root.val > search)
+                {
+                    if (result == -1)
+                    {
+                        result = root.val;
+                    }
+                    else
+                    {
+                        if ((result - search) < (root.val - search))
+                        {
+                            result = root.val;
+                        }
+                    }
+                }
+
+                if (root.val < search)
+                {
+                    root = root.right;
+
+                }
+                else
+                {
+                    root = root.left;
+                }
+            }
+            return result;
+        }
+
+
+        private int findSmallest(TreeNode root, int search)
+        {
+            if (root == null) return -1;
+
+            int result = -1;
+            while (root != null)
+            {
+
+                if (root.val == search) return root.val;
+                if (root.val < search)
+                {
+                    if (result == -1)
+                    {
+                        result = root.val;
+                    }
+                    else
+                    {
+                        if ((search - result) > (search - root.val))
+                        {
+                            result = root.val;
+                        }
+                    }
+                }
+
+                if (root.val < search)
+                {
+                    root = root.right;
+
+                }
+                else
+                {
+                    root = root.left;
+                }
+            }
+            return result;
+        }
+
         #endregion
         #endregion
     }
