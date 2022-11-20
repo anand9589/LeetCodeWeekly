@@ -509,7 +509,93 @@ namespace November22
         #region Day 8 Problem
         #endregion
 
-        #region Day 9 Problem
+        #region Day 9 Problem 901. Online Stock Span
+
+        public class StockSpanner
+        {
+            Stack<(int, int)> stack;
+            int dayIndex;
+            public StockSpanner()
+            {
+                stack = new Stack<(int, int)>();
+                dayIndex = 0;
+            }
+
+            public int Next(int price)
+            {
+                dayIndex++;
+                if (stack.Count == 0 || stack.Peek().Item2 > price)
+                {
+                    stack.Push((dayIndex, price));
+                    return 1;
+                }
+                else
+                {
+                    while (stack.Count > 0 && stack.Peek().Item2 < price)
+                    {
+                        stack.Pop();
+                    }
+
+                    if(stack.Count == 0)
+                    {
+                        stack.Push((dayIndex, price));
+                        return dayIndex;
+                    }
+                    else
+                    {
+                        int res = dayIndex - stack.Peek().Item1;
+                        stack.Push((dayIndex,price));
+                        return res;
+                    }
+                }
+            }
+        }
+
+        public class StockSpanner_V1
+        {
+            Stack<int> stack1;
+            Stack<int> stack2;
+
+            public StockSpanner()
+            {
+                stack1 = new Stack<int>();
+                stack2 = new Stack<int>();
+            }
+
+            public int Next(int price)
+            {
+                int result = 0;
+                if (stack1.Count == 0)
+                {
+                    stack1.Push(price);
+                    return 1;
+                }
+                else
+                {
+                    if (stack1.Peek() >= price)
+                    {
+                        stack1.Push((int)price);
+                        return 1;
+                    }
+                    else
+                    {
+                        result = 1;
+                        while (stack1.Count > 0 && price >= stack1.Peek())
+                        {
+                            stack2.Push(stack1.Pop());
+                        }
+                        result += stack2.Count;
+                        while (stack2.Count > 0)
+                        {
+                            stack1.Push(stack2.Pop());
+                        }
+                        stack1.Push(price);
+
+                    }
+                }
+                return result;
+            }
+        }
         #endregion
 
         #region Day 10 Problem 1047. Remove All Adjacent Duplicates In String
@@ -528,7 +614,7 @@ namespace November22
                     continue;
                 }
 
-                if(s[i] == stack.Peek())
+                if (s[i] == stack.Peek())
                 {
                     stack.Pop();
                     i++;
@@ -540,9 +626,9 @@ namespace November22
 
             }
             StringBuilder sb = new StringBuilder();
-            while (stack.Count>0)
+            while (stack.Count > 0)
             {
-                sb.Insert(0,stack.Pop());
+                sb.Insert(0, stack.Pop());
             }
 
             return sb.ToString();
