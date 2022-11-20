@@ -512,7 +512,41 @@ namespace November22
         #region Day 9 Problem
         #endregion
 
-        #region Day 10 Problem
+        #region Day 10 Problem 1047. Remove All Adjacent Duplicates In String
+        public string RemoveDuplicates(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+
+            int i = 0;
+
+            while (i < s.Length)
+            {
+                if (stack.Count == 0)
+                {
+                    stack.Push(s[i]);
+                    i++;
+                    continue;
+                }
+
+                if(s[i] == stack.Peek())
+                {
+                    stack.Pop();
+                    i++;
+                    continue;
+                }
+
+                stack.Push(s[i]);
+                i++;
+
+            }
+            StringBuilder sb = new StringBuilder();
+            while (stack.Count>0)
+            {
+                sb.Insert(0,stack.Pop());
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
         #region Day 11 Problem 26. Remove Duplicates from Sorted Array
@@ -1052,14 +1086,14 @@ namespace November22
                         {
                             StringBuilder stringBuilder = new StringBuilder();
                             stringBuilder.Append(s[i]);
-                            while (i+1 < s.Length && char.IsDigit(s[i+1]))
+                            while (i + 1 < s.Length && char.IsDigit(s[i + 1]))
                             {
                                 stringBuilder.Append(s[++i]);
                             }
 
                             num = int.Parse(stringBuilder.ToString());
                             num *= sign;
-                            result+=num;
+                            result += num;
                             sign = 1;
                         }
                         break;
