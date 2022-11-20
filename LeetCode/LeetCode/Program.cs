@@ -8,7 +8,7 @@ using static November22.Solution;
 
 //TreeNode treeNode = Utilities.BuildTreeNode(new int?[] { 16, 14, null, 4, 15, 1 });
 Solution solution = new Solution();
-var res = solution.Maximum69Number(9999);
+var res = solution.ReverseVowels("hello");
 //var res = solution.RemoveDuplicates("abbaca");
 //Console.WriteLine(res);
 

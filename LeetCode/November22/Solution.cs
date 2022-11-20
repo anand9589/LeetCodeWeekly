@@ -181,7 +181,33 @@ namespace November22
         }
         #endregion
 
-        #region Day 4 Problem
+        #region Day 4 Problem 345. Reverse Vowels of a String
+        public string ReverseVowels(string s)
+        {
+            char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+            List<char> chars = new List<char>();
+            List<int> index = new List<int>();
+            char[] word = s.ToCharArray();
+            int i = -1;
+
+            while (++i<s.Length)
+            {
+                if(vowels.Contains(s[i]))
+                {
+                    chars.Add(s[i]);
+                    index.Add(i);
+                }
+            }
+
+            int j = index.Count - 1;
+            foreach (var item in chars)
+            {
+                word[index[j]] = item;
+                j--;
+            }
+
+            return new string(word);
+        }
         #endregion
 
         #region Day 5 Problem 212. Word Search II
@@ -500,7 +526,11 @@ namespace November22
 
         #endregion
 
-        #region Day 6 Problem
+        #region Day 6 Problem 899. Orderly Queue
+        public string OrderlyQueue(string s, int k)
+        {
+            return k > 1 ? string.Concat(s.OrderBy(c => c)) : s.Min(c => s = $"{s[1..]}{c}");
+        }
         #endregion
 
         #region Day 7 Problem 1323. Maximum 69 Number
@@ -517,7 +547,7 @@ namespace November22
                 arr[--i] = n;
             }
 
-            while (i<arr.Length && arr[i] != 6)
+            while (i < arr.Length && arr[i] != 6)
             {
                 i++;
             }
