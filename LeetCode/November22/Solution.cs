@@ -503,7 +503,38 @@ namespace November22
         #region Day 6 Problem
         #endregion
 
-        #region Day 7 Problem
+        #region Day 7 Problem 1323. Maximum 69 Number
+        public int Maximum69Number(int num)
+        {
+            int len = num.ToString().Length;
+
+            int[] arr = new int[len];
+            int i = len;
+            while (num > 0)
+            {
+                int n = num % 10;
+                num /= 10;
+                arr[--i] = n;
+            }
+
+            while (i<arr.Length && arr[i] != 6)
+            {
+                i++;
+            }
+            if (i < arr.Length)
+            {
+                arr[i] = 9;
+            }
+
+            int res = 0;
+
+            for (i = 0; i < arr.Length; i++)
+            {
+                res = (res * 10) + arr[i];
+            }
+
+            return res;
+        }
         #endregion
 
         #region Day 8 Problem 1544. Make The String Great
@@ -533,7 +564,7 @@ namespace November22
                 i++;
             }
             StringBuilder stringBuilder = new StringBuilder();
-            while (stack.Count>0)
+            while (stack.Count > 0)
             {
                 stringBuilder.Insert(0, stack.Pop());
             }
