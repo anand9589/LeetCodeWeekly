@@ -506,7 +506,40 @@ namespace November22
         #region Day 7 Problem
         #endregion
 
-        #region Day 8 Problem
+        #region Day 8 Problem 1544. Make The String Great
+        public string MakeGood(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+            int i = 0;
+
+            while (i < s.Length)
+            {
+                if (stack.Count == 0)
+                {
+                    stack.Push(s[i]);
+                }
+                else
+                {
+                    char c = stack.Peek();
+                    if (Math.Abs(c - s[i]) == 32)
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        stack.Push(s[i]);
+                    }
+                }
+                i++;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            while (stack.Count>0)
+            {
+                stringBuilder.Insert(0, stack.Pop());
+            }
+
+            return stringBuilder.ToString();
+        }
         #endregion
 
         #region Day 9 Problem 901. Online Stock Span
