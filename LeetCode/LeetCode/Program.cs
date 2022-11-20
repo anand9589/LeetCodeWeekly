@@ -6,7 +6,7 @@ using static November22.Solution;
 //6
 //char[][] arr = Utilities.Get2DCharArray(@".\Testcase.txt");
 Solution solution = new Solution();
-var res = solution.RemoveDuplicates(new[] { 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4 });
+var res = solution.Calculate(" 1 + 1");
 Console.WriteLine(res);
 //var res = solution.RemoveStones(new int[][] { new int[] { 0,1 }, new int[] { 0,2 }, new int[] { 4,3}, new int[] { 2,4 }, new int[] {0,3 }, new int[] { 1,1 } });
 //Console.WriteLine(res);
