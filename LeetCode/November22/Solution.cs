@@ -190,9 +190,9 @@ namespace November22
             char[] word = s.ToCharArray();
             int i = -1;
 
-            while (++i<s.Length)
+            while (++i < s.Length)
             {
-                if(vowels.Contains(s[i]))
+                if (vowels.Contains(s[i]))
                 {
                     chars.Add(s[i]);
                     index.Add(i);
@@ -1239,7 +1239,61 @@ namespace November22
         }
         #endregion
 
-        #region Day 21 Problem
+        #region Day 21 Problem 1926. Nearest Exit from Entrance in Maze
+        public int NearestExit(char[][] maze, int[] entrance)
+        {
+            int result = -1;
+            bool[][] visited = new bool[maze.Length][];
+            for (int i = 0; i < maze.Length; i++)
+            {
+                visited[i] = new bool[maze[i].Length];
+                for (int j = 0; j < maze[i].Length; j++)
+                {
+                    if (maze[i][j] == '+')
+                    {
+                        visited[i][j] = true;
+                    }
+                }
+            }
+            Queue<(int, int, int)> queue = new();
+
+            queue.Enqueue((0, entrance[0], entrance[1]));
+            visited[entrance[0]][entrance[1]] = true;
+            while (queue.Count > 0)
+            {
+                (int count, int x, int y) = queue.Dequeue();
+
+                if ((x != entrance[0] || y != entrance[1]) && (x == maze.Length - 1 || x == 0 || y == maze[x].Length - 1 || y == 0)) return count;
+
+                count++;
+                //top y-1
+                CheckCoordinatesAndEnqueue(maze, queue, visited, count, x, y - 1);
+
+                //bottom y+1
+                CheckCoordinatesAndEnqueue(maze, queue, visited, count, x, y + 1);
+
+                //left x-1
+                CheckCoordinatesAndEnqueue(maze, queue, visited, count, x - 1, y);
+
+                //right x+1
+                CheckCoordinatesAndEnqueue(maze, queue, visited, count, x + 1, y);
+            }
+
+            return result;
+        }
+
+        private void CheckCoordinatesAndEnqueue(char[][] maze, Queue<(int, int, int)> queue, bool[][] visited, params int[] arr)
+        {
+            int count = arr[0];
+            int x = arr[1];
+            int y = arr[2];
+
+            if (x >= 0 && x < maze.Length && y >= 0 && y < maze[x].Length && !visited[x][y])
+            {
+                queue.Enqueue((count, x, y));
+                visited[x][y] = true;
+            }
+        }
         #endregion
 
         #region Day 22 Problem
