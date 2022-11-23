@@ -1296,10 +1296,148 @@ namespace November22
         }
         #endregion
 
-        #region Day 22 Problem
+        #region Day 22 Problem 279. Perfect Squares
+        int[] dp_279;
+
+        public int NumSquares(int n)
+        {
+            if (Math.Ceiling(Math.Sqrt(n)) == Math.Floor(Math.Sqrt(n))) return 1;
+
+            while (n % 4 == 0)
+            {
+                n /= 4;
+            }
+
+            if (n % 8 == 7) return 4;
+
+            for (int i = 1; i * i <= n; i++)
+            {
+                int b = (int)Math.Sqrt(n - i * i);
+                if (b * b == n - i * i)
+                {
+                    return 2;
+                }
+            }
+            return 3;
+        }
+
+        public int NumSquares_V3(int n)
+        {
+            if (n <= 0) return 0;
+            if (n <= 3) return n;
+            int[] dp = new int[n + 1];
+            dp[0] = 0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                dp[i] = i;
+                for (int j = 1; j * j <= i; j++)
+                {
+                    int sq = j * j;
+                    dp[i] = Math.Min(dp[i], 1 + dp[i - sq]);
+                }
+            }
+
+
+            return dp[n];
+        }
+
+        public int NumSquares_v2(int n)
+        {
+            dp_279 = Enumerable.Repeat(-1, n + 1).ToArray();
+            return solve_279_v2(n);
+        }
+
+        private int solve_279_v2(int n)
+        {
+            if (n <= 3) return n;
+
+            if (dp_279[n] != -1)
+            {
+                return dp_279[n];
+            }
+            int sqrt = (int)Math.Sqrt(n);
+
+            if (sqrt * sqrt == n) return 1;
+
+            int result = int.MaxValue;
+            for (int i = 1; i * i <= n; i++)
+            {
+                result = Math.Min(result, 1 + solve_279_v2(n - (i * i)));
+            }
+            dp_279[n] = result;
+
+            return result;
+        }
+
+        public int NumSquares_V1(int n)
+        {
+            if (n <= 0) return 0;
+            if (n <= 3) return n;
+
+            int sqrt = (int)Math.Sqrt(n);
+
+            if (sqrt * sqrt == n) return 1;
+
+            int result = int.MaxValue;
+            for (int i = 1; i * i <= n; i++)
+            {
+                result = Math.Min(result, 1 + NumSquares_V1(n - (i * i)));
+            }
+
+            return result;
+        }
         #endregion
 
-        #region Day 23 Problem
+        #region Day 23 Problem 36. Valid Sudoku
+        public bool IsValidSudoku(char[][] board)
+        {
+            IList<int>[] rows = new IList<int>[9];
+            IList<int>[] cols = new IList<int>[9];
+            IList<int>[] boxes = new IList<int>[9];
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                if (rows[i] == null) rows[i] = new List<int>();
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    if (cols[j] == null) cols[j] = new List<int>();
+                    if (board[i][j] == '.') continue;
+                    int num = board[i][j] - '0';
+
+                    if (rows[i].Contains(num)) return false;
+                    rows[i].Add(num);
+
+
+                    if (cols[j].Contains(num)) return false;
+                    cols[j].Add(num);
+
+                    int boxNumber;
+                    if (i < 3)
+                    {
+                        if (j < 3) boxNumber = 0;
+                        else if (j < 6) boxNumber = 3;
+                        else boxNumber = 6;
+                    }
+                    else if (i < 6)
+                    {
+                        if (j < 3) boxNumber = 1;
+                        else if (j < 6) boxNumber = 4;
+                        else boxNumber = 7;
+                    }
+                    else
+                    {
+                        if (j < 3) boxNumber = 2;
+                        else if (j < 6) boxNumber = 5;
+                        else boxNumber = 8;
+                    }
+                    if(boxes[boxNumber] == null) boxes[boxNumber] = new List<int>();
+                    if (boxes[boxNumber].Contains(num)) return false;
+                    boxes[boxNumber].Add(num);
+                }
+            }
+            return true;
+        }
         #endregion
 
         #region Day 24 Problem
@@ -1434,6 +1572,39 @@ namespace November22
             }
 
             return result;
+        }
+        #endregion
+
+        #region Problem 2312. Selling Pieces of Wood
+        public long SellingWood(int m, int n, int[][] prices)
+        {
+            long[][] dp = new long[m + 1][];
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = new long[n + 1];
+            }
+
+            for (int i = 0; i < prices.Length; i++)
+            {
+                dp[prices[i][0]][prices[i][1]] = prices[i][2];
+            }
+
+            for (int i = 1; i <= m; i++)
+            {
+                for (int j = 1; j <= n; j++)
+                {
+                    for (int k = 0; k <= i / 2; k++)
+                    {
+                        dp[i][j] = Math.Max(dp[i][j], dp[k][j] + dp[i - k][j]);
+                    }
+                    for (int k = 0; k <= j / 2; k++)
+                    {
+                        dp[i][j] = Math.Max(dp[i][j], dp[i][k] + dp[i][j - k]);
+                    }
+                }
+            }
+
+            return dp[m][n];
         }
         #endregion
         #endregion

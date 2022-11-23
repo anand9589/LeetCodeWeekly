@@ -15,4 +15,5 @@ Solution solution = new Solution();
 
 char[][] maze = new char[][] { new char[] { '+', '+', '+' }, new char[] { '.', '.', '.' }, new char[] { '+', '+', '+' } };
 
-var res = solution.NearestExit(maze, new int[] { 1, 0 });
+var res = solution.IsValidSudoku(maze);
+Console.WriteLine(res);
