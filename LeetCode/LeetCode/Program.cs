@@ -15,5 +15,5 @@ Solution solution = new Solution();
 
 char[][] maze = new char[][] { new char[] { '+', '+', '+' }, new char[] { '.', '.', '.' }, new char[] { '+', '+', '+' } };
 
-var res = solution.IsValidSudoku(maze);
+var res = solution.SumSubarrayMins(new int[] { 71, 55, 82, 55 });
 Console.WriteLine(res);

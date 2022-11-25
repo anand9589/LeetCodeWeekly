@@ -1431,7 +1431,7 @@ namespace November22
                         else if (j < 6) boxNumber = 5;
                         else boxNumber = 8;
                     }
-                    if(boxes[boxNumber] == null) boxes[boxNumber] = new List<int>();
+                    if (boxes[boxNumber] == null) boxes[boxNumber] = new List<int>();
                     if (boxes[boxNumber].Contains(num)) return false;
                     boxes[boxNumber].Add(num);
                 }
@@ -1440,10 +1440,194 @@ namespace November22
         }
         #endregion
 
-        #region Day 24 Problem
+        #region Day 24 Problem 79. Word Search
+        public bool Exist(char[][] board, string word)
+        {
+            bool[][] visited = new bool[board.Length][];
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                visited[i] = new bool[board[i].Length];
+            }
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    if (board[i][j] == word[0] && searchWord(word, 0, visited, board, i, j))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool searchWord(string word, int index, bool[][] visited, char[][] board, int i, int j)
+        {
+            if (index == word.Length) return true;
+
+            if (i < 0 || i >= board.Length
+                || j < 0 || j >= board[i].Length
+                || visited[i][j]
+                || word[index] != board[i][j]) return false;
+
+
+            visited[i][j] = true;
+            index++;
+            //top i-1
+            if (searchWord(word, index, visited, board, i - 1, j)
+                || searchWord(word, index, visited, board, i + 1, j)
+                || searchWord(word, index, visited, board, i, j - 1)
+                || searchWord(word, index, visited, board, i, j + 1))
+            {
+                return true;
+            }
+
+            visited[i][j] = false;
+            return false;
+
+        }
         #endregion
 
-        #region Day 25 Problem
+        #region Day 25 Problem 907. Sum of Subarray Minimums
+        public int SumSubarrayMins_V1(int[] arr)
+        {
+            int result = 0;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = i; j < arr.Length; j++)
+                {
+                    int min = int.MaxValue;
+                    for (int k = i; k <= j; k++)
+                    {
+                        min = Math.Min(min, arr[k]);
+                    }
+                    result += min;
+                }
+            }
+
+            return result;
+        }
+
+        public int SumSubarrayMins_V2(int[] arr)
+        {
+            int mod = (int)Math.Pow(10, 9) + 7;
+            int result = 0;
+            int[] pse = getPreviousSmallerElement(arr);
+            int[] nse = getNextSmallerElement(arr);
+
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                int left = pse[i] == -1 ? i + 1 : i - pse[i];
+                int right = nse[i] == -1 ? arr.Length - i : nse[i] - i;
+
+                result += (left * right * arr[i]);
+                result = result % mod;
+            }
+
+
+            return result;
+        }
+
+        private int[] getNextSmallerElement(int[] arr)
+        {
+            int[] result = Enumerable.Repeat(-1, arr.Length).ToArray();
+            Stack<int> stack = new Stack<int>();
+            stack.Push(arr.Length - 1);
+            for (int i = arr.Length - 2; i >= 0; i--)
+            {
+                if (arr[stack.Peek()] < arr[i])
+                {
+                    result[i] = stack.Peek();
+                }
+                else
+                {
+                    while (stack.Count > 0 && arr[stack.Peek()] > arr[i])
+                    {
+                        stack.Pop();
+                    }
+
+                    if (stack.Count > 0)
+                    {
+                        result[i] = stack.Peek();
+                    }
+                    else
+                    {
+                        result[i] = -1;
+                    }
+                }
+
+                stack.Push(i);
+            }
+
+
+            return result;
+        }
+
+        private int[] getPreviousSmallerElement(int[] arr)
+        {
+            int[] result = Enumerable.Repeat(-1, arr.Length).ToArray();
+            Stack<int> stack = new Stack<int>();
+            stack.Push(0);
+            for (int i = 1; i < arr.Length; i++)
+            {
+                if (arr[stack.Peek()] < arr[i])
+                {
+                    result[i] = stack.Peek();
+                }
+                else
+                {
+                    while (stack.Count > 0 && arr[stack.Peek()] >= arr[i])
+                    {
+                        stack.Pop();
+                    }
+
+                    if (stack.Count > 0)
+                    {
+                        result[i] = stack.Peek();
+                    }
+                    else
+                    {
+                        result[i] = -1;
+                    }
+                }
+
+                stack.Push(i);
+            }
+
+
+            return result;
+        }
+
+
+        public int SumSubarrayMins(int[] arr)
+        {
+
+            if (arr == null || arr.Length == 0)
+                return 0;
+
+            Stack<int> stack = new Stack<int>();
+            int n = arr.Length, MOD = (int)1e9 + 7;
+            long res = 0;
+            for (int i = 0; i <= n; i++)
+            {
+                while (stack.Count > 0 && arr[stack.Peek()] >= (i == n ? 0 : arr[i]))
+                {
+                    int mid = stack.Pop();
+                    int left = stack.Count == 0 ? -1 : stack.Peek();
+                    int right = i;
+                    res = (res + (long)arr[mid] * (right - mid) * (mid - left)) % MOD;
+                }
+
+                stack.Push(i);
+            }
+
+            return (int)res;
+        }
+
         #endregion
 
         #region Day 26 Problem
