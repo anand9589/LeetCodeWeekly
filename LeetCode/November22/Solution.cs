@@ -2031,6 +2031,38 @@ namespace November22
 
             return t.Length - curIndex;
         }
+
+        public ListNode RemoveNodes(ListNode head)
+        {
+            ListNode node;
+
+            Stack<int> stack = new Stack<int>();
+
+            while (head != null)
+            {
+
+                while (stack.Count>0 && stack.Peek()<head.val)
+                {
+                    stack.Pop();
+                }
+                stack.Push(head.val);
+
+                head = head.next;
+            }
+
+            node = new ListNode(-1, new ListNode(stack.Pop()));
+
+            while (stack.Count>0)
+            {
+                ListNode temp = node.next;
+
+                node.next = new ListNode(stack.Pop());
+                node.next.next = temp;
+            }
+
+            return node.next;
+        }
+
         #endregion
 
         #region Problem 977. Squares of a Sorted Array
