@@ -15,5 +15,5 @@ Solution solution = new Solution();
 
 char[][] maze = new char[][] { new char[] { '+', '+', '+' }, new char[] { '.', '.', '.' }, new char[] { '+', '+', '+' } };
 //[[0,1,1],[1,0,1],[0,0,1]]
-var res = solution.OnesMinusZeros(new int[][] { new int[] {0,1,1 }, new int[] {1,0,1 }, new int[] {0,0,1 } });
+var res = solution.BestClosingTime("YYNY");
 Console.WriteLine(res);

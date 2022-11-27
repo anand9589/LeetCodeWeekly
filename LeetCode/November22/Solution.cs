@@ -1967,6 +1967,48 @@ namespace November22
             return sum;
         }
         #endregion
+
+        #region Problem 2483. Minimum Penalty for a Shop
+        public int BestClosingTime(string customers)
+        {
+            int penalty = int.MaxValue;
+            int index = -1;
+
+            int no = 0,yes = 0;
+            while (++index<customers.Length)
+            {
+                if(customers[index] == 'Y')
+                {
+                    yes++;
+                }
+                else
+                {
+                    no++;
+                }
+            }
+            int[] dp = new int[customers.Length+1];
+            dp[0] = yes;
+            index = -1;
+            int resIndex = 0;
+            while (++index < customers.Length)
+            {
+                if (customers[index] == 'Y')
+                {
+                    dp[index + 1] = dp[index]- 1;
+                }
+                else
+                {
+                    dp[index + 1] = dp[index]+1;
+                }
+
+                if (dp[resIndex] > dp[index + 1])
+                {
+                    resIndex = index + 1;
+                }
+            }
+            return resIndex;
+        }
+        #endregion
         #endregion
 
         #region Weekly
