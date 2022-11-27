@@ -1630,7 +1630,79 @@ namespace November22
 
         #endregion
 
-        #region Day 26 Problem
+        #region Day 26 Problem 1235. Maximum Profit in Job Scheduling
+        public int JobScheduling(int[] startTime, int[] endTime, int[] profit)
+        {
+            IList<(int start, int end, int profitweight)> jobs = new List<(int start, int end, int profitweight)>();
+            int len = endTime.Length;
+
+            for (int i = 0; i < len; i++)
+            {
+                jobs.Add((startTime[i], endTime[i], profit[i]));
+            }
+
+            jobs = jobs.OrderBy(x => x.start).OrderBy(x => x.end).ToList();
+
+
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            map.Add(jobs[0].end, jobs[0].profitweight);
+
+
+            for (int i = 1; i < len; i++)
+            {
+                var p = map.Keys.Where(x => x <= jobs[i].start).LastOrDefault();
+
+                int weight = jobs[i].profitweight;
+                if (p != 0)
+                {
+                    weight += map[p];
+                }
+                if (map.ContainsKey(jobs[i].end))
+                {
+                    map[jobs[i].end] = Math.Max(map[jobs[i].end], weight);
+                }
+                else
+                {
+                    map.Add(jobs[i].end, weight);
+                }
+
+            }
+
+
+            return map.Values.Max();
+        }
+        public int JobScheduling_V1(int[] startTime, int[] endTime, int[] profit)
+        {
+            int result = 0;
+            IList<(int start, int end, int profitweight)> jobs = new List<(int start, int end, int profitweight)>();
+            int len = endTime.Length;
+
+            for (int i = 0; i < len; i++)
+            {
+                jobs.Add((startTime[i], endTime[i], profit[i]));
+            }
+
+            jobs = jobs.OrderBy(x => x.start).OrderBy(x => x.end).ToList();
+
+            int[] dp = new int[len];
+            dp[0] = jobs[0].profitweight;
+            for (int i = 1; i < len; i++)
+            {
+                int maxpro = jobs[i].profitweight;
+                for (int j = 0; j < i; j++)
+                {
+                    if (jobs[j].end <= jobs[i].start)
+                    {
+                        maxpro = Math.Max(maxpro, dp[j] + jobs[i].profitweight);
+                    }
+                }
+                dp[i] = maxpro;
+
+                result = Math.Max(result, dp[i]);
+            }
+
+            return result;
+        }
         #endregion
 
         #region Day 27 Problem

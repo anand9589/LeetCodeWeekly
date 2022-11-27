@@ -15,5 +15,5 @@ Solution solution = new Solution();
 
 char[][] maze = new char[][] { new char[] { '+', '+', '+' }, new char[] { '.', '.', '.' }, new char[] { '+', '+', '+' } };
 
-var res = solution.SumSubarrayMins(new int[] { 71, 55, 82, 55 });
+var res = solution.JobScheduling(new int[] { 1, 2, 3, 3 }, new int[] { 3, 4, 5, 6 }, new int[] { 50, 10, 40, 70 });
 Console.WriteLine(res);
