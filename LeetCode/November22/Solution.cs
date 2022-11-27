@@ -1987,6 +1987,52 @@ namespace November22
         }
         #endregion
 
+        #region 321
+        public int PivotInteger(int n)
+        {
+            int result = -1;
+
+            int totalSum = 0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                totalSum += i;
+            }
+
+            int leftSum = 1;
+
+            for (int i = 2; i <= n; i++)
+            {
+                leftSum += i;
+
+                if (totalSum - leftSum + i == leftSum) return i;
+
+                if (totalSum - leftSum < leftSum) break;
+            }
+
+            return result;
+        }
+
+        public int AppendCharacters(string s, string t)
+        {
+            int curIndex = 0;
+
+            int sIndex = 0;
+
+            while (sIndex < s.Length)
+            {
+                if (s[sIndex] == t[curIndex])
+                {
+                    curIndex++;
+                    if (curIndex == t.Length) return 0;
+                }
+                sIndex++;
+            }
+
+            return t.Length - curIndex;
+        }
+        #endregion
+
         #region Problem 977. Squares of a Sorted Array
         public int[] SortedSquares(int[] nums)
         {
