@@ -1705,7 +1705,44 @@ namespace November22
         }
         #endregion
 
-        #region Day 27 Problem
+        #region Day 27 Problem 446. Arithmetic Slices II - Subsequence
+        int len_446;
+        int res_446;
+        public int NumberOfArithmeticSlices(int[] nums)
+        {
+            len_446 = nums.Length;
+
+            res_446 = 0;
+
+            List<long> curr = new List<long>();
+
+            dfs_446(0, nums, curr);
+
+            return res_446;
+        }
+
+        private void dfs_446(int dep, int[] nums, List<long> curr)
+        {
+            if (dep == len_446)
+            {
+                if (curr.Count < 3) return;
+
+                long diff = curr[1] - curr[0];
+
+                for (int i = 1; i < curr.Count; i++)
+                {
+                    if (curr[i] - curr[i - 1] != diff) return;
+                }
+                res_446++;
+                return;
+            }
+
+            dfs_446(dep + 1, nums, curr);
+            curr.Add(nums[dep]);
+            dfs_446(dep + 1, nums, curr);
+            curr.Remove(nums[dep]);
+        }
+
         #endregion
 
         #region Day 28 Problem
