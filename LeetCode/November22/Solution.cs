@@ -1900,6 +1900,73 @@ namespace November22
             return dp[m][n];
         }
         #endregion
+
+        #region Problem 2482. Difference Between Ones and Zeros in Row and Column
+        public int[][] OnesMinusZeros(int[][] grid)
+        {
+            int[][] matrix = new int[grid.Length][];
+
+            int[] rows = new int[grid.Length];
+            int[] cols = new int[grid[0].Length];
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                rows[i] = grid[i].Sum();
+            }
+
+            for (int i = 0; i < grid[0].Length; i++)
+            {
+                int sum = 0;
+                for (int j = 0; j < grid.Length; j++)
+                {
+                    if (grid[j][i] == 1) sum++;
+                }
+                cols[i] = sum;
+            }
+
+            int total = rows.Length + cols.Length;
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                matrix[i] = new int[grid[i].Length];
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    int ones = rows[i] + cols[j];
+                    int zeros = total - ones;
+
+                    matrix[i][j] =ones - zeros;
+                }
+            }
+
+            return matrix;
+        }
+
+        private int getRows(int[][] grid, int row, int val)
+        {
+            int sum = 0;
+            for (int i = 0; i < grid[row].Length; i++)
+            {
+                if (grid[row][i] == val)
+                {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+
+        private int getCols(int[][] grid, int col, int val)
+        {
+            int sum = 0;
+            for (int i = 0; i < grid.Length; i++)
+            {
+                if (grid[i][col] == val)
+                {
+                    sum++;
+                }
+            }
+            return sum;
+        }
+        #endregion
         #endregion
 
         #region Weekly
@@ -2041,7 +2108,7 @@ namespace November22
             while (head != null)
             {
 
-                while (stack.Count>0 && stack.Peek()<head.val)
+                while (stack.Count > 0 && stack.Peek() < head.val)
                 {
                     stack.Pop();
                 }
@@ -2052,7 +2119,7 @@ namespace November22
 
             node = new ListNode(-1, new ListNode(stack.Pop()));
 
-            while (stack.Count>0)
+            while (stack.Count > 0)
             {
                 ListNode temp = node.next;
 
