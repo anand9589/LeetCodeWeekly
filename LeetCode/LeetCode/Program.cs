@@ -13,7 +13,8 @@ Solution solution = new Solution();
 //Console.WriteLine(res);
 //[["+","+","+"],[".",".","."],["+","+","+"]]
 
-char[][] maze = new char[][] { new char[] { '+', '+', '+' }, new char[] { '.', '.', '.' }, new char[] { '+', '+', '+' } };
+int[][] arr = Utilities.Get2DArray(@".\Testcase.txt");
+
 //[[0,1,1],[1,0,1],[0,0,1]]
-var res = solution.BestClosingTime("YYNY");
+var res = solution.FindWinners(arr);
 Console.WriteLine(res);

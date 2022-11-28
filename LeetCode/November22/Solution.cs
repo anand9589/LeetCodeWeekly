@@ -1745,7 +1745,62 @@ namespace November22
 
         #endregion
 
-        #region Day 28 Problem
+        #region Day 28 Problem 2225. Find Players With Zero or One Losses
+        public IList<IList<int>> FindWinners(int[][] matches)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+            SortedDictionary<int, int> teams = new SortedDictionary<int, int>();
+            result.Add(new List<int>());
+            result.Add(new List<int>());
+            for (int i = 0; i < matches.Length; i++)
+            {
+                int win = matches[i][0];
+                int lose = matches[i][1];
+
+                if (!teams.ContainsKey(win))
+                {
+                    teams.Add(win, 0); 
+                    //result[0].Add(win);
+                }
+
+                if (!teams.ContainsKey(lose))
+                {
+                    //result[0].Remove(lose);
+                    teams.Add(lose, 1);
+                    //result[1].Add(lose);
+                }
+                else
+                {
+                    teams[lose]++;
+                    //result[1].Remove(lose);
+                    //result[0].Remove(lose);
+
+                    //if (teams[lose] == 1)
+                    //{
+                    //    result[1].Add(lose);
+                    //}
+                    //else
+                    //{
+                    //    result[1].Remove(lose);
+                    //}
+                }
+            }
+
+            foreach (int key in teams.Keys)
+            {
+                if (teams[key] == 0)
+                {
+                    result[0].Add(key);
+                }
+                else if(teams[key] == 1)
+                {
+                    result[1].Add(key);
+                }
+            }
+
+            return result;
+        }
         #endregion
 
         #region Day 29 Problem
@@ -1934,7 +1989,7 @@ namespace November22
                     int ones = rows[i] + cols[j];
                     int zeros = total - ones;
 
-                    matrix[i][j] =ones - zeros;
+                    matrix[i][j] = ones - zeros;
                 }
             }
 
@@ -1974,10 +2029,10 @@ namespace November22
             int penalty = int.MaxValue;
             int index = -1;
 
-            int no = 0,yes = 0;
-            while (++index<customers.Length)
+            int no = 0, yes = 0;
+            while (++index < customers.Length)
             {
-                if(customers[index] == 'Y')
+                if (customers[index] == 'Y')
                 {
                     yes++;
                 }
@@ -1986,7 +2041,7 @@ namespace November22
                     no++;
                 }
             }
-            int[] dp = new int[customers.Length+1];
+            int[] dp = new int[customers.Length + 1];
             dp[0] = yes;
             index = -1;
             int resIndex = 0;
@@ -1994,11 +2049,11 @@ namespace November22
             {
                 if (customers[index] == 'Y')
                 {
-                    dp[index + 1] = dp[index]- 1;
+                    dp[index + 1] = dp[index] - 1;
                 }
                 else
                 {
-                    dp[index + 1] = dp[index]+1;
+                    dp[index + 1] = dp[index] + 1;
                 }
 
                 if (dp[resIndex] > dp[index + 1])
