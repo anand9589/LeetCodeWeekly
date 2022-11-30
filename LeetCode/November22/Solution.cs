@@ -1760,7 +1760,7 @@ namespace November22
 
                 if (!teams.ContainsKey(win))
                 {
-                    teams.Add(win, 0); 
+                    teams.Add(win, 0);
                     //result[0].Add(win);
                 }
 
@@ -1793,7 +1793,7 @@ namespace November22
                 {
                     result[0].Add(key);
                 }
-                else if(teams[key] == 1)
+                else if (teams[key] == 1)
                 {
                     result[1].Add(key);
                 }
@@ -1803,10 +1803,103 @@ namespace November22
         }
         #endregion
 
-        #region Day 29 Problem
+        #region Day 29 Problem 380. Insert Delete GetRandom O(1)
+
+        public class RandomizedSet
+        {
+            Random random;
+            Dictionary<int, int> sets;
+            int[] arr;
+            int index;
+            public RandomizedSet()
+            {
+                arr = new int[200000];
+                sets = new Dictionary<int, int>();
+                index = 0;
+                random = new Random();
+            }
+
+            public bool Insert(int val)
+            {
+                if (sets.ContainsKey(val)) return false;
+
+                sets.Add(val, index);
+                arr[index] = val;
+                index++;
+                return true;
+            }
+
+            public bool Remove(int val)
+            {
+                if (sets.ContainsKey(val))
+                {
+                    index--;
+                    int temp = arr[index];
+
+                    int remIndex = sets[val];
+
+                    arr[remIndex] = temp;
+                    sets[temp] = remIndex;
+                    sets.Remove(val);
+                    return true;
+                }
+                return false;
+            }
+
+            public int GetRandom()
+            {
+                return arr[random.Next(index)];
+            }
+        }
+
+        public class RandomizedSet_V1
+        {
+            HashSet<int> sets;
+            Random random;
+            public RandomizedSet_V1()
+            {
+                sets = new HashSet<int>();
+                random = new Random();
+            }
+
+            public bool Insert(int val)
+            {
+                if (!sets.Contains(val))
+                {
+                    sets.Add(val);
+                    return true;
+                }
+                return false;
+            }
+
+            public bool Remove(int val)
+            {
+                return sets.Remove(val);
+            }
+
+            public int GetRandom()
+            {
+                return sets.ElementAt(random.Next(sets.Count));
+            }
+        }
         #endregion
 
-        #region Day 30 Problem
+        #region Day 30 Problem 1207. Unique Number of Occurrences
+        public bool UniqueOccurrences(int[] arr)
+        {
+            Dictionary<int, int> set = new Dictionary<int, int>();
+
+            foreach (var item in arr)
+            {
+                if (!set.ContainsKey(item))
+                {
+                    set.Add(item, 0);
+                }
+                set[item]++;
+            }
+
+            return set.Count == set.Values.Distinct().Count();
+        }
         #endregion
         #endregion
 

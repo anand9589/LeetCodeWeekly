@@ -13,8 +13,17 @@ Solution solution = new Solution();
 //Console.WriteLine(res);
 //[["+","+","+"],[".",".","."],["+","+","+"]]
 
-int[][] arr = Utilities.Get2DArray(@".\Testcase.txt");
+//int[][] arr = Utilities.Get2DArray(@".\Testcase.txt");
 
 //[[0,1,1],[1,0,1],[0,0,1]]
-var res = solution.FindWinners(arr);
-Console.WriteLine(res);
+//var res = solution.FindWinners(arr);
+//Console.WriteLine(res);
+
+RandomizedSet randomizedSet = new RandomizedSet();
+
+randomizedSet.Remove(0);
+randomizedSet.Remove(0);
+randomizedSet.Insert(0);
+var a = randomizedSet.GetRandom();
+randomizedSet.Remove(0);
+randomizedSet.Insert(0);
