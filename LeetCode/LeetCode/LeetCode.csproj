@@ -9,13 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BinaryTreeProblems\BinaryTreeProblems.csproj" />
-    <ProjectReference Include="..\November22\November22.csproj" />
-    <ProjectReference Include="..\October22\October22.csproj" />
-    <ProjectReference Include="..\PalindromePairs\PalindromePairs.csproj" />
-    <ProjectReference Include="..\Problem1115\Problem1115.csproj" />
-    <ProjectReference Include="..\Problem1116\Problem1116.csproj" />
-    <ProjectReference Include="..\Problem1117\Problem1117.csproj" />
-    <ProjectReference Include="..\Week311\Week311.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\December22\December22.csproj" />
   </ItemGroup>
 
   <ItemGroup>
