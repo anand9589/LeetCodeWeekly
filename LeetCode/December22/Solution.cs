@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace December22
 {
@@ -33,7 +34,7 @@ namespace December22
         }
         #endregion
 
-        #region Day2 Problem 1657. Determine if Two Strings Are Close
+        #region Day 2 Problem 1657. Determine if Two Strings Are Close
         public bool CloseStrings(string word1, string word2)
         {
             if (word1.Length != word2.Length) return false;
@@ -104,6 +105,124 @@ namespace December22
 
             return true;
         }
+        #endregion
+
+        #region Day 3 Problem 451. Sort Characters By Frequency
+        public string FrequencySort(string s)
+        {
+            Dictionary<char, int> word1Map = new Dictionary<char, int>();
+            int index = 0;
+
+            while (index < s.Length)
+            {
+                if (!word1Map.ContainsKey(s[index]))
+                {
+                    word1Map.Add(s[index], 0);
+                }
+                word1Map[s[index]]++;
+                index++;
+            }
+
+            word1Map = word1Map.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char key in word1Map.Keys)
+            {
+                for (int i = 0; i < word1Map[key]; i++)
+                {
+                    stringBuilder.Append(key);
+                }
+            }
+
+
+
+            return stringBuilder.ToString();
+        }
+        #endregion
+
+        #region Day 4 Problem
+        #endregion
+
+        #region Day 5 Problem
+        #endregion
+
+        #region Day 6 Problem
+        #endregion
+
+        #region Day 7 Problem
+        #endregion
+
+        #region Day 8 Problem
+        #endregion
+
+        #region Day 9 Problem
+        #endregion
+
+        #region Day 10 Problem
+        #endregion
+
+        #region Day 11 Problem
+        #endregion
+
+        #region Day 12 Problem
+        #endregion
+
+        #region Day 13 Problem
+        #endregion
+
+        #region Day 14 Problem
+        #endregion
+
+        #region Day 15 Problem
+        #endregion
+
+        #region Day 16 Problem
+        #endregion
+
+        #region Day 17 Problem
+        #endregion
+
+        #region Day 18 Problem
+        #endregion
+
+        #region Day 19 Problem
+        #endregion
+
+        #region Day 20 Problem
+        #endregion
+
+        #region Day 21 Problem
+        #endregion
+
+        #region Day 22 Problem
+        #endregion
+
+        #region Day 23 Problem
+        #endregion
+
+        #region Day 24 Problem
+        #endregion
+
+        #region Day 25 Problem
+        #endregion
+
+        #region Day 26 Problem
+        #endregion
+
+        #region Day 27 Problem
+        #endregion
+
+        #region Day 28 Problem
+        #endregion
+
+        #region Day 29 Problem
+        #endregion
+
+        #region Day 30 Problem
+        #endregion
+
+        #region Day 31 Problem
         #endregion
     }
 }
