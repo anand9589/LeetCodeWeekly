@@ -388,13 +388,70 @@ namespace December22
 
         #endregion
 
-        #region Day 11 Problem
+        #region Day 11 Problem 124. Binary Tree Maximum Path Sum
+        int sum_124 = 0;
+        public int MaxPathSum(TreeNode root)
+        {
+            sum_124 = int.MinValue;
+
+            maxSumFromSubtree(root);
+
+            return sum_124;
+        }
+
+        private int maxSumFromSubtree(TreeNode root)
+        {
+            if (root == null) return 0;
+
+            int leftMaxSum = Math.Max(maxSumFromSubtree(root.left), 0);
+            int rightMaxSum = Math.Max(maxSumFromSubtree(root.right), 0);
+
+            sum_124 = Math.Max(sum_124, leftMaxSum + rightMaxSum + root.val);
+
+            return Math.Max(leftMaxSum, rightMaxSum) + root.val;
+        }
         #endregion
 
-        #region Day 12 Problem
+        #region Day 12 Problem 70. Climbing Stairs
+        public int ClimbStairs(int n)
+        {
+            int[] dp = new int[n + 2];
+            dp[1] = 1;
+
+            for (int i = 2; i <= n + 1; i++)
+            {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            }
+
+            return dp[n + 1];
+        }
         #endregion
 
-        #region Day 13 Problem
+        #region Day 13 Problem 931. Minimum Falling Path Sum
+        public int MinFallingPathSum(int[][] matrix)
+        {
+            int n = matrix.Length;
+            int result = int.MaxValue;
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    int min = matrix[i - 1][j];
+
+                    if (j - 1 >= 0 && min > matrix[i - 1][j - 1])
+                    {
+                        min = matrix[i - 1][j - 1];
+                    }
+
+                    if (j + 1 < n && min > matrix[i - 1][j + 1])
+                    {
+                        min = matrix[i - 1][j + 1];
+                    }
+                    matrix[i][j] += min;
+                }
+            }
+            return matrix[n - 1].Min();
+        }
         #endregion
 
         #region Day 14 Problem
@@ -548,6 +605,435 @@ namespace December22
             Console.WriteLine();
         }
 
+        #endregion
+
+        #region Problem 2500. Delete Greatest Value in Each Row
+        public int DeleteGreatestValue(int[][] grid)
+        {
+            int result = 0;
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                Array.Sort(grid[i]);
+            }
+
+            for (int i = 0; i < grid[0].Length; i++)
+            {
+                int k = grid[0][i];
+                for (int j = 1; j < grid.Length; j++)
+                {
+                    k = Math.Max(k, grid[j][i]);
+                }
+                result += k;
+            }
+            return result;
+        }
+        #endregion
+
+        #region Problem 2501. Longest Square Streak in an Array
+        public int LongestSquareStreak(int[] nums)
+        {
+            Array.Sort(nums);
+            // List<int> list = nums.ToList();
+            int result = -1;
+            int index = 0;
+            while (index < nums.Length)
+            {
+                //int cnt = 1;
+                //int i = list[0];
+
+                //list.RemoveAt(0);
+
+                //while (Array.BinarySearch())
+                //{
+                //    cnt++;
+                //    i *= i;
+                //    list.Remove(i);
+                //}
+
+                //result = Math.Max(result, cnt);
+                int cnt = -1;
+                int num = nums[index];
+                int sqr = num * num;
+
+                int found = Array.BinarySearch(nums, index + 1, nums.Length - 1 - index, sqr);
+
+                if (found > 0)
+                {
+                    cnt = 2;
+                    num = sqr;
+                    sqr = num * num;
+                    found = Array.BinarySearch(nums, found + 1, nums.Length - 1 - found, sqr);
+                    while (found > 0)
+                    {
+                        cnt++;
+                        num = sqr;
+                        sqr = num * num;
+                        found = Array.BinarySearch(nums, found + 1, nums.Length - 1 - found, sqr);
+                    }
+                }
+
+                index++;
+                result = Math.Max(result, cnt);
+            }
+            return result;
+        }
+        #endregion
+
+        #region Problem 2502. Design Memory Allocator
+        public class Allocator
+        {
+            int?[] arr;
+            readonly int len;
+            public Allocator(int n)
+            {
+                len = n;
+                arr = new int?[len];
+            }
+
+            public int Allocate(int size, int mID)
+            {
+                for (int i = 0; i < len; i++)
+                {
+                    if (arr[i] == null)
+                    {
+                        int j = i;
+                        int a = 0;
+                        for (j = i; j < size + i && j < len; j++)
+                        {
+                            a++;
+                            if (arr[j] != null) break;
+                        }
+                        if (j == size + i)
+                        {
+                            for (int k = i; k < size + i && k < len; k++)
+                            {
+                                arr[k] = mID;
+                            }
+
+                            return i;
+                        }
+                        else
+                        {
+                            i = i + a - 1;
+                        }
+                    }
+                }
+                return -1;
+            }
+
+            public int Free(int mID)
+            {
+                int cnt = 0;
+                for (int i = 0; i < len; i++)
+                {
+                    if (arr[i] == mID)
+                    {
+                        arr[i] = null; cnt++;
+                    }
+                }
+                return cnt;
+            }
+        }
+        public class Allocator_V1
+        {
+            int?[] arr;
+            int len;
+            Dictionary<int, IList<(int, int)>> dict;
+            SortedDictionary<int, int> freeBlocks;
+            public Allocator_V1(int n)
+            {
+                dict = new Dictionary<int, IList<(int, int)>>();
+                len = n;
+                arr = new int?[len];
+                freeBlocks = new SortedDictionary<int, int>();
+                freeBlocks.Add(0, n);
+            }
+
+            public int Allocate(int size, int mID)
+            {
+                var dct = freeBlocks.FirstOrDefault(x => x.Value >= size);
+                if (dct.Value >= size)
+                {
+                    if (!dict.ContainsKey(mID))
+                    {
+                        dict.Add(mID, new List<(int, int)>());
+                    }
+
+                    for (int i = dct.Key; i < size + dct.Key; i++)
+                    {
+                        arr[i] = mID;
+                    }
+
+                    dict[mID].Add((dct.Key, size));
+
+                    freeBlocks.Remove(dct.Key);
+                    if (dct.Value > size)
+                    {
+                        freeBlocks.Add(dct.Key + size, dct.Value - size);
+                    }
+                    return dct.Key;
+                }
+
+
+
+                return -1;
+            }
+
+            public int Free(int mID)
+            {
+                if (!dict.ContainsKey(mID) || dict[mID].Count == 0) return 0;
+                int cnt = 0;
+                //foreach (var index in dict[mID])
+                //{
+                //    cnt++;
+                //    arr[index] = null;
+                //}
+
+                foreach ((int index, int size) in dict[mID])
+                {
+                    for (int i = index; i < index + size; i++)
+                    {
+                        cnt++;
+                        arr[i] = null;
+                    }
+                    if (freeBlocks.ContainsKey(index + size))
+                    {
+                        var val = freeBlocks[index + size];
+
+                        freeBlocks.Remove(index + size);
+
+                        freeBlocks.Add(index, val + size);
+                    }
+                    else
+                    {
+                        var dct = freeBlocks.LastOrDefault(x => x.Key < index);
+                        if (dct.Value > 0)
+                        {
+                            freeBlocks[dct.Key] += size;
+                        }
+                        else
+                        {
+
+                            freeBlocks.Add(index, size);
+                        }
+                    }
+                }
+                dict.Remove(mID);
+                return cnt;
+            }
+        }
+        #endregion
+
+        #region Problem 2503. Maximum Number of Points From Grid Queries
+
+        public int[] MaxPoints(int[][] grid, int[] queries)
+        {
+            bool[][] dp = new bool[grid.Length][];
+            for (int i = 0; i < grid.Length; i++)
+            {
+                dp[i] = new bool[grid[i].Length];
+            }
+
+            int[] output = new int[queries.Length];
+
+            Dictionary<int, IList<int>> map = new Dictionary<int, IList<int>>();
+            for (int i = 0; i < queries.Length; i++)
+            {
+                if (!map.ContainsKey(queries[i]))
+                {
+                    map.Add(queries[i], new List<int>());
+                }
+                map[queries[i]].Add(i);
+            }
+
+
+            Array.Sort(queries);
+
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+            HashSet<(int, int)> list = new HashSet<(int, int)>();
+
+            list.Add((0, 0));
+            int[] result = new int[queries.Length];
+            int counter = 0;
+            for (int k = 0; k < queries.Length; k++)
+            {
+                queue = new Queue<(int, int)>(list);
+
+                list = new HashSet<(int, int)>();
+                int num = queries[k];
+                while (queue.Count > 0)
+                {
+                    (int i, int j) = queue.Dequeue();
+                    if (i < 0 || j < 0 || i >= grid.Length || j >= grid[i].Length) continue;
+
+                    if (num > grid[i][j])
+                    {
+                        if (!dp[i][j])
+                        {
+                            counter++;
+                            dp[i][j] = true;
+                            //top i-1
+                            queue.Enqueue((i - 1, j));
+
+                            //bottom i+1
+                            queue.Enqueue((i + 1, j));
+
+                            //left j-1
+                            queue.Enqueue((i, j - 1));
+
+                            //right j+1
+                            queue.Enqueue((i, j + 1));
+                        }
+                    }
+                    else
+                    {
+                        list.Add((i, j));
+                    }
+                }
+
+                result[k] = counter;
+
+                output[map[queries[k]][0]] = counter;
+                map[queries[k]].RemoveAt(0);
+            }
+
+            return output;
+        }
+
+        public int[] MaxPoints_v1(int[][] grid, int[] queries)
+        {
+            int[] result = new int[queries.Length];
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int count = 0;
+
+                if (grid[0][0] < queries[i])
+                {
+                    count = MaxPoints_Helper_V2(grid, queries[i]);
+                }
+
+                result[i] = count;
+
+            }
+
+            return result;
+        }
+
+
+
+        private int[] MaxPoints_Helper(int[][] grid, int[] queries)
+        {
+            bool[][] dp = new bool[grid.Length][];
+            for (int i = 0; i < grid.Length; i++)
+            {
+                dp[i] = new bool[grid[i].Length];
+            }
+
+            int[] output = new int[queries.Length];
+
+            Dictionary<int, IList<int>> map = new Dictionary<int, IList<int>>();
+            for (int i = 0; i < queries.Length; i++)
+            {
+                if (!map.ContainsKey(queries[i]))
+                {
+                    map.Add(queries[i], new List<int>());
+                }
+                map[queries[i]].Add(i);
+            }
+
+
+            Array.Sort(queries);
+
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+            IList<(int, int)> list = new List<(int, int)>();
+
+            list.Add((0, 0));
+            int[] result = new int[queries.Length];
+            int counter = 0;
+            for (int k = 0; k < queries.Length; k++)
+            {
+                queue = new Queue<(int, int)>(list);
+
+                list = new List<(int, int)>();
+                int num = queries[k];
+                while (queue.Count > 0)
+                {
+                    (int i, int j) = queue.Dequeue();
+                    if (i < 0 || j < 0 || i >= grid.Length || j >= grid[i].Length) continue;
+
+                    if (num > grid[i][j])
+                    {
+                        if (!dp[i][j])
+                        {
+                            counter++;
+                            dp[i][j] = true;
+                            //top i-1
+                            queue.Enqueue((i - 1, j));
+
+                            //bottom i+1
+                            queue.Enqueue((i + 1, j));
+
+                            //left j-1
+                            queue.Enqueue((i, j - 1));
+
+                            //right j+1
+                            queue.Enqueue((i, j + 1));
+                        }
+                    }
+                    else
+                    {
+                        if (!list.Contains((i, j))) list.Add((i, j));
+                    }
+                }
+
+                result[k] = counter;
+
+                output[map[queries[k]][0]] = counter;
+                map[queries[k]].RemoveAt(0);
+            }
+
+            return output;
+        }
+
+        private int MaxPoints_Helper_V2(int[][] grid, int v)
+        {
+            int count = 0;
+            bool[][] visited = new bool[grid.Length][];
+
+            for (int i = 0; i < grid.Length; i++)
+            {
+                visited[i] = new bool[grid[i].Length];
+            }
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+
+            queue.Enqueue((0, 0));
+            while (queue.Count > 0)
+            {
+                (int i, int j) = queue.Dequeue();
+
+                if (i < 0 || j < 0 || i >= grid.Length || j >= grid[i].Length || visited[i][j] || grid[i][j] >= v) continue;
+
+                count++;
+                visited[i][j] = true;
+
+
+                //top i-1
+                queue.Enqueue((i - 1, j));
+
+                //bottom i+1
+                queue.Enqueue((i + 1, j));
+
+                //left j-1
+                queue.Enqueue((i, j - 1));
+
+                //right j+1
+                queue.Enqueue((i, j + 1));
+            }
+
+            return count;
+        }
         #endregion
 
         #region Weekly 322

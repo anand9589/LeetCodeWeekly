@@ -38,7 +38,7 @@
             return root;
         }
 
-        public static int[][] Get2DArray(string path)
+        public static int[][] Get2DArray(string path= @"C:\Users\anand\source\repos\LeetCodeWeekly\LeetCode\LeetCode\Testcase.txt")
         {
             string s = File.ReadAllText(path);
 
