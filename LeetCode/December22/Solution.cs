@@ -454,10 +454,48 @@ namespace December22
         }
         #endregion
 
-        #region Day 14 Problem
+        #region Day 14 Problem 198. House Robber
+        public int Rob(int[] nums)
+        {
+
+            if (nums.Length <= 2) return nums.Max();
+
+            nums[2] += nums[0];
+
+            for (int i = 3; i < nums.Length; i++)
+            {
+                int prev = Math.Max(nums[i - 2], nums[i - 3]);
+                nums[i] += prev;
+            }
+            return nums[nums.Length-1];
+        }
         #endregion
 
-        #region Day 15 Problem
+        #region Day 15 Problem 1143. Longest Common Subsequence
+        public int LongestCommonSubsequence(string text1, string text2)
+        {
+            int[][] dp = new int[text1.Length+1][];
+
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = new int[text2.Length + 1];
+                for (int j = 0; j < dp[i].Length; j++)
+                {
+                    if (i == 0 || j == 0) continue;
+
+                    if(text1[i] == text2[j])
+                    {
+                        dp[i][j] = 1 + dp[i - 1][j - 1];
+                    }
+                    else
+                    {
+                        dp[i][j] = Math.Max(dp[i-1][j], dp[i][j-1]);    
+                    }
+                }
+            }
+
+            return dp[text1.Length][text2.Length];
+        }
         #endregion
 
         #region Day 16 Problem
