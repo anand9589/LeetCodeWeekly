@@ -467,14 +467,14 @@ namespace December22
                 int prev = Math.Max(nums[i - 2], nums[i - 3]);
                 nums[i] += prev;
             }
-            return nums[nums.Length-1];
+            return nums[nums.Length - 1];
         }
         #endregion
 
         #region Day 15 Problem 1143. Longest Common Subsequence
         public int LongestCommonSubsequence(string text1, string text2)
         {
-            int[][] dp = new int[text1.Length+1][];
+            int[][] dp = new int[text1.Length + 1][];
 
             for (int i = 0; i < dp.Length; i++)
             {
@@ -483,13 +483,13 @@ namespace December22
                 {
                     if (i == 0 || j == 0) continue;
 
-                    if(text1[i] == text2[j])
+                    if (text1[i] == text2[j])
                     {
                         dp[i][j] = 1 + dp[i - 1][j - 1];
                     }
                     else
                     {
-                        dp[i][j] = Math.Max(dp[i-1][j], dp[i][j-1]);    
+                        dp[i][j] = Math.Max(dp[i - 1][j], dp[i][j - 1]);
                     }
                 }
             }
@@ -498,10 +498,172 @@ namespace December22
         }
         #endregion
 
-        #region Day 16 Problem
+        #region Day 16 Problem 232. Implement Queue using Stacks
+        public class MyQueue
+        {
+            Stack<int> stack1, stack2;
+            public MyQueue()
+            {
+                stack1 = new Stack<int>();
+                stack2 = new Stack<int>();
+            }
+
+            public void Push(int x)
+            {
+                stack1.Push(x);
+            }
+
+            public int Pop()
+            {
+                int res = temp();
+
+                while (stack2.Count > 0)
+                {
+                    stack1.Push(stack2.Pop());
+                }
+                return res;
+            }
+
+            public int Peek()
+            {
+                int res = temp();
+                stack1.Push(res);
+                while (stack2.Count > 0)
+                {
+                    stack1.Push(stack2.Pop());
+                }
+                return res;
+            }
+
+            public bool Empty()
+            {
+                return stack1.Count == 0 && stack2.Count == 0;
+            }
+
+            private int temp()
+            {
+                while (stack1.Count > 1)
+                {
+                    stack2.Push(stack1.Pop());
+                }
+
+                int res = stack1.Pop();
+                return res;
+            }
+        }
+
+        public class MyQueue_V1
+        {
+            Stack<int> stack1, stack2;
+            public MyQueue_V1()
+            {
+                stack1 = new Stack<int>();
+                stack2 = new Stack<int>();
+            }
+
+            public void Push(int x)
+            {
+                stack1.Push(x);
+            }
+
+            public int Pop()
+            {
+                int res = temp();
+
+                while (stack2.Count > 0)
+                {
+                    stack1.Push(stack2.Pop());
+                }
+                return res;
+            }
+
+            public int Peek()
+            {
+                int res = temp();
+                stack1.Push(res);
+                while (stack2.Count > 0)
+                {
+                    stack1.Push(stack2.Pop());
+                }
+                return res;
+            }
+
+            public bool Empty()
+            {
+                return stack1.Count == 0 && stack2.Count == 0;
+            }
+
+            private int temp()
+            {
+                while (stack1.Count > 1)
+                {
+                    stack2.Push(stack1.Pop());
+                }
+
+                int res = stack1.Pop();
+                return res;
+            }
+        }
         #endregion
 
-        #region Day 17 Problem
+        #region Day 17 Problem 150. Evaluate Reverse Polish Notation
+        public int EvalRPN(string[] tokens)
+        {
+            int result = 0;
+
+            Stack<string> stack = new Stack<string>();
+
+            foreach (string token in tokens)
+            {
+                stack.Push(token);
+            }
+            string s = stack.Peek();
+
+            if (int.TryParse(s, out int num))
+            {
+                return num;
+            }
+            result = calculeteRPN(stack);
+            return result;
+        }
+
+        private int calculeteRPN(Stack<string> stack)
+        {
+            int num1 = int.MinValue, num2 = int.MinValue;
+            char op = stack.Pop()[0];
+
+            if (int.TryParse(stack.Peek(), out num1))
+            {
+                stack.Pop();
+            }
+            else
+            {
+                num1 = calculeteRPN(stack);
+            }
+
+            if (int.TryParse(stack.Peek(), out num2))
+            {
+                stack.Pop();
+            }
+            else
+            {
+                num2 = calculeteRPN(stack);
+            }
+
+            switch (op)
+            {
+                case '+':
+                    return num1 + num2;
+                case '-':
+                    return num2 - num1;
+                case '/':
+                    return num2 / num1;
+                case '*':
+                    return num1 * num2;
+                default:
+                    return 0;
+            }
+        }
         #endregion
 
         #region Day 18 Problem
