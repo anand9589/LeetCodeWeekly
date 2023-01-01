@@ -666,46 +666,1081 @@ namespace December22
         }
         #endregion
 
-        #region Day 18 Problem
+        #region Day 18 Problem 739. Daily Temperatures
+        public int[] DailyTemperatures(int[] temperatures)
+        {
+            int[] res = new int[temperatures.Length];
+            Stack<int> stack = new Stack<int>();
+            //stack.Push(res.Length-1);
+            //res[res.Length - 1] = 0;
+            for (int i = temperatures.Length - 1; i >= 0; i--)
+            {
+                while (stack.Count > 0 && temperatures[stack.Peek()] <= temperatures[i])
+                {
+                    stack.Pop();
+                }
+
+                if (stack.Count == 0)
+                {
+                    res[i] = 0;
+                }
+                else
+                {
+                    res[i] = stack.Peek() - i;
+                }
+                stack.Push(i);
+
+            }
+            return res;
+        }
         #endregion
 
-        #region Day 19 Problem
+        #region Day 19 Problem 1971. Find if Path Exists in Graph
+        public bool ValidPath(int n, int[][] edges, int source, int destination)
+        {
+            if (source == destination) return true;
+            bool[] visited = new bool[n];
+            Dictionary<int, IList<int>> path = new Dictionary<int, IList<int>>();
+            for (int i = 0; i < edges.Length; i++)
+            {
+                addToPath(edges[i][0], edges[i][1], path);
+                addToPath(edges[i][1], edges[i][0], path);
+            }
+            Stack<int> stack = new Stack<int>();
+            stack.Push(source);
+
+            while (stack.Count > 0)
+            {
+                int u = stack.Pop();
+                visited[u] = true;
+                if (path.ContainsKey(u))
+                {
+                    foreach (var item in path[u])
+                    {
+                        if (!visited[item])
+                        {
+                            if (item == destination) return true;
+                            stack.Push((int)item);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static void addToPath(int v, int u, Dictionary<int, IList<int>> path)
+        {
+            if (!path.ContainsKey(v))
+            {
+                path.Add(v, new List<int>());
+            }
+            path[v].Add(u);
+        }
         #endregion
 
-        #region Day 20 Problem
+        #region Day 20 Problem 841. Keys and Rooms
+        public bool CanVisitAllRooms(IList<IList<int>> rooms)
+        {
+            bool[] visited = new bool[rooms.Count];
+
+            Stack<int> stack = new Stack<int>();
+            stack.Push(0);
+
+            while (stack.Count > 0)
+            {
+                int room = stack.Pop();
+                visited[room] = true;
+                foreach (int r in rooms[room])
+                {
+                    if (!visited[r]) stack.Push(r);
+                }
+            }
+
+            return !visited.Any(x => !x);
+        }
         #endregion
 
-        #region Day 21 Problem
+        #region Day 21 Problem 886. Possible Bipartition
+        public bool PossibleBipartition(int n, int[][] dislikes)
+        {
+            IDictionary<int, IList<int>> dislikemap = new Dictionary<int, IList<int>>();
+            bool[] visited = new bool[n + 1];
+            for (int i = 1; i <= n; i++)
+            {
+                dislikemap.Add(i, new List<int>());
+            }
+
+            foreach (int[] dislike in dislikes)
+            {
+                dislikemap[dislike[0]].Add(dislike[1]);
+            }
+
+            dislikemap = dislikemap.OrderByDescending(x => x.Value.Count).ToDictionary(x => x.Key, x => x.Value);
+
+            List<int> group1 = new List<int>();
+            List<int> group2 = new List<int>();
+            Stack<int> stack1 = new Stack<int>();
+            Stack<int> stack2 = new Stack<int>();
+
+            var d = dislikemap.Keys.FirstOrDefault();
+
+            stack1.Push(d);
+
+            while (stack1.Count > 0 || stack2.Count > 0)
+            {
+                if (stack2.Count == 0)
+                {
+                    while (stack1.Count > 0)
+                    {
+                        int k = stack1.Pop();
+                        if (group2.Contains(k)) return false;
+                        visited[k] = true;
+                        group1.Add(k);
+                        foreach (var val in dislikemap[k])
+                        {
+                            if (group1.Contains(val)) return false;
+                            if (!visited[val]) stack2.Push(val);
+                        }
+                    }
+                }
+                else
+                {
+                    while (stack2.Count > 0)
+                    {
+                        int r = stack2.Pop();
+
+                        if (group1.Contains(r)) return false;
+                        visited[r] = true;
+
+                        group2.Add(r);
+                        foreach (var val in dislikemap[r])
+                        {
+                            if (group2.Contains(val)) return false;
+                            if (!visited[val]) stack1.Push(val);
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool addtogroup(IList<int> values, List<int> group)
+        {
+            foreach (var val in values)
+            {
+                if (group.Contains(val)) return false;
+
+                group.Add(val);
+            }
+            return true;
+        }
         #endregion
 
-        #region Day 22 Problem
+        #region Day 22 Problem 834. Sum of Distances in Tree
+        int[] ans_834, count_834;
+        IList<HashSet<int>> graph_834;
+        int n_834;
+        public int[] SumOfDistancesInTree(int n, int[][] edges)
+        {
+            this.n_834 = n;
+
+            this.graph_834 = new List<HashSet<int>>();
+            ans_834 = new int[n];
+            count_834 = Enumerable.Repeat(1, n).ToArray();
+
+            for (int i = 0; i < n_834; i++)
+            {
+                graph_834.Add(new HashSet<int>());
+            }
+
+            foreach (int[] edge in edges)
+            {
+                graph_834[edge[0]].Add(edge[1]);
+                graph_834[edge[1]].Add(edge[0]);
+            }
+
+            dfs_834_1(0, -1);
+            dfs_834_2(0, -1);
+            return ans_834;
+        }
+
+        private void dfs_834_1(int node, int parent)
+        {
+            foreach (int val in graph_834[node])
+            {
+                if (val != parent)
+                {
+                    dfs_834_1(val, node);
+                    count_834[node] += count_834[val];
+                    ans_834[node] += ans_834[val] + count_834[val];
+                }
+            }
+        }
+
+        private void dfs_834_2(int node, int parent)
+        {
+            foreach (int val in graph_834[node])
+            {
+                if (val != parent)
+                {
+                    ans_834[val] = ans_834[node] - count_834[val] + n_834 - count_834[val];
+                    dfs_834_2(val, node);
+                }
+            }
+        }
+
+        public int[] SumOfDistancesInTree_V1(int n, int[][] edges)
+        {
+            int[] result = new int[n];
+            int[][] dp = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                dp[i] = new int[n];
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == j)
+                    {
+                        dp[i][j] = 0;
+                    }
+                    else
+                    {
+                        dp[i][j] = int.MaxValue;
+                    }
+                }
+            }
+            Queue<(int, int, int)> q = new Queue<(int, int, int)>();
+            foreach (int[] edge in edges)
+            {
+                dp[edge[0]][edge[1]] = 1;
+                dp[edge[1]][edge[0]] = 1;
+
+                q.Enqueue((edge[0], edge[1], 1));
+                //q.Enqueue((edge[1], edge[0], 1));
+            }
+
+
+            while (q.Count > 0)
+            {
+                (int v, int u, int w) = q.Dequeue();
+
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (i == u || i == v) continue;
+                    //long vv = w;
+                    //vv += dp[u][i];
+
+                    //if (vv > int.MaxValue) continue;
+                    NewMethod(dp, q, v, u, w, i);
+                    NewMethod(dp, q, u, v, w, i);
+
+                    //if (dp[v][i] != int.MaxValue)
+                    //{
+                    //    if (dp[u][i] > w + dp[v][i])
+                    //    {
+                    //        dp[v][i] = w + dp[u][i];
+                    //        dp[i][v] = w + dp[u][i];
+
+                    //        q.Enqueue((v, i, w + dp[u][i]));
+                    //        //q.Enqueue((i, v, w + dp[u][i]));
+                    //    }
+                    //}
+
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                result[i] = dp[i].Sum();
+            }
+            return result;
+        }
+
+        private static void NewMethod(int[][] dp, Queue<(int, int, int)> q, int v, int u, int w, int i)
+        {
+            if (dp[u][i] != int.MaxValue)
+            {
+                if (dp[v][i] > w + dp[u][i])
+                {
+                    dp[v][i] = w + dp[u][i];
+                    dp[i][v] = w + dp[u][i];
+
+                    q.Enqueue((v, i, w + dp[u][i]));
+                    //q.Enqueue((i, v, w + dp[u][i]));
+                }
+            }
+        }
+
+        private void helper(int[][] dp, int i, int j, int k)
+        {
+            if (dp[i][k] < dp[i][j] + dp[j][k])
+            {
+                dp[i][k] = dp[i][j] + dp[j][k];
+                dp[k][i] = dp[i][j] + dp[j][k];
+
+                Stack<(int, int)> stack = new Stack<(int, int)>();
+
+                stack.Push((i, k));
+
+                while (stack.Count > 0)
+                {
+                    var p = stack.Pop();
+                }
+            }
+        }
         #endregion
 
-        #region Day 23 Problem
+        #region Day 23 Problem 309. Best Time to Buy and Sell Stock with Cooldown
+        public int MaxProfit(int[] prices)
+        {
+            if (prices.Length < 2) return 0;
+
+            int[] buy = new int[prices.Length];
+            int[] sell = new int[prices.Length];
+
+            buy[0] = -prices[0];
+            sell[0] = 0;
+
+            Console.WriteLine(string.Join(" ", buy));
+            Console.WriteLine(string.Join(" ", sell));
+            Console.WriteLine();
+            for (int i = 1; i < prices.Length; i++)
+            {
+                buy[i] = Math.Max(buy[i - 1], i > 1 ? sell[i - 2] - prices[i] : -prices[i]);
+                sell[i] = Math.Max(sell[i - 1], buy[i - 1] + prices[i]);
+                Console.WriteLine(string.Join(" ", buy));
+                Console.WriteLine(string.Join(" ", sell));
+                Console.WriteLine();
+            }
+            return sell[prices.Length - 1];
+        }
         #endregion
 
-        #region Day 24 Problem
+        #region Day 24 Problem 790. Domino and Tromino Tiling
+        public int NumTilings_V1(int n)
+        {
+            if (n <= 1) return n;
+            int mod = 1000000007;
+            int[,] dp = new int[n, 2];
+
+            dp[0, 0] = 1;
+            dp[0, 1] = 0;
+
+            dp[1, 0] = 2;
+            dp[1, 1] = 1;
+
+            for (int i = 2; i < n; i++)
+            {
+                dp[i, 0] = (dp[i - 1, 0] + dp[i - 2, 0] + 2 * dp[i - 1, 1]) % mod;
+                dp[i, 1] = (dp[i - 2, 0] + dp[i - 1, 1]) % mod;
+            }
+
+            return dp[n - 1, 0];
+        }
+
+        public int NumTilings(int n)
+        {
+            var dp = new long[n, 3];
+            var mod = 1_000_000_007;
+            dp[0, 0] = 1; // full
+            dp[0, 1] = 0; // top half empty in the last column
+            dp[0, 2] = 0; // bottom half empty in the last column
+
+            dp[1, 0] = 2; // full
+            dp[1, 1] = 1; // top half empty in the last column
+            dp[1, 2] = 1; // bottom half empty in the last column
+
+            for (int i = 2; i < n; i++)
+            {
+                dp[i, 0] = (dp[i - 2, 0] + dp[i - 1, 0] + dp[i - 1, 1] + dp[i - 1, 2]) % mod; // full
+                dp[i, 1] = (dp[i - 2, 0] + dp[i - 1, 2]) % mod;// top half empty in the last column
+                dp[i, 2] = (dp[i - 2, 0] + dp[i - 1, 1]) % mod;// bottom half empty in the last column
+            }
+
+            return (int)dp[n - 1, 0];
+        }
+
         #endregion
 
-        #region Day 25 Problem
+        #region Day 25 Problem 2389. Longest Subsequence With Limited Sum
+        public int[] AnswerQueries(int[] nums, int[] queries)
+        {
+            Array.Sort(nums);
+
+            int n = queries.Length;
+            int[] result = new int[n];
+
+            int[] prefixsum = new int[nums.Length];
+            prefixsum[0] = nums[0];
+            for (int i = 1; i < prefixsum.Length; i++)
+            {
+                prefixsum[i] = prefixsum[i - 1] + nums[i];
+            }
+
+
+            for (int i = 0; i < n; i++)
+            {
+                int k = binarySearch(prefixsum, queries[i]);
+                result[i] = k + 1;
+            }
+
+            return result;
+        }
+
+        private int binarySearch(int[] arr, int target)
+        {
+            int result = 0;
+            int low = 0;
+            int high = arr.Length - 1;
+            while (low <= high)
+            {
+                if (arr[low] == target) return low;
+
+                if (arr[low] > target) return low - 1;
+
+                if (arr[high] == target || arr[high] < target) return high;
+
+                int mid = (low + high) / 2;
+
+                if (arr[mid] == target) return mid;
+
+                if (arr[mid] < target)
+                {
+                    if (mid + 1 < arr.Length && arr[mid + 1] > target) return mid;
+                    low = mid + 1;
+                }
+                else
+                {
+                    if (mid - 1 >= 0 && arr[mid - 1] < target) return mid;
+                    high = mid - 1;
+                }
+            }
+
+            return result;
+        }
         #endregion
 
-        #region Day 26 Problem
+        #region Day 26 Problem  55. Jump Game   
+        public bool CanJump(int[] nums)
+        {
+            int n = nums.Length;
+            bool[] visited = new bool[n];
+            Stack<int> stack = new Stack<int>();
+            stack.Push(0);
+
+            while (stack.Count > 0)
+            {
+                int i = stack.Pop();
+
+                visited[i] = true;
+
+                int val = nums[i];
+
+
+            }
+
+            return false;
+        }
         #endregion
 
-        #region Day 27 Problem
+        #region Day 27 Problem 2279. Maximum Bags With Full Capacity of Rocks
+        public int MaximumBags(int[] capacity, int[] rocks, int additionalRocks)
+        {
+            //List<(int, int)> bags = new List<(int, int)>();
+
+            List<int> result = new List<int>();
+
+            for (int i = 0; i < rocks.Length; i++)
+            {
+                int rem = capacity[i] - rocks[i];
+                if (rem > 0) result.Add(capacity[i] - rocks[i]);
+            }
+
+            result = result.OrderBy(x => x).ToList();
+
+            int fullbags = rocks.Length - result.Count;
+
+            while (additionalRocks > 0 && result.Count > 0)
+            {
+
+                int v = result[0];
+
+                result.RemoveAt(0);
+
+                if (v <= additionalRocks)
+                {
+                    additionalRocks -= v;
+                    fullbags++;
+                }
+            }
+
+            return fullbags;
+        }
         #endregion
 
-        #region Day 28 Problem
+        #region Day 28 Problem 1962. Remove Stones to Minimize the Total
+        public int MinStoneSum(int[] piles, int k)
+        {
+            int lastIndex = piles.Length - 1;
+            PriorityQueue<int, int> queue = new PriorityQueue<int, int>(new IntMaxComparer());
+            int total = 0;
+            for (int i = 0; i < piles.Length; i++)
+            {
+                queue.Enqueue(piles[i], piles[i]);
+                total += piles[i];
+            }
+
+            while (k > 0)
+            {
+                var p = queue.Dequeue();
+                int sub = p / 2;
+                p = p - sub;
+                queue.Enqueue(p, p);
+                total -= sub;
+                k--;
+            }
+
+
+            return total;
+        }
+
+        public class IntMaxComparer : IComparer<int>
+        {
+            public int Compare(int x, int y)
+            {
+                if (x < y) return 1;
+                if (x > y) return -1;
+                return 0;
+            }
+
+        }
         #endregion
 
-        #region Day 29 Problem
+        #region Day 29 Problem 1834. Single-Threaded CPU
+        public int[] GetOrder(int[][] tasks)
+        {
+            int[][] tasks1 = new int[tasks.Length][];
+
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                tasks1[i] = new int[] { tasks[i][0], tasks[i][1], i };
+            }
+            Array.Sort(tasks1, (x, y) => x[1] - y[1]);
+            Array.Sort(tasks1, (x, y) => x[0] - y[0]);
+            PriorityQueue<(int x, int y, int index), (int x, int y, int index)> queue = new PriorityQueue<(int x, int y, int index), (int x, int y, int index)>(new IntIntComaprer());
+
+            int[] result = new int[tasks.Length];
+            int counterIndex = tasks1[0][0];
+            int processIndex = 0;
+            int[] task = tasks1[0];
+            queue.Enqueue((task[0], task[1], task[2]), (task[0], task[1], task[2]));
+            int tasksprocessIndex = 1;
+            int temp = task[0];
+            while (tasksprocessIndex < tasks.Length && tasks1[tasksprocessIndex][0] <= temp)
+            {
+                task = tasks1[tasksprocessIndex];
+                queue.Enqueue((task[0], task[1], task[2]), (task[0], task[1], task[2]));
+                tasksprocessIndex++;
+            }
+            while (processIndex < result.Length)
+            {
+                if (queue.Count == 0)
+                {
+                    task = tasks1[tasksprocessIndex];
+                    temp = task[0];
+                    queue.Enqueue((task[0], task[1], task[2]), (task[0], task[1], task[2]));
+                    tasksprocessIndex++;
+                    counterIndex = temp;
+                    while (tasksprocessIndex < tasks.Length && tasks1[tasksprocessIndex][0] <= temp)
+                    {
+                        task = tasks1[tasksprocessIndex];
+                        queue.Enqueue((task[0], task[1], task[2]), (task[0], task[1], task[2]));
+                        tasksprocessIndex++;
+                    }
+                }
+                var p = queue.Dequeue();
+                result[processIndex] = p.index;
+                counterIndex += p.y;
+
+                while (tasksprocessIndex < tasks.Length && tasks1[tasksprocessIndex][0] <= counterIndex)
+                {
+                    task = tasks1[tasksprocessIndex];
+                    queue.Enqueue((task[0], task[1], task[2]), (task[0], task[1], task[2]));
+                    tasksprocessIndex++;
+                }
+                processIndex++;
+            }
+            return result;
+        }
+
+        public class IntIntComaprer : IComparer<(int x, int y, int index)>
+        {
+            public int Compare((int x, int y, int index) x, (int x, int y, int index) y)
+            {
+
+                if (x.y > y.y) return 1;
+                if (x.y < y.y) return -1;
+
+                if (x.index > y.index) return 1;
+                if (x.index < y.index) return -1;
+
+                if (x.x > y.x) return 1;
+                if (x.x < y.x) return -1;
+
+                return 0;
+            }
+        }
         #endregion
 
-        #region Day 30 Problem
+        #region Day 30 Problem 797. All Paths From Source to Target
+        public IList<IList<int>> AllPathsSourceTarget(int[][] graph)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+            int lastNode = graph.Length - 1;
+
+            Stack<IList<int>> stack = new Stack<IList<int>>();
+            foreach (int node in graph[0])
+            {
+                stack.Push(new List<int>() { 0, node });
+            }
+
+            while (stack.Count > 0)
+            {
+
+                var nodeList = stack.Pop();
+
+                int lastNodeVal = nodeList.Last();
+
+                if (lastNodeVal == lastNode)
+                {
+                    result.Add(nodeList);
+                }
+                else
+                {
+                    foreach (var node in graph[lastNodeVal])
+                    {
+                        IList<int> list = new List<int>(nodeList);
+                        list.Add(node);
+                        stack.Push(list);
+                    }
+                }
+            }
+            return result;
+        }
+        public IList<IList<int>> AllPathsSourceTarget_V1(int[][] graph)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+            int lastNode = graph.Length - 1;
+
+            Queue<IList<int>> queue = new Queue<IList<int>>();
+            foreach (int node in graph[0])
+            {
+                queue.Enqueue(new List<int>() { 0, node });
+            }
+
+            while (queue.Count > 0)
+            {
+                var nodeList = queue.Dequeue();
+
+                int lastNodeVal = nodeList.Last();
+
+                if (lastNodeVal == lastNode)
+                {
+                    result.Add(nodeList);
+                }
+                else
+                {
+                    foreach (var node in graph[lastNodeVal])
+                    {
+                        IList<int> list = new List<int>(nodeList);
+                        list.Add(node);
+                        queue.Enqueue(list);
+                    }
+                }
+            }
+            return result;
+        }
         #endregion
 
-        #region Day 31 Problem
+        #region Day 31 Problem 980. Unique Paths III
+        public int UniquePathsIII(int[][] grid)
+        {
+            int zero = 0, x = 0, y = 0, m = grid.Length, n = grid[0].Length;
+
+            for (int r = 0; r < m; r++)
+            {
+                for (int c = 0; c < n; c++)
+                {
+                    if (grid[r][c] == 0)
+                    {
+                        zero++;
+                    }
+                    else if (grid[r][c] == 1)
+                    {
+                        x = r;
+                        y = c;
+                    }
+                }
+            }
+
+            return dfs_980(grid, x, y, zero);
+        }
+
+        private int dfs_980(int[][] grid, int x, int y, int zero)
+        {
+            if (x < 0 || y < 0 || x >= grid.Length || y >= grid[x].Length || grid[x][y] == -1) return 0;
+
+            if (grid[x][y] == 2)
+            {
+                return zero == -1 ? 1 : 0;
+            }
+
+            grid[x][y] = -1;
+
+            zero--;
+
+            int uniquePaths = dfs_980(grid, x + 1, y, zero) +
+                dfs_980(grid, x - 1, y, zero) +
+                dfs_980(grid, x, y - 1, zero) +
+                dfs_980(grid, x, y + 1, zero);
+
+            grid[x][y] = 0;
+            zero++;
+            return uniquePaths;
+        }
+        #endregion
+
+        #region Problem 130. Surrounded Regions
+
+        public void Solve(char[][] board)
+        {
+            int m = board.Length;
+            int n = board[0].Length;
+            bool[][] visited = new bool[m][];
+
+            for (int i = 0; i < m; i++)
+            {
+                visited[i] = new bool[n];
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                if (board[i][0] == 'O' && !visited[i][0])
+                {
+                    solve_130(board, visited, i, 0);
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                if (board[0][i] == 'O' && !visited[0][i])
+                {
+                    solve_130(board, visited, 0, i);
+                }
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                if (board[i][n - 1] == 'O' && !visited[i][n - 1])
+                {
+                    solve_130(board, visited, i, n - 1);
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                if (board[m - 1][i] == 'O' && !visited[m - 1][i])
+                {
+                    solve_130(board, visited, m - 1, i);
+                }
+            }
+
+            for (int i = 1; i < m - 1; i++)
+            {
+                for (int j = 1; j < n - 1; j++)
+                {
+                    if (board[i][j] == 'O' && !visited[i][j])
+                    {
+                        board[i][j] = 'X';
+                    }
+                }
+            }
+        }
+
+        private void solve_130(char[][] board, bool[][] visited, int i, int j)
+        {
+            Queue<(int x, int y)> q = new Queue<(int x, int y)>();
+            visited[i][j] = true;
+            q.Enqueue((i, j));
+
+            while (q.Count > 0)
+            {
+                (int x, int y) = q.Dequeue();
+
+
+                if (x - 1 >= 0 && !visited[x - 1][y] && board[x - 1][y] == 'O')
+                {
+                    visited[x - 1][y] = true;
+                    q.Enqueue((x - 1, y));
+                }
+
+                if (y - 1 >= 0 && !visited[x][y - 1] && board[x][y - 1] == 'O')
+                {
+                    visited[x][y - 1] = true;
+                    q.Enqueue((x, y - 1));
+                }
+
+                if (x + 1 < board.Length && !visited[x + 1][y] && board[x + 1][y] == 'O')
+                {
+                    visited[x + 1][y] = true;
+                    q.Enqueue((x + 1, y));
+                }
+
+                if (y + 1 < board[x].Length && !visited[x][y + 1] && board[x][y + 1] == 'O')
+                {
+                    visited[x][y + 1] = true;
+                    q.Enqueue((x, y + 1));
+                }
+            }
+        }
+
+        public void Solve_v1(char[][] board)
+        {
+            bool[][] visited = new bool[board.Length][];
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                visited[i] = new bool[board[i].Length];
+            }
+
+            for (int i = 0; i < board.Length; i++)
+            {
+                if (i == 0 || i == board.Length - 1) continue;
+                for (int j = 0; j < board[i].Length; j++)
+                {
+                    if (j == 0 || j == board[i].Length - 1 || visited[i][j]) continue;
+
+                    if (board[i][j] == 'O')
+                    {
+                        solve_130_V1(board, visited, i, j);
+                    }
+                }
+            }
+        }
+
+        private void solve_130_V1(char[][] board, bool[][] visited, int i, int j)
+        {
+            bool edge = false;
+            IList<(int, int)> lst = new List<(int, int)>();
+            Queue<(int, int)> q = new Queue<(int, int)>();
+            q.Enqueue((i, j));
+            // visited[i][j] = true;
+
+            while (q.Count > 0)
+            {
+                (int x, int y) = q.Dequeue();
+
+                if (!edge && (x == 0 || y == 0 || x == board.Length - 1 || y == board[x].Length))
+                {
+                    edge = true;
+                }
+
+                visited[x][y] = true;
+                lst.Add((x, y));
+                //top y-1
+                if (y - 1 >= 0 && board[x][y - 1] == 'O' && !visited[x][y - 1])
+                {
+                    q.Enqueue((x, y - 1));
+                }
+
+
+                //bottom y+1
+                if (y + 1 < board[x].Length && board[x][y + 1] == 'O' && !visited[x][y + 1])
+                {
+                    q.Enqueue((x, y + 1));
+                }
+
+                //left x-1
+                if (x - 1 >= 0 && board[x - 1][y] == 'O' && !visited[x - 1][y])
+                {
+                    q.Enqueue((x - 1, y));
+                }
+
+                //right x+1
+                if (x + 1 < board.Length && board[x + 1][y] == 'O' && !visited[x + 1][y])
+                {
+                    q.Enqueue((x + 1, y));
+                }
+
+            }
+
+            if (!edge)
+            {
+                foreach ((int x, int y) in lst)
+                {
+                    board[x][y] = 'X';
+                }
+            }
+
+        }
+
+
+        private void solve_130(char[][] board, bool[][] visited, Queue<(int, int)> q)
+        {
+            while (q.Count > 0)
+            {
+                (int i, int j) = q.Dequeue();
+                visited[i][j] = true;
+
+
+            }
+        }
+
+        #endregion
+
+        #region Problem 743. Network Delay Time
+        public int NetworkDelayTime(int[][] times, int n, int k)
+        {
+            int result = -1;
+            Dictionary<int, IList<(int, int)>> map = new Dictionary<int, IList<(int, int)>>();
+
+            int[] arr = Enumerable.Repeat(int.MaxValue, n).ToArray();
+            bool[] visited = new bool[n];
+            arr[k - 1] = 0;
+
+            foreach (int[] time in times)
+            {
+                if (!map.ContainsKey(time[0] - 1))
+                {
+                    map.Add(time[0] - 1, new List<(int, int)>());
+                }
+
+                map[time[0] - 1].Add((time[1] - 1, time[2]));
+            }
+
+            int u = k - 1;
+            while (u >= 0)
+            {
+                visited[u] = true;
+                if (map.ContainsKey(u))
+                {
+                    foreach ((int v, int w) in map[u])
+                    {
+                        if (arr[u] + w < arr[v])
+                        {
+                            arr[v] = arr[u] + w;
+                        }
+                    }
+                }
+
+                u = -1;
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    if (!visited[i])
+                    {
+                        if (u == -1 || arr[u] > arr[i])
+                        {
+                            u = i;
+                        }
+                    }
+                }
+
+                if (u != -1 && arr[u] == int.MaxValue) return -1;
+            }
+
+            return arr.Max();
+        }
+        #endregion
+
+        #region Problem 744. Find Smallest Letter Greater Than Target
+        public char NextGreatestLetter(char[] letters, char target)
+        {
+            int low = 0;
+            int high = letters.Length - 1;
+
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+
+                if (letters[mid] == target)
+                {
+
+                }
+                else if (target > letters[mid])
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+
+            if (high <= 0 || low >= letters.Length) return letters[0];
+            return letters[0];
+        }
+        #endregion
+
+        #region Problem 787. Cheapest Flights Within K Stops
+        public int FindCheapestPrice(int n, int[][] flights, int src, int dst, int k)
+        {
+            if (src == dst) return 0;
+            int[] arr = Enumerable.Repeat(int.MaxValue, n).ToArray();
+            Dictionary<int, List<(int, int)>> map = new Dictionary<int, List<(int, int)>>();
+
+            for (int i = 0; i < n; i++)
+            {
+                map.Add(i, new List<(int, int)>());
+            }
+
+
+            foreach (int[] flight in flights)
+            {
+                map[flight[0]].Add((flight[1], flight[2]));
+            }
+
+            foreach (var key in map.Keys)
+            {
+                map[key] = map[key].OrderBy(x => x.Item2).ToList();
+            }
+
+            Queue<(int, int, int)> q = new Queue<(int, int, int)>();
+            arr[src] = 0;
+            q.Enqueue((src, 0, k));
+            int result = int.MaxValue;
+            while (q.Count > 0)
+            {
+                var p = q.Dequeue();
+                foreach (var item in map[p.Item1])
+                {
+                    int nxt = item.Item1;
+                    int stop = p.Item3 - 1;
+                    int weight = item.Item2 + p.Item2;
+                    if (arr[nxt] > weight)
+                    {
+                        arr[nxt] = weight;
+                        if (item.Item1 == dst)
+                        {
+                            result = Math.Min(result, weight);
+                        }
+                        else if (stop >= 0)
+                        {
+                            q.Enqueue((item.Item1, weight, stop));
+                        }
+                    }
+                }
+            }
+            return result == int.MaxValue ? -1 : result;
+        }
         #endregion
 
         #region Problem 2478. Number of Beautiful Partitions
@@ -1260,6 +2295,159 @@ namespace December22
         {
             long result = 0;
             return result;
+        }
+        #endregion
+
+        #region Weekly324
+        public int SimilarPairs(string[] words)
+        {
+            if (words.Length < 2)
+            {
+                return 0;
+            }
+
+            int result = 0;
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                words[i] = new string(words[i].Distinct().OrderBy(x => x).ToArray());
+            }
+            Dictionary<string, int> pair = new Dictionary<string, int>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (!pair.ContainsKey(words[i]))
+                {
+                    pair.Add(words[i], 0);
+                }
+                pair[words[i]]++;
+            }
+
+            foreach (var key in pair.Keys)
+            {
+                result += getPairs(pair[key] - 1);
+            }
+
+            //Dictionary<int, IList<int>> pairs = new Dictionary<int, IList<int>>();
+            //for (int i = 0; i < words.Length - 1; i++)
+            //{
+            //    if (pairs.ContainsKey(i)) continue;
+            //    var word1 = words[i].ToCharArray().OrderBy(x => x).Distinct();
+            //    pairs.Add(i, new List<int>());
+            //    for (int j = i + 1; j < words.Length; j++)
+            //    {
+            //        var word2 = words[j].ToCharArray().OrderBy(x => x).Distinct();
+
+            //        if (match(word1, word2))
+            //        {
+            //            pairs[i].Add(j);
+            //        }
+            //    }
+
+            //    for (int k = 0; k < pairs[i].Count - 1; k++)
+            //    {
+            //        pairs.Add(pairs[i][k], new List<int>());
+            //        for (int l = k + 1; l < pairs[i].Count; l++)
+            //        {
+            //            pairs[pairs[i][k]].Add(l);
+            //        }
+            //    }
+            //}
+
+            //foreach (var item in pairs.Keys)
+            //{
+            //    result += pairs[item].Count;
+            //}
+            return result;
+        }
+
+        private int getPairs(int k)
+        {
+            int result = 0;
+
+            while (k > 0)
+            {
+                result += k;
+                k--;
+            }
+
+            return result;
+        }
+
+        private bool match(IEnumerable<char> word1, IEnumerable<char> word2)
+        {
+            int len = word1.Count();
+            if (len != word2.Count()) return false;
+
+            for (int i = 0; i < len; i++)
+            {
+                if (word1.ElementAt(i) != word2.ElementAt(i)) return false;
+            }
+            return true;
+        }
+
+        public int SmallestValue(int n)
+        {
+            int oldn = n;
+            int sum = 0;
+            int i = 2;
+            while (i <= n)
+            {
+                if (n % i == 0)
+                {
+                    sum += i;
+                    n /= i;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            if (sum == oldn) return oldn;
+
+            return SmallestValue(sum);
+        }
+        #endregion
+
+        #region Weekly 325
+        public int ClosetTarget(string[] words, string target, int startIndex)
+        {
+            int left = startIndex - 1, right = startIndex + 1;
+            bool found = false;
+            int counter = 1;
+            while (!found && counter < words.Length)
+            {
+                if (left == -1)
+                {
+                    left = words.Length - 1;
+                }
+                if (left >= 0)
+                {
+                    if (words[left] == target)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (right == words.Length)
+                {
+                    right = 0;
+                }
+                if (right < words.Length)
+                {
+                    if (words[right] == target)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                left--;
+                right++;
+                counter++;
+            }
+
+            return found ? counter : -1;
         }
         #endregion
     }

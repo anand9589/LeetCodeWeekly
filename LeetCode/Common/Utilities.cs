@@ -51,13 +51,20 @@
 
             for (int i = 0; i < arr2.Length; i++)
             {
-                arr2[i] = Array.ConvertAll(arr[i].Split(','), int.Parse);
+                if (string.IsNullOrEmpty(arr[i]))
+                {
+                    arr2[i] = new int[0];
+                }
+                else
+                {
+                    arr2[i] = Array.ConvertAll(arr[i].Split(','), int.Parse);
+                }
             }
 
             return arr2;
         }
 
-        public static int[] GetIntArray(string path)
+        public static int[] GetIntArray(string path = @"C:\Users\anand\source\repos\LeetCodeWeekly\LeetCode\LeetCode\Testcase.txt")
         {
             string s = File.ReadAllText(path);
 
@@ -69,7 +76,7 @@
             return Array.ConvertAll(arr, int.Parse);
         }
 
-        public static char[][] Get2DCharArray(string path)
+        public static char[][] Get2DCharArray(string path = @"C:\Users\anand\source\repos\LeetCodeWeekly\LeetCode\LeetCode\Testcase.txt")
         {
             string s = File.ReadAllText(path);
 
