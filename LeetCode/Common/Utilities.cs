@@ -26,6 +26,16 @@
 
             return root;
         }
+
+        public static int[] GetArray(string path =@"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
+        {
+            string str = File.ReadAllText(path).TrimStart('[').TrimEnd(']');
+
+            int[] arr = Array.ConvertAll( str.Split(','), int.Parse);
+
+            return arr;
+        }
+
         public static TreeNode BuildTreeNode(int[] arr, int index = 0)
         {
             TreeNode root = null;
@@ -38,10 +48,10 @@
             return root;
         }
 
-        public static int[][] Get2DArray(string path= @"C:\Users\anand\source\repos\LeetCodeWeekly\LeetCode\LeetCode\Testcase.txt")
+        public static int[][] Get2DArray(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
         {
-            string s = File.ReadAllText(path);
-
+            string[] strs = File.ReadAllLines(path);
+            string s = strs[0];
             s = s.TrimStart('[');
             s = s.TrimEnd(']');
 
@@ -78,12 +88,7 @@
 
         public static char[][] Get2DCharArray(string path = @"C:\Users\anand\source\repos\LeetCodeWeekly\LeetCode\LeetCode\Testcase.txt")
         {
-            string s = File.ReadAllText(path);
-
-            s = s.TrimStart('[');
-            s = s.TrimEnd(']');
-            s = s.Replace("\"","");
-            string[] arr = s.Split("],[");
+            string[] arr = getArray(path);
 
             char[][] arr2 = new char[arr.Length][];
 
@@ -93,6 +98,31 @@
             }
 
             return arr2;
+        }
+
+        private static string[] getArray(string path)
+        {
+            string s = File.ReadAllText(path);
+
+            s = s.TrimStart('[');
+            s = s.TrimEnd(']');
+            s = s.Replace("\"", "");
+            string[] arr = s.Split("],[");
+            return arr;
+        }
+
+        public static IList<IList<string>> GetListofListofString(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
+        {
+            IList<IList<string>> list = new List<IList<string>>();
+
+            string[] arr = getArray(path);
+
+            foreach (string str in arr)
+            {
+                list.Add(new List<string>(str.Split(",")));
+            }
+
+            return list;
         }
 
         //public static string[] GetStringArray(string path, int lineIndex = 0)
