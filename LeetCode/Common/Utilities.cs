@@ -17,21 +17,18 @@
 
         public static TreeNode BuildTreeNode(int?[] arr, int index = 0)
         {
-            TreeNode root = null;
 
-            if (index < arr.Length && arr[index] != null)
-            {
-                root = new TreeNode((int)arr[index], BuildTreeNode(arr, 2 * index + 1), BuildTreeNode(arr, 2 * index + 2));
-            }
+            if (index >= arr.Length || arr[index] == null) return null;
 
-            return root;
+            return new TreeNode((int)arr[index], BuildTreeNode(arr, (2 * index) + 1), BuildTreeNode(arr, (2 * index) + 2));
+
         }
 
-        public static int[] GetArray(string path =@"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
+        public static int[] GetArray(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
         {
             string str = File.ReadAllText(path).TrimStart('[').TrimEnd(']');
 
-            int[] arr = Array.ConvertAll( str.Split(','), int.Parse);
+            int[] arr = Array.ConvertAll(str.Split(','), int.Parse);
 
             return arr;
         }
@@ -46,6 +43,24 @@
             }
 
             return root;
+        }
+
+
+
+        public static TreeNode BuildTreeNode(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
+        {
+            string[] s = File.ReadAllText(path).Trim('[', ']').Split(",");
+            int?[] arr = new int?[s.Length];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != "null")
+                {
+                    arr[i] = int.Parse(s[i]);
+                }
+            }
+
+            return BuildTreeNode(arr);
         }
 
         public static int[][] Get2DArray(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
