@@ -26,9 +26,9 @@
 
         public static int[] GetArray(string path = @"C:\Users\anand\source\repos\Leetcode2023\Leetcode2023\Testcase.txt")
         {
-            string str = File.ReadAllText(path).TrimStart('[').TrimEnd(']');
+            string[] str = File.ReadAllLines(path);
 
-            int[] arr = Array.ConvertAll(str.Split(','), int.Parse);
+            int[] arr = Array.ConvertAll(str[0].Trim('[').Trim(']').Split(','), int.Parse);
 
             return arr;
         }
